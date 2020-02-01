@@ -1,0 +1,9 @@
+#Ant properties
+#Thu Oct 12 09:38:36 CEST 2017
+builddate=20171012 0936
+description=goldtest
+name=goldtest
+releasedate=20170803 1323
+vendor=hybris
+version=6.5.0.2
+version.api=6.5.0

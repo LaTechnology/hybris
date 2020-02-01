@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:file="http://www.springframework.org/schema/integration/file"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration 
+	http://www.springframework.org/schema/integration/spring-integration.xsd
+	http://www.springframework.org/schema/integration/file 
+	http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/> 
+
+	<bean id="baseDirectoryGold" class="java.lang.String">
+		<constructor-arg value="#{baseDirectory}/${tenantId}/gold" />
+	</bean>
+	<!-- 1) Scan for files -->
+	<file:inbound-channel-adapter id="batchFilesGold" directory="#{baseDirectoryGold}"
+		filename-regex="^(.*)-(\d+)\.csv" comparator="fileOrderComparator">
+		<int:poller fixed-rate="1000" />
+	</file:inbound-channel-adapter>
+	
+	<!-- 2) move the file to processing and create header -->
+	<file:outbound-gateway request-channel="batchFilesGold" reply-channel="batchFilesGoldProc"
+		directory="#{baseDirectoryGold}/processing" delete-source-files="true" />
+	<int:service-activator input-channel="batchFilesGoldProc" output-channel="batchFilesHeaderInit" ref="apparelHeaderSetupTask"
+		method="execute" />
+	<bean id="apparelHeaderSetupTask" class="de.hybris.platform.acceleratorservices.dataimport.batch.task.HeaderSetupTask">
+		<property name="catalog" value="goldProductCatalog" />
+		<property name="net" value="false" />
+		<property name="storeBaseDirectory" ref="baseDirectoryGold" />
+	</bean>
+	
+	<!-- Transformer converters mappings -->
+	 	<bean id="goldProductTaxConverterMapping" 
+		  class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping" 
+		  p:mapping="tax" 
+		  p:converter-ref="goldProductTaxConverter"/>
+		  
+		  
+		   <!-- Apparel specific converters -->
+  <bean id="goldProductTaxConverter" 
+		  class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter" >
+		<property name="header">
+			<value>#{defaultImpexProductHeader}
+				# Insert  product Tax data
+				INSERT_UPDATE ProductTaxCode;productCode[unique=true];taxCode;taxArea[unique=true];sequenceId[translator=de.hybris.platform.acceleratorservices.dataimport.batch.converter.SequenceIdTranslator]
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>;{+0};{1};{2};{S}</value>
+		</property>
+		<property name="rowFilter">
+			<bean class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexRowFilter">
+				<property name="expression" value="row[1]"/>
+			</bean>
+		</property>
+		<property name="type" value="ProductTaxCode" />
+	</bean>
+	
+	
+	 </beans>
+	 

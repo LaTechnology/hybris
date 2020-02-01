@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:file="http://www.springframework.org/schema/integration/file"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration 
+	http://www.springframework.org/schema/integration/spring-integration.xsd
+	http://www.springframework.org/schema/integration/file 
+	http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/> 
+
+	<bean id="baseDirectoryGold" class="java.lang.String">
+		<constructor-arg value="#{baseDirectory}/${tenantId}/gold" />
+	</bean>
+	<!-- 1) Scan for files -->
+	<file:inbound-channel-adapter id="batchFilesGold" directory="#{baseDirectoryGold}"
+		filename-regex="^(.*)-(\d+)\.csv" comparator="fileOrderComparator">
+		<int:poller fixed-rate="1000" />
+	</file:inbound-channel-adapter>
+	
+	<!-- 2) move the file to processing and create header -->
+	<file:outbound-gateway request-channel="batchFilesGold" reply-channel="batchFilesGoldProc"
+		directory="#{baseDirectoryGold}/processing" delete-source-files="true" />
+	<int:service-activator input-channel="batchFilesGoldProc" output-channel="batchFilesHeaderInit" ref="apparelHeaderSetupTask"
+		method="execute" />
+	<bean id="apparelHeaderSetupTask" class="de.hybris.platform.acceleratorservices.dataimport.batch.task.HeaderSetupTask">
+		<property name="catalog" value="goldProductCatalog" />
+		<property name="net" value="false" />
+		<property name="storeBaseDirectory" ref="baseDirectoryGold" />
+	</bean>
+	
+	
+	<!-- Transformer converters mappings -->
+	 	<bean id="goldProductConverterMapping" 
+		  class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping" 
+		  p:mapping="base_product" 
+		  p:converter-ref="goldProductConverter"/>
+		  <bean id="goldStyleVariantProductConverterMapping" 
+		  class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping" 
+		  p:mapping="variant" 
+		  p:converter-ref="goldStyleVariantProductConverter"/>
+		    <bean id="goldSizeVariantProductConverterMapping" 
+		  class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping" 
+		  p:mapping="variant" 
+		  p:converter-ref="goldSizeVariantProductConverter"/>
+		  
+		  <!-- product-en converters mappings -->
+		  <bean id="goldProductEnConverterMapping" 
+		  class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping" 
+		  p:mapping="base_product" 
+		  p:converter-ref="goldProductEnConverter"/>
+		  
+		   <!-- Apparel specific converters -->
+		   <bean id="goldProductConverter" 
+		  class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter" >
+		<property name="header">
+			<value>#{defaultImpexProductHeader}
+				# INSERT  product  data
+				INSERT_UPDATE ApparelProduct;code[unique=true];$catalogVersion;unit(code);supercategories(code,$catalogVersion);varianttype(code);$approved;$taxGroup;ean;genders(code);sequenceId[translator=de.hybris.platform.acceleratorservices.dataimport.batch.converter.SequenceIdTranslator]
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>;{+0};{+1};{2};{3};{4};{5};{6};{7};{8};{S}</value>
+		</property>
+		<property name="rowFilter">
+			<bean class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexRowFilter">
+				<property name="expression" value="row[1]"/>
+				<property name="type" value="ApparelProduct" />
+			</bean>
+		</property>
+	</bean>
+	
+	   <bean id="goldStyleVariantProductConverter" 
+		  class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter" >
+		<property name="header">
+			<value>#{defaultImpexProductHeader}
+				# INSERT  GoldStyleVariantProduct
+				INSERT_UPDATE ApparelStyleVariantProduct;code[unique=true];$catalogVersion;$baseProduct;unit(code);swatchColors(code);supercategories(code,$catalogVersion);varianttype(code);$approved;sequenceId[translator=de.hybris.platform.acceleratorservices.dataimport.batch.converter.SequenceIdTranslator]
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>;{+0};{+1};{2};{3};{4};{5};{6};{S}</value>
+		</property>
+		<property name="rowFilter">
+			<bean class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexRowFilter">
+				<property name="expression" value="row[1]"/>
+				<property name="type" value="ApparelStyleVariantProduct" />
+			</bean>
+		</property>
+	</bean>
+	<bean id="goldSizeVariantProductConverter" 
+		  class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter" >
+		<property name="header">
+			<value>#{defaultImpexProductHeader}
+				# INSERT  GoldSizeVariantProduct
+              INSERT_UPDATE ApparelSizeVariantProduct;code[unique=true];$catalogVersion;$baseProduct;ean;unit(code);swatchColors(code);supercategories(code,$catalogVersion);;$approved;$taxGroup;sequenceId[translator=de.hybris.platform.acceleratorservices.dataimport.batch.converter.SequenceIdTranslator]
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>;{+0};{+1};{2};{3};{4};{5};{6};{7};{8};{9};{S}</value>
+		</property>
+		<property name="rowFilter">
+			<bean class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexRowFilter">
+				<property name="expression" value="row[1]"/>
+				<property name="type" value="ApparelSizeVariantProduct" />
+			</bean>
+		</property>
+	</bean>
+	
+	
+	
+	 <!-- product-en specific converters -->
+  <bean id="goldProductEnConverter" 
+		  class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter" >
+		<property name="header">
+			<value>#{defaultImpexProductHeader}
+				# Update product en data
+				UPDATE Product;code[unique=true];$catalogVersion;name[lang=$lang];summary[lang=$lang];description[lang=$lang];ApparelStyleVariantProduct.style[lang=$lang];ApparelSizeVariantProduct.size[lang=$lang];sequenceId[translator=de.hybris.platform.acceleratorservices.dataimport.batch.converter.SequenceIdTranslator]
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>;{+0};{+1};{2};{3};{4};{S}</value>
+		</property>
+		<property name="rowFilter">
+			<bean class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexRowFilter">
+				<property name="expression" value="row[1]"/>
+				<property name="type" value="Product" />
+			</bean>
+		</property>
+	</bean>
+	    
+	
+	
+	 </beans>
+	 
+		   
+		   
+		   
