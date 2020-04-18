@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="SI_Hybris_Pricing_Enquiry_OB"
+	targetNamespace="urn.Hybris.com:xi:Pricing_Enquiry" xmlns:p1="urn.Hybris.com:xi:Pricing_Enquiry"
+	xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+	xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+	<wsdl:documentation />
+	<wsp:UsingPolicy wsdl:required="true" />
+	<wsp:Policy wsu:Id="OP_SI_Hybris_Pricing_Enquiry_OB" />
+	<wsdl:types>
+		<xsd:schema targetNamespace="urn.Hybris.com:xi:Pricing_Enquiry"
+			xmlns="urn.Hybris.com:xi:Pricing_Enquiry" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:element name="MT_Hybris_Pricing_Response" type="DT_Hybris_Pricing_Response" />
+			<xsd:element name="MT_Hybris_Pricing_Request" type="DT_Hybris_Pricing_Request" />
+			<xsd:complexType name="DT_Hybris_Pricing_Request">
+				<xsd:annotation>
+					<xsd:appinfo source="http://sap.com/xi/VersionID">9984507dd95711e5adbb00000024fafe
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="ORDER_HEADER" minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo source="http://sap.com/xi/TextID">a9c57873d94c11e58d21a0a8cd743f6a
+							</xsd:appinfo>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="CUSTOMER" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">a9c57867d94c11e58ecba0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="DOC_TYPE" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">a9c57868d94c11e5ad81a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="SALES_ORG" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">a9c57869d94c11e5c719a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="DISTR_CHAN" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">a9c5786ad94c11e5b396a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="DIVISION" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">a9c5786bd94c11e5b94da0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PURCH_NO" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">a9c5786cd94c11e5b5eca0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="PO_METHOD" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">a9c5786dd94c11e59724a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="INCOTERMS1" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">a9c5786ed94c11e5c0a6a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="INCOTERMS2" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">a9c5786fd94c11e5b6e3a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="SHIP_COND" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">a9c57870d94c11e58943a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="ROUTE" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">a9c57871d94c11e58d97a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="SHIP_METHOD" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">a9c57872d94c11e5b049a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="DROPSHIP_ADDRESS" minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo source="http://sap.com/xi/TextID">bb548bd7d94e11e5839fa0a8cd743f6a
+							</xsd:appinfo>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="NAME1" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">bb548bccd94e11e59177a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="NAME_2" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">bb548bcdd94e11e59766a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="COMPANY_NAME" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">bb548bced94e11e5bc65a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="STREET2" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">bb548bcfd94e11e5a77ba0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="STREET" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">bb548bd0d94e11e5af1ea0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="POBX_PCD" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">bb548bd1d94e11e58602a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="CITY" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">bb548bd2d94e11e59abda0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="LANDX" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">bb548bd3d94e11e586f0a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="COUNTRY" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">bb548bd4d94e11e5ce85a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="REGION" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">bb548bd5d94e11e588a7a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="POBX_LOC" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">bb548bd6d94e11e587dea0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="ORDER_ITEMS" minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo source="http://sap.com/xi/TextID">2d7c2b06d94f11e5b675a0a8cd743f6a
+							</xsd:appinfo>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="ITEMS" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">2d7c2b05d94f11e5cbf2a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:sequence>
+											<xsd:element name="MATERIAL" type="xsd:string"
+												minOccurs="0">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">2d7c2b00d94f11e598fba0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="REQ_QTY" type="xsd:string"
+												minOccurs="0">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">2d7c2b01d94f11e5a2a9a0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="UPD_INDICATOR" type="xsd:string"
+												minOccurs="0">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">2d7c2b02d94f11e5b146a0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="REF_ITEM" type="xsd:string"
+												minOccurs="0">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">2d7c2b03d94f11e591fba0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="SALES_UNIT" type="xsd:string"
+												minOccurs="0">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">2d7c2b04d94f11e597bda0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+										</xsd:sequence>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="DT_Hybris_Pricing_Response">
+				<xsd:annotation>
+					<xsd:appinfo source="http://sap.com/xi/VersionID">de61b134da0d11e5903100000024fafe
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="RETURN" minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15a9d95411e59ec9a0a8cd743f6a
+							</xsd:appinfo>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="Type" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15a0d95411e5bad8a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Code" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15a1d95411e5a2a8a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Message" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15a2d95411e58168a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Log_No" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15a3d95411e5c4f0a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Log_Msg_No" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15a4d95411e5c904a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Message_V1" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15a5d95411e599a7a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Message_V2" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15a6d95411e5a54da0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Message_V3" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15a7d95411e58453a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+								<xsd:element name="Message_V4" type="xsd:string"
+									minOccurs="0">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15a8d95411e58b72a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="Freight" type="xsd:string"
+						minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15aad95411e5c4f5a0a8cd743f6a
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ORDER_ITEMS" minOccurs="0">
+						<xsd:annotation>
+							<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15bfd95411e59af8a0a8cd743f6a
+							</xsd:appinfo>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="ITEMS" minOccurs="0" maxOccurs="unbounded">
+									<xsd:annotation>
+										<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15bed95411e5a874a0a8cd743f6a
+										</xsd:appinfo>
+									</xsd:annotation>
+									<xsd:complexType>
+										<xsd:sequence>
+											<xsd:element name="Sales_Doc_No" type="xsd:string"
+												minOccurs="0">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15abd95411e5a909a0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Sales_Doc_Item" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15acd95411e5cdfda0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="High_Level_Item_No" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15add95411e59f18a0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Hybris_Item_No" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15aed95411e5b90fa0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Material_No" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15afd95411e5953aa0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Material_Entered" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15b0d95411e5cceba0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Required_Quantity" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15b1d95411e5cab7a0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Sales_Unit" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15b2d95411e5aeaaa0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Net_Value" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15b3d95411e5bedba0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Currency" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15b4d95411e596a1a0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Subtotal_1" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15b5d95411e5a7f9a0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Subtotal_2" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15b6d95411e5886aa0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Subtotal_3" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15b7d95411e59243a0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Subtotal_4" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15b8d95411e5b51fa0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Subtotal_5" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15b9d95411e5a80ba0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Subtotal_6" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15bad95411e594aba0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Goods_Issue_Date" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15bbd95411e59c0ba0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Unrestricted_Use_Stock" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15bcd95411e5cbaaa0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+											<xsd:element name="Inactive_Material_Desc" type="xsd:string">
+												<xsd:annotation>
+													<xsd:appinfo source="http://sap.com/xi/TextID">8e6a15bdd95411e5876ba0a8cd743f6a
+													</xsd:appinfo>
+												</xsd:annotation>
+											</xsd:element>
+										</xsd:sequence>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="MT_Hybris_Pricing_Request">
+		<wsdl:documentation />
+		<wsdl:part name="MT_Hybris_Pricing_Request" element="p1:MT_Hybris_Pricing_Request" />
+	</wsdl:message>
+	<wsdl:message name="MT_Hybris_Pricing_Response">
+		<wsdl:documentation />
+		<wsdl:part name="MT_Hybris_Pricing_Response" element="p1:MT_Hybris_Pricing_Response" />
+	</wsdl:message>
+	<wsdl:portType name="SI_Hybris_Pricing_Enquiry_OB">
+		<wsdl:documentation />
+		<wsdl:operation name="SI_Hybris_Pricing_Enquiry_OB">
+			<wsdl:documentation />
+			<wsp:Policy>
+				<wsp:PolicyReference URI="#OP_SI_Hybris_Pricing_Enquiry_OB" />
+			</wsp:Policy>
+			<wsdl:input message="p1:MT_Hybris_Pricing_Request" />
+			<wsdl:output message="p1:MT_Hybris_Pricing_Response" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="SI_Hybris_Pricing_Enquiry_OBBinding"
+		type="p1:SI_Hybris_Pricing_Enquiry_OB">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+		<wsdl:operation name="SI_Hybris_Pricing_Enquiry_OB">
+			<soap:operation soapAction="http://sap.com/xi/WebService/soap1.1"
+				xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+			<wsdl:input>
+				<soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="BC_HYBRIS_SI_Hybris_Pricing_Enquiry_OB">
+		<wsdl:port name="HTTP_Port" binding="p1:SI_Hybris_Pricing_Enquiry_OBBinding">
+			<soap:address
+				location="http://txeappnwh801v.txt.textron.com:50000/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BC_HYBRIS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_Hybris_Pricing_Enquiry_OB&amp;interfaceNamespace=urn.Hybris.com%3Axi%3APricing_Enquiry"
+				xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+		</wsdl:port>
+		<wsdl:port name="HTTPS_Port" binding="p1:SI_Hybris_Pricing_Enquiry_OBBinding">
+			<soap:address
+				location="https://txeappnwh801v.txt.textron.com:50001/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BC_HYBRIS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_Hybris_Pricing_Enquiry_OB&amp;interfaceNamespace=urn.Hybris.com%3Axi%3APricing_Enquiry"
+				xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

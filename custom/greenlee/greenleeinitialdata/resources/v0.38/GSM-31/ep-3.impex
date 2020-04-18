@@ -1,0 +1,79 @@
+#------------------
+# Enterprise Staged
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Enterprise Category Landing page              #################
+							 
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                               ; name                                  ;content																																																																																																																																																																																																																																																																																																																																																																																					  ; &componentRef                              
+                                    ;                         ; EnterpriseCategoryOverviewTextComponent     ; Enterprise Category Overview Text        ;"<p style=""text-align: left;"" class=""MsoNormal"">The demand for reliable Enterprise Wi-Fi&reg; is growing much quicker than the current infrastructure can handle, and companies are frantically trying to catch up. Poorly designed wireless networks affect every aspect of a company, from customer satisfaction to productivity and beyond. The future of business is here, and it is a Wi-Fi&reg; &reg; connected world - are you ready to handle it?</p><p style=""text-align: left;"" class=""MsoNormal"">The AirScout&reg; Enterprise WLAN Test System is revolutionizing Wi-Fi&reg; design. Planning, surveying, installing, and validating your wireless network has never been easier, faster, or more accurate. AirScout testing works in parallel with existing workflows, providing quick results based on actual data collected from the environment. Using real distributed clients to collect real measurements, the results are more accurate than ever before, taking into account various parameters ranging from density to interference and everything in between.</p><p style=""text-align: left;"" class=""MsoNormal"">Upon test completion, the AirScout Enterprise WLAN Test System produces a series of heat maps that visually represent whether the WLAN requirements are being met.&nbsp; Based on these reports, the installer may analyze results and deploy Wi-Fi&reg; based on AirScout recommendations. A full report can be exported to Greenlee&rsquo;s Cloud Service with easy access anywhere, at any time.</p>"; EnterpriseCategoryOverviewTextComponent    
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;  active ; cmsComponents(&componentRef)                                                                                                                              
+                           ;                         ; Section3ContentSlot-ECatPage  ;   true   ; EnterpriseCategoryOverviewTextComponent                                                                                                                   
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                           ;                         ; Section3ContentSlot-ECatPage  ; Enterprise Section3 Slot for CategoryLandingPage   ; true   ; EnterpriseCategoryOverviewTextComponent                                                                                                                   
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisecategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                   ;                         ; Section3-enterprisecategory      ; Section3              ;                                                                 ; Section3ContentSlot-ECatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisecategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section3-enterprisecategory      ; Section3              ;                                                                 ; Section3ContentSlot-ECatPage            
+
+#------------------
+# Enterprise Online
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Online'])[default=$contentCatalog:Online]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Enterprise Category Landing page              #################
+							 
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                               ; name                                  ;content																																																																																																																																																																																																																																																																																																																																																																																					  ; &componentRef                              
+                                    ;                         ; EnterpriseCategoryOverviewTextComponent     ; Enterprise Category Overview Text        ;"<p style=""text-align: left;"" class=""MsoNormal"">The demand for reliable Enterprise Wi-Fi&reg; is growing much quicker than the current infrastructure can handle, and companies are frantically trying to catch up. Poorly designed wireless networks affect every aspect of a company, from customer satisfaction to productivity and beyond. The future of business is here, and it is a Wi-Fi&reg; &reg; connected world - are you ready to handle it?</p><p style=""text-align: left;"" class=""MsoNormal"">The AirScout&reg; Enterprise WLAN Test System is revolutionizing Wi-Fi&reg; design. Planning, surveying, installing, and validating your wireless network has never been easier, faster, or more accurate. AirScout testing works in parallel with existing workflows, providing quick results based on actual data collected from the environment. Using real distributed clients to collect real measurements, the results are more accurate than ever before, taking into account various parameters ranging from density to interference and everything in between.</p><p style=""text-align: left;"" class=""MsoNormal"">Upon test completion, the AirScout Enterprise WLAN Test System produces a series of heat maps that visually represent whether the WLAN requirements are being met.&nbsp; Based on these reports, the installer may analyze results and deploy Wi-Fi&reg; based on AirScout recommendations. A full report can be exported to Greenlee&rsquo;s Cloud Service with easy access anywhere, at any time.</p>"; EnterpriseCategoryOverviewTextComponent    
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                           ;                         ; Section3ContentSlot-ECatPage  ; Enterprise Section3 Slot for CategoryLandingPage   ; true   ; EnterpriseCategoryOverviewTextComponent                                                                                                                   
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisecategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                   ;                         ; Section3-enterprisecategory      ; Section3              ;                                                                 ; Section3ContentSlot-ECatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisecategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section3-enterprisecategory      ; Section3              ;                                                                 ; Section3ContentSlot-ECatPage            

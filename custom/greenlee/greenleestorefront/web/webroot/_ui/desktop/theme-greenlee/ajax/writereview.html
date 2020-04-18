@@ -1,0 +1,37 @@
+<div class="write-review js-review-write">
+	<form="post" action="${productReviewActionUrl}" commandName="reviewForm">
+		<div class="form-group">
+			<label>overall rating</label>
+			<div class="help-text">Select the number of stars</div>
+			<div class="rating rating-set js-ratingCalcSet" data-rating='{"total":5}'>
+				<div class="rating-stars">
+					<span class="js-ratingIcon js-rationIconSet fa fa-star-o"></span>
+				</div>
+			</div>
+
+			<input id="Review.title" name="email" class=" form-control sr-only js-ratingSetInput" type="text" value=""/>
+
+		<div class="form-group">
+			<label class="control-label " for="forgottenPwd.email">
+			Review title </label>
+			<div class="help-text">Example: "Lorem ipsum dolor sit amet"</div>
+			<input id="Review.title" name="email" class=" form-control" type="text" value=""/>
+		</div>
+		<div class="form-group">
+			<label class="control-label " for="review.text">
+			your review</label>
+			<textarea id="review.text"></textarea>
+		</div>
+		<div class="checkbox checkbox-group">
+			<input id="checkbox1" class="remember" type="checkbox">
+			<label class="text-none" for="checkbox1">By submitting I agree to the <a href="">Terms & Conditions</a></label>
+		</div>
+		<div class="form-group">
+			<button class="btn btn-white btn-popup" type="submit">
+					Submit</button>
+			<button class="btn btn-white btn-popup btn-border last" type="submit">
+					close</button>
+			</div>
+		</div>
+	</form>
+</div>

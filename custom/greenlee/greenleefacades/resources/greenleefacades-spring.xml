@@ -1,0 +1,1431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- [y] hybris Platform Copyright (c) 2000-2015 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris. -->
+
+<beans
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans">
+
+	<context:annotation-config />
+
+	<alias name="defaultSimpleSuggestionFacade" alias="simpleSuggestionFacade" />
+
+
+	<bean
+		class="com.greenlee.facades.suggestion.impl.DefaultSimpleSuggestionFacade"
+		id="defaultSimpleSuggestionFacade">
+
+		<property name="simpleSuggestionService" ref="simpleSuggestionService" />
+
+		<property name="userService" ref="userService" />
+
+		<property name="categoryService" ref="categoryService" />
+
+		<property name="productService" ref="productService" />
+
+		<property name="productConverter" ref="greenleeCarouselProductConverter" />
+
+		<property name="cartService" ref="cartService" />
+
+	</bean>
+
+
+	<bean id="greenleeCarouselProductConverter" parent="abstractPopulatingConverter">
+
+		<property name="targetClass"
+			value="de.hybris.platform.commercefacades.product.data.ProductData" />
+
+
+		<property name="populators">
+
+
+			<list>
+
+				<ref bean="productBasicPopulator" />
+
+				<ref bean="productPricePopulator" />
+
+				<ref bean="productDescriptionPopulator" />
+
+				<ref bean="productUrlPopulator" />
+
+				<ref bean="productPrimaryImagePopulator" />
+
+			</list>
+
+		</property>
+
+	</bean>
+
+
+	<bean id="carouselProductConverter" parent="defaultProductConverter">
+
+
+		<property name="populators">
+
+
+			<list merge="true">
+
+				<ref bean="productPricePopulator" />
+
+				<ref bean="productDescriptionPopulator" />
+
+			</list>
+
+		</property>
+
+	</bean>
+
+	<alias name="acceleratorVariantOptionDataConverter" alias="variantOptionDataConverter" />
+
+
+	<bean id="acceleratorVariantOptionDataConverter" parent="abstractPopulatingConverter">
+
+		<lookup-method name="createTarget" bean="variantOptionData" />
+
+
+		<property name="populators">
+
+
+			<list>
+
+				<ref bean="acceleratorVariantOptionDataPopulator" />
+
+			</list>
+
+		</property>
+
+	</bean>
+
+	<alias name="defaultAcceleratorVariantOptionDataPopulator" alias="acceleratorVariantOptionDataPopulator" />
+
+
+	<bean
+		class="com.greenlee.facades.populators.AcceleratorVariantOptionDataPopulator"
+		id="defaultAcceleratorVariantOptionDataPopulator" parent="variantOptionDataPopulator">
+
+		<property name="mediaService" ref="mediaService" />
+
+		<property name="mediaContainerService" ref="mediaContainerService" />
+
+		<property name="typeService" ref="typeService" />
+
+		<property name="imageFormatMapping" ref="imageFormatMapping" />
+
+
+		<property name="variantAttributeMapping">
+
+
+			<map>
+
+				<entry value="styleSwatch" key="ApparelStyleVariantProduct.style" />
+
+			</map>
+
+		</property>
+
+	</bean>
+
+	<alias name="acceleratorGenderConverter" alias="genderConverter" />
+
+
+	<bean id="acceleratorGenderConverter" parent="abstractPopulatingConverter">
+
+		<property name="targetClass" value="com.greenlee.facades.product.data.GenderData" />
+
+
+		<property name="populators">
+
+
+			<list>
+
+				<ref bean="genderDataPopulator" />
+
+			</list>
+
+		</property>
+
+	</bean>
+
+	<alias name="defaultGenderDataPopulator" alias="genderDataPopulator" />
+
+
+	<bean class="com.greenlee.facades.populators.GenderDataPopulator"
+		id="defaultGenderDataPopulator">
+
+		<property name="typeService" ref="typeService" />
+
+	</bean>
+
+	<!-- accelerator Image Format Mappings -->
+
+
+	<alias name="acceleratorImageFormatMapping" alias="imageFormatMapping" />
+
+
+	<bean id="acceleratorImageFormatMapping" parent="defaultImageFormatMapping">
+
+
+		<property name="mapping">
+
+
+			<map>
+
+				<!-- <entry key="superZoom" value="1200Wx1200H"/> <entry key="zoom" value="515Wx515H"/> 
+					<entry key="store" value="365Wx246H"/> <entry key="product" value="300Wx300H"/> 
+					<entry key="thumbnail" value="96Wx96H"/> <entry key="cartIcon" value="65Wx65H"/> 
+					<entry key="styleSwatch" value="30Wx30H"/> -->
+
+
+				<entry value="Airscout-WorkingFormat" key="superZoom" />
+
+				<entry value="Airscout-WorkingFormat" key="zoom" />
+
+				<entry value="Airscout-PDPPrimaryImage" key="store" />
+
+				<entry value="Airscout-PDPPrimaryImage" key="product" />
+
+				<entry value="Airscout-CartPage" key="thumbnail" />
+
+				<entry value="Airscout-PDPGalleryImage" key="cartIcon" />
+
+				<entry value="Airscout-PDPGalleryImage" key="styleSwatch" />
+
+				<entry value="Airscout-PLPImage" key="pLPImage" />
+
+			</map>
+
+		</property>
+
+	</bean>
+
+	<alias name="acceleratorProductPrimaryImagePopulator" alias="productPrimaryImagePopulator" />
+
+
+	<bean id="acceleratorProductPrimaryImagePopulator" parent="defaultProductPrimaryImagePopulator">
+
+
+		<property name="imageFormats">
+
+
+			<list>
+
+				<value>zoom</value>
+
+				<value>product</value>
+
+				<value>thumbnail</value>
+
+				<value>cartIcon</value>
+
+				<value>pLPImage</value>
+
+			</list>
+
+		</property>
+
+	</bean>
+
+	<alias name="acceleratorProductGalleryImagesPopulator" alias="productGalleryImagesPopulator" />
+
+
+	<bean id="acceleratorProductGalleryImagesPopulator" parent="defaultProductGalleryImagesPopulator">
+
+
+		<property name="imageFormats">
+
+
+			<list>
+
+				<value>superZoom</value>
+
+				<value>zoom</value>
+
+				<value>product</value>
+
+				<value>thumbnail</value>
+
+				<value>cartIcon</value>
+
+			</list>
+
+		</property>
+
+	</bean>
+
+
+	<bean class="com.greenlee.facades.process.email.context.CustomerEmailContext"
+		id="customerEmailContext" parent="abstractEmailContext" scope="prototype">
+
+		<property name="customerConverter" ref="customerConverter" />
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.process.email.context.ForgottenPasswordEmailContext"
+		id="forgottenPasswordEmailContext" parent="customerEmailContext"
+		scope="prototype">
+
+		<property name="customerConverter" ref="customerConverter" />
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.process.email.context.OrderNotificationEmailContext"
+		id="orderNotificationEmailContext" parent="abstractEmailContext"
+		scope="prototype">
+
+		<property name="orderConverter" ref="orderConverter" />
+
+		<property name="b2bUnitConverter" ref="b2bUnitConverter" />
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.process.email.context.DeliverySentEmailContext"
+		id="deliverySentEmailContext" parent="abstractEmailContext" scope="prototype">
+
+		<property name="consignmentConverter" ref="consignmentConverter" />
+
+		<property name="orderConverter" ref="orderConverter" />
+
+	</bean>
+
+
+	<bean parent="modifyPopulatorList">
+
+		<property name="list" ref="orderEntryProductConverter" />
+
+		<property name="add" ref="greenleeProductExtendedAttrPopulator" />
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.process.email.context.ReadyForPickupEmailContext"
+		id="readyForPickupEmailContext" parent="abstractEmailContext" scope="prototype">
+
+		<property name="consignmentConverter" ref="consignmentConverter" />
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.process.email.context.OrderCancelledEmailContext"
+		id="orderCancelledEmailContext" parent="abstractEmailContext" scope="prototype">
+
+		<property name="orderConverter" ref="orderConverter" />
+
+		<property name="b2bUnitConverter" ref="b2bUnitConverter" />
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.process.email.context.OrderRefundEmailContext"
+		id="orderRefundEmailContext" parent="abstractEmailContext" scope="prototype">
+
+		<property name="orderConverter" ref="orderConverter" />
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.process.email.context.ConsignmentCollectionReminderEmailContext"
+		id="consignmentCollectionReminderEmailContext" parent="abstractEmailContext"
+		scope="prototype">
+
+		<property name="consignmentConverter" ref="consignmentConverter" />
+
+		<property name="formatFactory" ref="formatFactory" />
+
+		<property name="customerServiceUncollectedConsignmentStrategy"
+			ref="customerServiceUncollectedConsignmentStrategy" />
+
+		<property name="orderConverter" ref="orderConverter" />
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.process.email.context.OrderPartiallyModifiedEmailContext"
+		id="orderPartiallyModifiedEmailContext" parent="abstractEmailContext"
+		scope="prototype">
+
+		<property name="orderConverter" ref="orderConverter" />
+
+		<property name="orderEntryConverter" ref="orderEntryConverter" />
+
+		<property name="priceDataFactory" ref="priceDataFactory" />
+
+	</bean>
+
+	<bean
+		class="com.greenlee.facades.process.email.context.OrderPartiallyCanceledEmailContext"
+		id="orderPartiallyCanceledEmailContext" parent="orderPartiallyModifiedEmailContext"
+		scope="prototype">
+	</bean>
+
+	<bean
+		class="com.greenlee.facades.process.email.context.OrderPartiallyRefundedEmailContext"
+		id="orderPartiallyRefundedEmailContext" parent="orderPartiallyModifiedEmailContext"
+		scope="prototype">
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.process.email.context.NotPickedUpConsignmentCanceledEmailContext"
+		id="notPickedUpConsignmentCanceledEmailContext" parent="abstractEmailContext"
+		scope="prototype">
+
+		<property name="consignmentConverter" ref="consignmentConverter" />
+
+		<property name="priceDataFactory" ref="priceDataFactory" />
+
+	</bean>
+
+	<alias name="yacceleratorSearchPagePointOfServiceDistancePopulator"
+		alias="searchPagePointOfServiceDistancePopulator" />
+
+
+	<bean
+		class="com.greenlee.facades.storefinder.populators.SearchPagePointOfServiceDistancePopulator"
+		id="yacceleratorSearchPagePointOfServiceDistancePopulator">
+
+		<property name="pointOfServiceDistanceConverter" ref="pointOfServiceDistanceConverter" />
+
+	</bean>
+
+	<bean class="com.greenlee.facades.product.data.GenderData" id="genderData"
+		scope="prototype" />
+
+	<alias name="greenleeAddressReversePopulator" alias="addressReversePopulator" />
+
+	<bean class="com.greenlee.facades.populators.GreenleeAddressReversePopulator"
+		id="greenleeAddressReversePopulator" parent="defaultAddressReversePopulator">
+	</bean>
+
+	<alias name="greenleeB2BUnitPopulator" alias="b2bUnitPopulator" />
+
+	<bean class="com.greenlee.facades.populators.GreenLeeB2BUnitPopulator"
+		id="greenleeB2BUnitPopulator" parent="defaultB2BUnitPopulator">
+		<property name="companyB2BCommerceService" ref="companyB2BCommerceService" />
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.populators.GreenleeProductWarrantyPopulator"
+		id="greenleeProductWarrantyPopulator">
+
+		<property name="categoryService" ref="categoryService" />
+
+	</bean>
+
+	<alias name="greenleeRequestForDemoPopulator" alias="greenleeRequestForDemoPopulator" />
+
+	<bean class="com.greenlee.facades.populators.GreenleeRequestForDemoPopulator"
+		id="greenleeRequestForDemoPopulator">
+	</bean>
+
+	<alias name="greenleevideoLinkPopulator" alias="greenleevideoLinkPopulator" />
+
+	<bean
+		class="com.greenlee.facades.populators.GreenleeProductVideolinkPopulator"
+		id="greenleevideoLinkPopulator">
+	</bean>
+
+	<alias name="greenleeProductFeatureTabPopulator" alias="greenleeProductFeatureTabPopulator" />
+
+
+	<bean
+		class="com.greenlee.facades.populators.GreenleeProductFeatureTabsPopulator"
+		id="greenleeProductFeatureTabPopulator">
+
+		<property name="i18Service" ref="commerceCommonI18NService" />
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.populators.GreenleeProductShowPricePopulator"
+		id="greenleeProductShowPricePopulator">
+
+		<property name="userService" ref="userService" />
+
+	</bean>
+
+
+	<bean id="accProductConfiguredPopulator" parent="defaultProductConfiguredPopulator">
+
+
+		<property name="populators">
+
+
+			<map merge="true"
+				key-type="de.hybris.platform.commercefacades.product.ProductOption">
+
+				<entry key="VIDEOLINK" value-ref="greenleevideoLinkPopulator" />
+
+				<entry key="REQUESTTODEMO" value-ref="greenleeRequestForDemoPopulator" />
+
+				<entry key="PRODUCTFEATURETAB" value-ref="greenleeProductFeatureTabPopulator" />
+
+				<entry key="SHOWADDTOCART" value-ref="greenleeShowAddToCartPopulator" />
+
+				<entry key="PRODUCTARTIFACTS" value-ref="greenleeProductMediaDataPopulator" />
+
+				<entry key="PRODUCTARTIFACTSGROUPS" value-ref="greenleeProductMediaGroupDataPopulator" />
+
+				<entry key="EXTENDEDATTRIBUTES" value-ref="greenleeProductExtendedAttrPopulator" />
+
+				<entry key="WARRANTYPRODUCT" value-ref="greenleeProductWarrantyPopulator" />
+
+				<entry key="SHOWPRICE" value-ref="greenleeProductShowPricePopulator" />
+
+			</map>
+
+		</property>
+
+	</bean>
+
+	<alias name="greenleeCustomerFacade" alias="customerFacade" />
+
+
+	<bean
+		class="com.greenlee.facades.customer.impl.DefaultGreenleeCustomerFacade"
+		id="greenleeCustomerFacade" parent="defaultB2BCustomerFacade">
+
+		<property name="companyB2BCommerceService" ref="companyB2BCommerceService" />
+
+		<property name="flexService" ref="flexibleSearchService" />
+
+		<property name="b2bUnitConverter" ref="b2bUnitConverter" />
+
+		<property name="secureTokenService" ref="secureTokenService" />
+
+		<property name="salesforceService" ref="salesforceService" />
+
+		<property name="cartService" ref="cartService" />
+
+		<property name="eventService" ref="eventService" />
+
+		<property name="baseSiteService" ref="baseSiteService" />
+
+		<property name="baseStoreService" ref="baseStoreService" />
+
+	</bean>
+
+	<alias name="defaultCommerceFacade" alias="commerceFacade" />
+
+
+	<bean
+		class="com.greenlee.facades.customer.impl.DefaultGreenleeCommerceFacade"
+		id="defaultCommerceFacade">
+
+		<property name="b2bUnitService" ref="b2bCommerceUnitService" />
+
+		<property name="b2bUnitConverter" ref="b2bUnitConverter" />
+
+		<property name="configService" ref="configurationService" />
+
+		<property name="userService" ref="userService" />
+
+		<property name="unitService" ref="greenleeUnitService" />
+
+		<property name="flexibleSearchService" ref="flexibleSearchService" />
+
+		<property name="sessionService" ref="sessionService" />
+
+	</bean>
+
+
+	<bean class="com.greenlee.facades.populators.GreenleeCustomerPopulator"
+		id="greenleeCustomerPopulator" parent="defaultCustomerPopulator">
+
+		<property name="b2bUnitConverter" ref="b2bUnitConverter" />
+
+	</bean>
+
+	<alias name="greenleeCustomerConverter" alias="b2BCustomerConverter" />
+
+	<bean id="greenleeCustomerConverter" parent="defaultB2BCustomerConverter">
+	</bean>
+
+
+	<bean parent="modifyPopulatorList">
+
+		<property name="list" ref="b2BCustomerConverter" />
+
+		<property name="add" ref="greenleeCustomerPopulator" />
+
+	</bean>
+
+
+	<bean parent="modifyPopulatorList">
+
+		<property name="list" ref="customerConverter" />
+
+		<property name="add" ref="greenleeCustomerPopulator" />
+
+	</bean>
+
+
+	<bean parent="modifyPopulatorList">
+
+		<property name="list" ref="orderEntryProductConverter" />
+
+		<property name="add" ref="greenleeProductWarrantyPopulator" />
+
+	</bean>
+
+
+	<bean parent="configurablePopulatorModification">
+
+		<property name="target" ref="productConfiguredPopulator" />
+
+		<property name="keyType"
+			value="de.hybris.platform.commercefacades.product.ProductOption" />
+
+		<property name="key" value="SHOWADDTOCART" />
+
+		<property name="add" ref="greenleeShowAddToCartPopulator" />
+
+	</bean>
+
+
+	<bean parent="configurablePopulatorModification">
+
+		<property name="target" ref="productConfiguredPopulator" />
+
+		<property name="keyType"
+			value="de.hybris.platform.commercefacades.product.ProductOption" />
+
+		<property name="key" value="EXTENDEDATTRIBUTES" />
+
+		<property name="add" ref="greenleeProductExtendedAttrPopulator" />
+
+	</bean>
+
+	<!-- prod doc search -->
+
+
+
+	<bean
+		class="com.greenlee.facades.search.impl.ProductDocumentSearchFacadeImpl"
+		id="productDocumentFacade" scope="prototype">
+
+		<property name="searchQueryDecoder" ref="solrSearchQueryDecoder" />
+
+	</bean>
+
+
+	<bean id="productDocumentSearchPageConverter" parent="abstractPopulatingConverter">
+
+		<property name="targetClass"
+			value="com.hybris.greenlee.search.facetdata.ProductDocumentSearchPageData" />
+
+
+		<property name="populators">
+
+
+			<list>
+
+				<ref bean="productDocumentSearchPagePopulator" />
+
+			</list>
+
+		</property>
+
+	</bean>
+
+	<alias name="productDocumentSearchPagePopulator" alias="productDocumentSearchPagePopulator" />
+
+
+	<bean
+		class="com.greenlee.facades.populators.ProductDocumentSearchPagePopulator"
+		id="productDocumentSearchPagePopulator">
+
+		<property name="breadcrumbConverter" ref="breadcrumbConverter" />
+
+		<property name="facetConverter" ref="facetConverter" />
+
+		<property name="searchStateConverter" ref="solrSearchStateConverter" />
+
+		<property name="spellingSuggestionConverter" ref="spellingSuggestionConverter" />
+
+		<property name="searchResultProductDocumentConverter" ref="searchResultProductDocumentConverter" />
+
+	</bean>
+
+
+	<bean id="searchResultProductDocumentConverter" parent="abstractPopulatingConverter">
+
+		<property name="targetClass" value="com.greenlee.search.data.ProductDocumentData" />
+
+
+		<property name="populators">
+
+
+			<list>
+
+				<ref bean="searchResultPoductDocumentPopulator" />
+
+			</list>
+
+		</property>
+
+	</bean>
+
+	<bean
+		class="com.greenlee.facades.populators.SearchResultProductDocumentPopulator"
+		id="searchResultPoductDocumentPopulator">
+	</bean>
+
+	<alias name="greenleeAccountTypeProductPopulator" alias="greenleeAccountTypeProductPopulator" />
+
+	<bean
+		class="com.greenlee.facades.populators.GreenleeAccountTypeProductPopulator"
+		id="greenleeAccountTypeProductPopulator">
+	</bean>
+
+	<bean
+		class="com.greenlee.facades.populators.GreenleeProductExtendedAttrPopulator"
+		id="greenleeProductExtendedAttrPopulator" />
+
+	<alias name="greenleeShowAddToCartPopulator" alias="greenleeShowAddToCartPopulator" />
+
+
+	<bean class="com.greenlee.facades.populators.GreenleeShowAddToCartPopulator"
+		id="greenleeShowAddToCartPopulator">
+
+		<property name="greenleeAccountTypeProductPopulator" ref="greenleeAccountTypeProductPopulator" />
+
+		<property name="userService" ref="userService" />
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.populators.GreenleeSearchResultProductPopulator"
+		id="greenleeSearchResultProductPopulator" parent="defaultCommerceSearchResultProductPopulator">
+
+		<property name="userService" ref="userService" />
+
+	</bean>
+
+	<alias name="greenLeeCommerceSearchResultProductConverter" alias="commerceSearchResultProductConverter" />
+
+
+	<bean id="greenLeeCommerceSearchResultProductConverter" parent="defaultCommerceSearchResultProductConverter">
+
+
+		<property name="populators">
+
+
+			<list merge="true">
+
+				<ref bean="greenleeSearchResultProductPopulator" />
+
+			</list>
+
+		</property>
+
+	</bean>
+
+	<!-- shareProductEmailContext -->
+
+
+	<bean
+		class="com.greenlee.facades.process.email.context.ShareProductEmailContext"
+		id="shareProductEmailContext" parent="abstractEmailContext" scope="prototype">
+	</bean>
+
+	<!-- shareProductFacade -->
+
+
+	<alias name="defaultShareProductFacade" alias="shareProductFacade" />
+
+
+	<bean class="com.greenlee.facades.product.impl.DefaultShareProductFacade"
+		id="defaultShareProductFacade">
+
+		<property name="eventService" ref="eventService" />
+
+		<property name="commonI18NService" ref="commonI18NService" />
+
+		<property name="baseStoreService" ref="baseStoreService" />
+
+		<property name="baseSiteService" ref="baseSiteService" />
+
+		<property name="userService" ref="userService" />
+
+		<property name="modelService" ref="modelService" />
+
+	</bean>
+
+	<!-- shareProductEmailGenerationService -->
+
+
+
+	<bean
+		class="com.greenlee.facades.process.email.impl.ShareProductEmailGenerationService"
+		id="shareProductEmailGenerationService" parent="abstractBusinessService">
+
+		<property name="emailService" ref="emailService" />
+
+		<property name="rendererService" ref="rendererService" />
+
+		<property name="emailContextFactory" ref="emailContextFactory" />
+
+	</bean>
+
+	<!-- abstractGenerateShareProductEmailAction -->
+
+
+
+	<bean
+		class="com.greenlee.facades.process.email.actions.GenerateShareProductEmailAction"
+		id="abstractGenerateShareProductEmailAction" parent="abstractAction"
+		abstract="true">
+
+		<property name="modelService" ref="modelService" />
+
+		<property name="cmsEmailPageService" ref="cmsEmailPageService" />
+
+		<property name="contextResolutionStrategy" ref="processContextResolutionStrategy" />
+
+		<property name="emailGenerationService" ref="shareProductEmailGenerationService" />
+
+	</bean>
+
+	<!-- Override EmailContextFactory -->
+
+
+	<alias name="defaultEmailContextFactory" alias="emailContextFactory" />
+
+
+	<bean
+		class="de.hybris.platform.acceleratorservices.process.email.context.impl.DefaultEmailContextFactory"
+		id="defaultEmailContextFactory">
+
+		<property name="rendererTemplateDao" ref="rendererTemplateDao" />
+
+		<property name="cmsPageService" ref="cmsPageService" />
+
+		<property name="cmsComponentService" ref="cmsComponentService" />
+
+		<property name="rendererService" ref="rendererService" />
+
+		<property name="modelService" ref="modelService" />
+
+		<property name="typeService" ref="typeService" />
+
+		<property name="emailTemplateTranslationStrategy" ref="emailTemplateTranslationStrategy" />
+
+		<property name="siteBaseUrlResolutionService" ref="siteBaseUrlResolutionService" />
+
+		<property name="contextResolutionStrategy" ref="processContextResolutionStrategy" />
+
+
+		<property name="emailContextVariables">
+
+
+			<map merge="true">
+
+				<entry value="{baseThemeUrl}/_ui/desktop/common" key="commonResourceUrl" />
+
+				<entry value="{baseThemeUrl}/_ui/desktop/theme-{theme}" key="themeResourceUrl" />
+
+			</map>
+
+		</property>
+
+	</bean>
+
+	<alias name="defaultGreenleeProductMediaDataPopulator" alias="greenleeProductMediaDataPopulator" />
+
+	<bean
+		class="com.greenlee.facades.populators.GreenleeProductMediaDataPopulator"
+		id="defaultGreenleeProductMediaDataPopulator" />
+
+	<alias name="defaultGreenleeProductMediaGroupDataPopulator"
+		alias="greenleeProductMediaGroupDataPopulator" />
+
+	<bean
+		class="com.greenlee.facades.populators.GreenleeProductMediaGroupDataPopulator"
+		id="defaultGreenleeProductMediaGroupDataPopulator" />
+
+	<alias name="greenleeB2BCommerceUserFacade" alias="b2bCommerceUserFacade" />
+
+
+	<bean class="com.greenlee.facades.company.impl.GreenleeB2BCommerceUserFacade"
+		id="greenleeB2BCommerceUserFacade" parent="defaultCompanyB2BCommerceFacade">
+		<!--changed parent from defaultB2BUserGroupFacade-->
+
+		<property name="baseSiteService" ref="baseSiteService" />
+
+		<property name="baseStoreService" ref="baseStoreService" />
+
+		<property name="eventService" ref="eventService" />
+
+		<property name="commonI18NService" ref="commonI18NService" />
+
+		<property name="secureTokenService" ref="secureTokenService" />
+
+		<property name="customerAccountService" ref="customerAccountService" />
+
+		<property name="salesforceService" ref="salesforceService" />
+
+	</bean>
+
+	<!-- content search -->
+
+
+
+	<bean class="com.greenlee.facades.search.impl.ContentSearchFacadeImpl"
+		id="contentSearchFacade" scope="prototype">
+
+		<property name="autocompleteSuggestionConverter" ref="autocompleteSuggestionConverter" />
+
+	</bean>
+
+
+	<bean id="contentSearchPageConverter" parent="abstractPopulatingConverter">
+
+		<property name="targetClass"
+			value="de.hybris.greenlee.facades.search.facetdata.ContentSearchPageData" />
+
+
+		<property name="populators">
+
+
+			<list>
+
+				<ref bean="contentSearchPagePopulator" />
+
+			</list>
+
+		</property>
+
+	</bean>
+
+	<alias name="contentSearchPagePopulator" alias="contentSearchPagePopulator" />
+
+
+	<bean
+		class="com.greenlee.facades.search.populators.ContentSearchPagePopulator"
+		id="contentSearchPagePopulator">
+
+		<property name="breadcrumbConverter" ref="breadcrumbConverter" />
+
+		<property name="facetConverter" ref="facetConverter" />
+
+		<property name="searchStateConverter" ref="solrSearchStateConverter" />
+
+		<property name="spellingSuggestionConverter" ref="spellingSuggestionConverter" />
+
+		<property name="searchResultContentConverter" ref="searchResultContentConverter" />
+
+	</bean>
+
+
+	<bean id="contentSolrSearchResponseConverter" parent="abstractPopulatingConverter">
+
+		<property name="targetClass"
+			value="de.hybris.greenlee.facades.search.facetdata.ContentSearchPageData" />
+
+
+		<property name="populators">
+
+
+			<list>
+
+				<ref bean="commerceSearchResponseQueryPopulator" />
+
+				<ref bean="commerceSearchResponsePaginationPopulator" />
+
+				<ref bean="commerceSearchResponseResultsPopulator" />
+
+				<ref bean="commerceSearchResponseFacetsPopulator" />
+
+				<ref bean="commerceSearchResponseFacetFilterPopulator" />
+
+				<ref bean="commerceSearchResponseFacetSortPopulator" />
+
+				<ref bean="commerceSearchResponseBreadcrumbsPopulator" />
+
+				<ref bean="commerceSearchResponseSortsPopulator" />
+
+				<ref bean="commerceSearchResponseFreeTextSearchPopulator" />
+
+				<ref bean="commerceSearchResponseSpellingSuggestionPopulator" />
+
+				<ref bean="commerceSearchResponseKeywordRedirectPopulator" />
+
+			</list>
+
+		</property>
+
+	</bean>
+
+
+	<bean id="searchResultContentConverter" parent="abstractPopulatingConverter">
+
+		<property name="targetClass"
+			value="de.hybris.greenlee.facades.content.data.ContentData" />
+
+
+		<property name="populators">
+
+
+			<list>
+
+				<ref bean="searchResultContentPopulator" />
+
+			</list>
+
+		</property>
+
+	</bean>
+
+	<bean
+		class="com.greenlee.facades.search.populators.SearchResultContentPopulator"
+		id="searchResultContentPopulator">
+	</bean>
+
+	<!-- user registration -->
+
+
+
+	<bean
+		class="com.greenlee.facades.customer.impl.GreenleeCustomerAccountFacadeImpl"
+		id="greenleeCustomerAccountFacadeImpl">
+
+		<property name="modelService" ref="modelService" />
+
+		<property name="customerNameStrategy" ref="customerNameStrategy" />
+
+		<property name="passwordEncoderService" ref="passwordEncoderService" />
+
+		<property name="commonI18NService" ref="commonI18NService" />
+
+		<property name="glCustomerAccountService" ref="greenleeCustomerAccountService" />
+
+		<property name="userService" ref="userService" />
+
+		<property name="baseStoreService" ref="baseStoreService" />
+
+		<property name="baseSiteService" ref="baseSiteService" />
+
+		<property name="eventService" ref="eventService" />
+
+		<property name="secureTokenService" ref="secureTokenService" />
+
+		<property name="salesforceService" ref="salesforceService" />
+
+	</bean>
+
+
+	<bean class="com.greenlee.facades.customer.GreenleeUserFacade" id="greenleeUserFacade"
+		parent="defaultUserFacade">
+
+		<property name="greenleeB2BCustomerService" ref="greenleeB2BCustomerService" />
+
+		<property name="deliveryService" ref="deliveryService" />
+
+	</bean>
+
+	<alias name="greenleeEmailGenerationService" alias="emailGenerationService" />
+
+	<bean
+		class="com.greenlee.facades.process.email.impl.GreenleeEmailGenerationService"
+		id="greenleeEmailGenerationService" parent="defaultEmailGenerationService">
+	</bean>
+
+
+	<bean id="realTimePricingResponseConverter" parent="abstractPopulatingConverter">
+
+		<property name="targetClass"
+			value="com.greenlee.facades.price.data.PriceDiffDataList" />
+
+
+		<property name="populators">
+
+
+			<list>
+
+				<ref bean="realtTimePricingResponsePopulator" />
+
+			</list>
+
+		</property>
+
+	</bean>
+
+
+	<bean id="orderSimulationResponseConverter" parent="abstractPopulatingConverter">
+
+		<property name="targetClass"
+			value="com.greenlee.facades.price.data.OrderSimulationData" />
+
+
+		<property name="populators">
+
+
+			<list>
+
+				<ref bean="orderSimulationResponsePopulator" />
+
+			</list>
+
+		</property>
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.populators.OrderSimulationResponsePopulator"
+		id="orderSimulationResponsePopulator">
+
+		<property name="cartService" ref="cartService" />
+
+		<property name="modificationStrategy" ref="greenleeCartModificationStrategy" />
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.populators.RealtTimePricingResponsePopulator"
+		id="realtTimePricingResponsePopulator">
+
+		<property name="cartService" ref="cartService" />
+
+		<property name="priceDataFactory" ref="priceDataFactory" />
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.populators.EstimateShipDateOrderEntryPopulator"
+		id="estimateShipDateOrderEntryPopulator">
+
+		<property name="i18NService" ref="i18NService" />
+
+	</bean>
+
+	<!-- Modify orderEntryConverter -->
+
+
+
+	<bean parent="modifyPopulatorList">
+
+		<property name="list" ref="orderEntryConverter" />
+
+		<property name="add" ref="estimateShipDateOrderEntryPopulator" />
+
+	</bean>
+
+
+	<bean class="com.greenlee.facades.cart.impl.DefaultGreenLeeCartFacade"
+		id="greenleeCartFacade" parent="defaultCartFacade">
+
+		<property name="modelService" ref="modelService" />
+
+		<property name="b2bProductFacade" ref="productVariantFacade" />
+
+		<property name="cartService" ref="b2bCartService" />
+
+		<property name="deliveryService" ref="deliveryService" />
+
+		<property name="greenleePIClientService" ref="greenleePIClientService" />
+
+		<property name="realTimePricingResponseConverter" ref="realTimePricingResponseConverter" />
+
+		<property name="deliveryMethodConverter" ref="deliveryModeConverter" />
+
+		<property name="greenleeCommerceCartService" ref="greenleeCommerceCartService" />
+
+		<property name="orderSimulationResponseConverter" ref="orderSimulationResponseConverter" />
+
+		<property name="priceDataFactory" ref="priceDataFactory" />
+
+		<property name="calculationService" ref="calculationService" />
+
+		<property name="commonI18NService" ref="commonI18NService" />
+
+	</bean>
+
+	<bean
+		class="com.greenlee.facades.populators.GreenleeSapSourcedAddressPopulator"
+		id="sapSourcedAddressPopulator" />
+
+
+	<bean parent="modifyPopulatorList">
+
+		<property name="list" ref="addressConverter" />
+
+		<property name="add" ref="sapSourcedAddressPopulator" />
+
+	</bean>
+
+	<bean
+		class="com.greenlee.facades.populators.GreenleeRegionAsDistrictAddressPopulator"
+		id="regionAsDistrictAddressPopulator" />
+
+
+	<bean parent="modifyPopulatorList">
+
+		<property name="list" ref="addressConverter" />
+
+		<property name="add" ref="regionAsDistrictAddressPopulator" />
+
+	</bean>
+
+
+	<bean class="com.greenlee.facades.order.populators.GreenleeB2BOrderPopulator"
+		id="greenleeB2BOrderPopulator" parent="b2bOrderPopulator">
+
+		<property name="priceDataFactory" ref="priceDataFactory" />
+		<property name="deliveryMethodConverter" ref="deliveryModeConverter" />
+  		<property name="deliveryService" ref="deliveryService"/>
+		<property name="commonI18NService" ref="commonI18NService" />
+
+	</bean>
+
+
+	<bean parent="modifyPopulatorList">
+
+		<property name="list" ref="orderConverter" />
+
+		<property name="add" ref="greenleeB2BOrderPopulator" />
+
+	</bean>
+
+
+	<bean class="com.greenlee.facades.order.populators.GreenleeCartPopulator"
+		id="greenleeCartPopulator">
+
+		<property name="priceDataFactory" ref="priceDataFactory" />
+
+		<property name="commonI18NService" ref="commonI18NService" />
+
+		<property name="sessionService" ref="sessionService" />
+
+		<property name="b2bUnitConverter" ref="b2bUnitConverter" />
+
+		<property name="addressConverter" ref="addressConverter" />
+
+		<property name="deliveryMethodConverter" ref="deliveryModeConverter" />
+
+		<property name="deliveryService" ref="deliveryService" />
+
+	</bean>
+
+
+	<bean parent="modifyPopulatorList">
+
+		<property name="list" ref="cartConverter" />
+
+		<property name="add" ref="greenleeCartPopulator" />
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.order.populators.GreenleeOrderEntryPopulator"
+		id="greenleeOrderEntryPopulator" parent="defaultOrderEntryPopulator">
+
+		<property name="categoryService" ref="categoryService" />
+
+		<property name="i18NService" ref="i18NService" />
+
+	</bean>
+
+	<bean class="com.greenlee.facades.populators.GreenleeDeliveryModePopulator"
+		id="greenleeDeliveryModePopulator" />
+
+
+	<bean parent="modifyPopulatorList">
+
+		<property name="list" ref="deliveryModeConverter" />
+
+		<property name="add" ref="greenleeDeliveryModePopulator" />
+
+	</bean>
+
+	<alias name="greenleeZoneDeliveryModePopulator" alias="zoneDeliveryModePopulator" />
+
+	<bean
+		class="com.greenlee.facades.populators.GreenleeZoneDeliveryModePopulator"
+		id="greenleeZoneDeliveryModePopulator" parent="defaultZoneDeliveryModePopulator" />
+
+
+	<bean parent="modifyPopulatorList">
+
+		<property name="list" ref="orderEntryConverter" />
+
+		<property name="add" ref="greenleeOrderEntryPopulator" />
+
+	</bean>
+
+
+	<bean class="com.greenlee.facades.cart.impl.GreenleeCartModificationStrategy"
+		id="greenleeCartModificationStrategy">
+
+		<property name="priceDataFactory" ref="priceDataFactory" />
+
+	</bean>
+
+	<alias name="GreenleeCommerceSearchResultProductPopulator" alias="commerceSearchResultProductPopulator" />
+
+
+	<bean
+		class="com.greenlee.facades.populators.GreenleeSearchResultVariantProductPopulator"
+		id="GreenleeCommerceSearchResultProductPopulator" parent="variantCommerceSearchResultProductPopulator">
+
+		<property name="productFacade" ref="accProductFacade" />
+
+	</bean>
+
+	<alias name="greenleeProductPopulator" alias="productPopulator" />
+
+
+	<bean class="com.greenlee.facades.populators.GreenleeProductPopulator"
+		id="greenleeProductPopulator" parent="defaultProductPopulator">
+
+		<property name="userService" ref="userService" />
+
+		<property name="i18NService" ref="i18NService" />
+
+	</bean>
+
+	<bean class="com.greenlee.facades.populators.CustomerEmailPopulator"
+		id="customerEmailPopulator" />
+
+
+	<bean parent="modifyPopulatorList">
+
+		<property name="list" ref="customerConverter" />
+
+		<property name="add" ref="customerEmailPopulator" />
+
+	</bean>
+
+	<alias name="defaultGreenleeB2BCheckoutFacade" alias="greenleeB2BCheckoutFacade" />
+
+
+	<bean
+		class="com.greenlee.facades.checkout.impl.DefaultGreenleeB2BCheckoutFacade"
+		id="defaultGreenleeB2BCheckoutFacade" parent="defaultB2BCheckoutFacade">
+
+		<property name="sessionService" ref="sessionService" />
+
+	</bean>
+
+
+	<bean class="com.greenlee.facades.cart.hook.impl.GreenleeAddToCartMethodHook"
+		id="greenleeAddToCartMethodHook">
+
+		<property name="modelService" ref="modelService" />
+
+		<property name="greenleePIClientService" ref="greenleePIClientService" />
+
+	</bean>
+
+
+	<bean id="greenleeAddToCartHookMergeDirective" parent="listMergeDirective"
+		depends-on="commerceAddToCartMethodHooks">
+
+		<property name="add" ref="greenleeAddToCartMethodHook" />
+
+	</bean>
+
+
+	<bean
+		class="com.greenlee.facades.cart.hook.impl.GreenleeUpdateCartEntryMethodHook"
+		id="greenleeUpdateCartEntryMethodHook">
+
+		<property name="modelService" ref="modelService" />
+
+		<property name="greenleePIClientService" ref="greenleePIClientService" />
+
+	</bean>
+
+
+	<bean id="greenleeUpdateCartEntryHookMergeDirective" parent="listMergeDirective"
+		depends-on="commerceUpdateCartEntryMethodHooks">
+
+		<property name="add" ref="greenleeUpdateCartEntryMethodHook" />
+
+	</bean>
+
+	<alias name="greenleeB2BCustomerFacade" alias="b2bCustomerFacade" />
+
+
+	<bean
+		class="com.greenlee.facades.greenleeb2bcustomer.facades.impl.GreenleeB2BCustomerFacade"
+		id="greenleeB2BCustomerFacade" parent="defaultB2BCustomerFacade">
+
+		<property name="greenleeCustomerAccountService" ref="greenleeCustomerAccountService" />
+
+	</bean>
+
+	<alias name="greenleeConsignmentPopulator" alias="consignmentPopulator" />
+
+
+	<bean class="com.greenlee.facades.populators.GreenleeConsignmentPopulator"
+		id="greenleeConsignmentPopulator">
+
+		<property name="consignmentEntryConverter" ref="consignmentEntryConverter" />
+
+		<property name="addressConverter" ref="addressConverter" />
+
+		<property name="pointOfServiceConverter" ref="pointOfServiceConverter" />
+
+	</bean>
+
+	<alias name="greenleeProductFeatureListPopulator" alias="productFeatureListPopulator" />
+
+
+	<bean
+		class="com.greenlee.facades.populators.GreenleeProductFeatureListPopulator"
+		id="greenleeProductFeatureListPopulator">
+
+		<property name="classificationConverter" ref="classificationConverter" />
+
+		<property name="featureConverter" ref="featureConverter" />
+
+	</bean>
+
+	<alias name="DefaultGreenleeB2BCostCenterFacade" alias="greenleeB2BCostCenterFacade" />
+
+
+	<!--<bean
+		class="com.greenlee.facades.costcenter.impl.DefaultGreenleeB2BCostCenterFacade"
+		id="DefaultGreenleeB2BCostCenterFacade" parent="costCenterFacade">
+
+		<property name="b2bCostCenterService" ref="b2bCostCenterService" />
+
+		<property name="b2bCostCenterConverter" ref="b2bCostCenterConverter" />
+
+		<property name="b2bUnitService" ref="b2bUnitService" />
+
+		<property name="b2bBudgetService" ref="b2bCommerceBudgetService"/>
+		<property name="b2bCommerceCostCenterService" ref="b2bCommerceCostCenterService"/>
+		<property name="b2bCostCenterReverseConverter" ref="b2bCostCenterReversePopulator"/>
+
+	</bean>
+-->
+	<bean id="realTimePICustomerCreationService"
+		class="com.greenlee.facades.checkout.services.impl.DefaultRealTimePICustomerCreationService">
+		<property name="addressReversePopulator" ref="addressReversePopulator" />
+	</bean>
+</beans>

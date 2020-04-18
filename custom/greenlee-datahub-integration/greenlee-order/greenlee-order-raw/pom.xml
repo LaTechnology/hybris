@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<groupId>com.greenlee.datahub.order</groupId>
+		<artifactId>greenlee-order</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>greenlee-order-raw</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.greenlee.datahub.order</groupId>
+			<artifactId>greenlee-order-canonical</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<dependency>
+			<groupId>com.hybris.datahub</groupId>
+			<artifactId>saporder-raw</artifactId>
+			<version>5.7.0.2</version>
+		</dependency>
+	</dependencies>
+
+</project>

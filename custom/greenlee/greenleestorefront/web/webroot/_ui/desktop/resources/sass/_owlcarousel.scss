@@ -1,0 +1,248 @@
+//colors
+$black: #000; //urls
+//@extend-elements
+//original selectors
+//.owl-carousel .owl-nav .owl-prev, .owl-carousel .owl-nav .owl-next, .owl-carousel .owl-dot
+%extend_1 {
+    cursor: pointer;
+    //Instead of the line below you could use @include user-select($select)
+    user-select: none;
+}
+.owl-carousel {
+    display: none;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    .owl-stage {
+        position: relative;
+        &:after {
+            content: ".";
+            display: block;
+            clear: both;
+            visibility: hidden;
+            line-height: 0;
+            height: 0;
+        }
+    }
+    .owl-stage-outer {
+        position: relative;
+        overflow: hidden;
+    }
+    .owl-item {
+        position: relative;
+        min-height: 1px;
+        float: left;
+        img {
+            margin: 0 auto;
+            display: block;
+            max-width: 100%;
+            //Instead of the line below you could use @include transform-style($style)
+            transform-style: preserve-3d;
+        }
+        .owl-lazy {
+            opacity: 0;
+            //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+            transition: opacity 400ms ease;
+        }
+    }
+    .owl-nav {
+        &.disabled {
+            display: none;
+        }
+        .owl-prev {
+            @extend %extend_1;
+        }
+        .owl-next {
+            @extend %extend_1;
+        }
+    }
+    .owl-dot {
+        @extend %extend_1;
+    }
+    &.owl-loaded {
+        display: block;
+    }
+    &.owl-loading {
+        opacity: 0;
+        display: block;
+    }
+    &.owl-hidden {
+        opacity: 0;
+    }
+    &.owl-grab {
+        cursor: move;
+        cursor: grab;
+    }
+    &.owl-rtl {
+        direction: rtl;
+        .owl-item {
+            float: right;
+        }
+    }
+    .animated {
+        animation-duration: 1000ms;
+        animation-fill-mode: both;
+    }
+    .owl-animated-in {
+        z-index: 0;
+    }
+    .owl-animated-out {
+        z-index: 1;
+    }
+    .fadeOut {
+        animation-name: fadeOut;
+    }
+    .owl-video-wrapper {
+        position: relative;
+        height: 100%;
+        background: $black;
+    }
+    .owl-video-play-icon {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        font: 70px/42px FontAwesome;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        cursor: pointer;
+        z-index: 1;
+        //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+        transition: scale 100ms ease;
+        color: $white;
+        &:hover {
+            //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+            transform: scale(1.3, 1.3);
+        }
+        &:before {
+            content: "\f01d";
+        }
+    }
+    .owl-video-playing {
+        .owl-video-tn {
+            display: none;
+        }
+        .owl-video-play-icon {
+            display: none;
+        }
+    }
+    .owl-video-tn {
+        opacity: 0;
+        height: 100%;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+        transition: opacity 400ms ease;
+    }
+    .owl-video-frame {
+        position: relative;
+        z-index: 1;
+        height: 100%;
+        width: 100%;
+    }
+    .owl-dots.disabled {
+        display: none;
+    }
+    &.owl-refresh .owl-item {
+        display: none;
+    }
+    &.owl-drag .owl-item {
+        //Instead of the line below you could use @include user-select($select)
+        user-select: none;
+    }
+}
+@-webkit-keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+.owl-height {
+    //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+    transition: height 500ms ease-in-out;
+}
+.no-js .owl-carousel {
+    display: block;
+}
+.orange-carousel {
+    .owl-dots {
+        margin-top: 10px;
+        text-align: center;
+        .owl-dot {
+            display: inline-block;
+            span {
+                display: block;
+                width: 12px;
+                height: 12px;
+                margin: 5px 7px;
+                filter: Alpha(Opacity = 50);
+                opacity: 0.5;
+                -webkit-border-radius: 20px;
+                -moz-border-radius: 20px;
+                border-radius: 20px;
+                background: #000;
+                transition: all 300ms ease-in-out;
+            }
+            &.active span {
+                background: $highlight;
+                opacity: 1;
+            }
+        }
+    }
+}
+#owl-home .owl-dots {
+    position: absolute;
+    text-align: center;
+    z-index: 20;
+    bottom: 7px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    @media (min-width: $screen-md-min) {
+        width: 100%;
+    }
+    @media (min-width: $screen-lg-min) {
+        width: 1240px;
+        position: absolute;
+        bottom: 29px;
+        right: 0;
+        text-align: right;
+        left: 0;
+        height: 5px;
+        margin: 0 auto;
+    }
+    .owl-dot {
+        width: 32px;
+        height: 5px;
+        margin: 0 1px;
+        border: 1px solid #ccc;
+        display: inline-block;
+        /*IE7 life-saver */
+        span {
+            display: block;
+            width: 30px;
+            height: 3px;
+            background: rgba(252, 252, 252, 0.6);
+            transition: all 300ms ease-in-out;
+        }
+        &.active span {
+            background: $highlight;
+        }
+    }
+}

@@ -1,0 +1,148 @@
+.sidebar {
+    position: relative;
+}
+.account-head {
+    @include font-size(18px);
+    font-family: 'robotomedium';
+    text-transform: uppercase;
+    margin: 0 0 20px;
+    padding: 14px 0;
+    border-bottom: 1px solid $mobile-header;
+    position: relative;
+    &.active .fa {
+        -webkit-transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+    .fa {
+        position: absolute;
+        right: 10px;
+        @include font-size(24px);
+        top: 10px;
+        transition: 0.4s ease-out;
+    }
+}
+.account-sidebar {
+    padding: 5px 4px;
+    background: $account-side-bg;
+    margin-bottom: 18px;
+    position: absolute;
+    top: 44px;
+    width: 100%;
+    z-index: 9;
+    left: 0;
+    display: none;
+    @media (min-width: $screen-md-min) {
+        position: static;
+        display: block;
+    }
+    .sidebar-youraccount {
+        margin-top: 4px;
+        margin-left: -3px;
+        display: block;
+    }
+    .sidebar-body {
+        border-top: 1px solid $light-grey;
+        border-bottom: 1px solid $light-grey;
+        padding-bottom: 4px;
+    }
+    h3 {
+        @include font-size(12px);
+        text-transform: uppercase;
+        margin: 4px 0 0;
+        padding: 13px 0 13px 18px;
+        border-top: 1px solid $light-grey;
+        &.active {
+            padding: 0;
+            margin-left: -3px;
+            a {
+                display: block;
+                width: calc(100% + 2px);
+                padding: 13px 0 13px 18px;
+                background: $white;
+                border-left: 5px solid $horgange;
+            }
+        }
+    }
+    h4 {
+        @include font-size(14px);
+        font-family: 'robotomedium';
+        text-transform: uppercase;
+        margin: 0;
+        padding: 15px 0 6px 26px;
+        position: relative;
+        .fa {
+            position: absolute;
+            left: 4px;
+        }
+    }
+    ul {
+        margin: 0;
+        padding: 0 3px 8px;
+        border-bottom: 1px solid $light-grey;
+        li {
+            margin: 0;
+            &.active a {
+                padding: 11px 0 11px 26px;
+                background: $white;
+                border-left: 5px solid $horgange;
+            }
+            a {
+                @include font-size(12px);
+                letter-spacing: 0.05em;
+                padding: 5px 0 5px 30px;
+                width: calc(100% + 14px);
+                display: block;
+                text-transform: uppercase;
+                margin: 0 -7px;
+                position: relative;
+                z-index: 2;
+                &:after {
+                    width: 0;
+                    z-index: 1;
+                    -webkit-transition: background 0.5s ease, width 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+                    transition: background 0.5s ease, width 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+                    content: '';
+                    display: block;
+                    height: 100%;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                }
+            }
+            &:hover {
+                a:after {
+                    width: 100%;
+                    background: #fff;
+                    z-index: -1;
+                    border-left: 5px solid #ff8c01;
+                }
+            }
+            &.active:hover a:after {
+                border-left: none;
+            }
+        }
+    }
+}
+.account-body {
+    h1 {
+        text-transform: uppercase;
+        @include font-size(18px);
+        font-family: 'robotomedium';
+        border-bottom: 1px solid $light-grey;
+        margin: 0 0 20px;
+        padding: 12px 0;
+        cursor: pointer;
+        @media (min-width: $screen-md-min) {
+            padding: 0 0 15px;
+            cursor: default;
+        }
+        .fa {
+            font-size: 24px;
+            float: right;
+            margin-right: 10px;
+        }
+    }
+}

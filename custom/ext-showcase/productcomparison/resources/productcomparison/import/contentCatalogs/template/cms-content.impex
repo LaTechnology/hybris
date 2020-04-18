@@ -1,0 +1,51 @@
+######
+## PARAMETERS REQUIRED FOR THIS SCRIPT
+##
+##   * contentCatalog   - content catalog id
+##   * addonExtensionName - extension name of the ui addon
+#######
+$contentCatalog=greenleeContentCatalog
+
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$jarResourceCmsCockpit=jar:com.hybris.productcomparison.constants.ProductcomparisonConstants&/productcomparison/import/cockpit/cmscockpit
+$addonExtensionName=productcomparison
+
+##########################  Product Comparison Page Template  ###################################
+INSERT_UPDATE PageTemplate;$contentCV[unique=true];uid[unique=true];name;frontendTemplateName;restrictedPageTypes(code);active[default=true]
+;;ProductComparisonPageTemplate;Product Comparison Page Template;addon:/$addonExtensionName/pages/productComparisonPage;ContentPage
+
+UPDATE PageTemplate;$contentCV[unique=true];uid[unique=true];velocityTemplate[translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+;;ProductComparisonPageTemplate;$jarResourceCmsCockpit/structure-view/structure_productComparisonPageTemplate.vm
+
+
+# Product Grid Page Template
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='ProductComparisonPageTemplate'];validComponentTypes(code);compTypeGroup(code)
+;SiteLogo;;;logo
+;HeaderLinks;;;headerlinks
+;MiniCart;;;minicart
+;NavigationBar;;;navigation
+;Footer;;;footer
+;TopHeaderSlot;;;wide
+;BottomHeaderSlot;;;wide
+
+
+
+
+# Bind Content Slots to Page Templates
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='ProductComparisonPageTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-ProductComparisonPageTemplate;SiteLogo;;SiteLogoSlot;true
+;;MiniCart-ProductComparisonPageTemplate;MiniCart;;MiniCartSlot;true
+;;NavigationBar-ProductComparisonPageTemplate;NavigationBar;;NavigationBarSlot;true
+;;Footer-ProductComparisonPageTemplate;Footer;;FooterSlot;true
+;;HeaderLinks-ProductComparisonPageTemplate;HeaderLinks;;HeaderLinksSlot;true
+;;TopHeaderSlot-ProductComparisonPageTemplate;TopHeaderSlot;;TopHeaderSlot;true
+;;BottomHeaderSlot-ProductComparisonPageTemplate;BottomHeaderSlot;;BottomHeaderSlot;true
+
+
+INSERT_UPDATE ContentPage;$contentCV[unique=true];uid[unique=true];name;masterTemplate(uid,$contentCV);label;defaultPage[default='true'];approvalStatus(code)[default='approved'];homepage[default='false']
+;;productComparisonPage;Product Comparison Page;ProductComparisonPageTemplate;/comparison
+
+
+INSERT_UPDATE ProductComparisonComponent;&componentRef;$contentCV[unique=true];uid[unique=true];name;openPopup;showCheckbox[default=true];showCompareButton[default=true];closePopupAfterAddToCart[default=true]
+;DefaultProductComparePopupComponent;;DefaultProductComparePopupComponent;Product Compare PopUp Button;true;;;
+;DefaultProductComparePageComponent;;DefaultProductComparePageComponent;Product Compare Page Button;false;;;

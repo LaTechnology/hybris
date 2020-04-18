@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="base.xsd">
+	<search>
+		<search-properties>
+			<property qualifier="GreenleeProductFeatureTab.tabCode"/>		
+			<property qualifier="GreenleeProductFeatureTab.tabName"/>
+			<property qualifier="GreenleeProductFeatureTab.tabDescription"/>
+			<property qualifier="GreenleeProductFeatureTab.greenleeProduct"/>
+		</search-properties>
+		<sort-properties>
+			<property qualifier="Item.modifiedtime"/>
+			<property qualifier="Item.pk"/>
+			<property qualifier="GreenleeProductFeatureTab.tabName"/>
+			<property qualifier="GreenleeProductFeatureTab.greenleeProduct"/>
+		</sort-properties>
+	</search>
+	<label>
+		<property qualifier="GreenleeProductFeatureTab.tabName"/>
+	</label>	
+</base>

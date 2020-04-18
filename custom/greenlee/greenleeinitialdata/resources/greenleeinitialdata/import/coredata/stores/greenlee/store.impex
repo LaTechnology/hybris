@@ -1,0 +1,42 @@
+# 
+# Create the greenlee BaseStore
+#
+
+$productCatalog=greenleeProductCatalog
+$classificationCatalog=greenleeClassification
+$currencies=USD,CAD
+$net=false
+$storeUid=greenlee
+$defaultCurrency=USD
+$languages=en
+$defaultLanguage=en
+#$deliveryCountries=US,CA,GB,AL,AR,AU,AT,BY,BE,BR,BG,HR,CY,CZ,DK,EE,FI,FR,DE,GR,HK,HU,IS,IN,IE,IL,IT,JP,KZ,KR,LV,LT,LU,MT,MX,NL,NO,NZ,PL,PT,RO,RU,RS,SG,SK,SI,ZA,ES,SE,CH,TW,TR,UA,DZ,AD,AO,AG,AW,BS,BH,BD,BB,BZ,BJ,BT,BO,BA,BW,BN,BF,BI,CM,CV,CF,TD,CL,CO,KM,CD,CG,CR,CW,DJ,DM,DO,EC,SV,GQ,ET,FJ,GA,GM,GH,GD,GT,GW,GN,GY,HN,ID,JM,KE,KI,KW,LS,LR,MK,MG,MW,MY,MV,ML,MH,MR,MU,FM,MC,ME,MA,MZ,NA,NR,NP,NI,NE,NG,PW,PA,PG,PY,PE,PH,RW,KN,VC,WS,SM,ST,SA,SN,SC,SL,SX,SB,SS,SR,SZ,TZ,TH,TL,TG,TO,TT,TN,TV,UG,UY,VU,VA,ZM,EH
+$deliveryCountries=AD,AE,AF,AG,AI,AL,AM,AN,AO,AQ,AR,AS,AT,AU,AW,AZ,BA,BB,BD,BE,BF,BG,BH,BI,BJ,BM,BN,BO,BR,BS,BT,BV,BW,BY,BZ,CA,CC,CD,CF,CG,CH,CI,CK,CL,CM,CN,CO,CR,CU,CV,CW,CX,CY,CZ,DE,DJ,DK,DM,DO,DZ,EC,EE,EG,EH,ER,ES,ET,FI,FJ,FK,FM,FO,FR,GA,GB,GD,GE,GF,GG,GH,GI,GL,GM,GN,GP,GQ,GR,GS,GT,GU,GW,GY,HK,HM,HN,HR,HT,HU,ID,IE,IL,IM,IN,IO,IQ,IT,IS,IT,JE,JM,JO,JP,KE,KG,KH,KI,KM,KN,KP,KR,KW,KY,KZ,LA,LB,LC,LI,LK,LR,LS,LT,LU,LV,LY,MA,MC,MD,ME,MG,MH,MK,ML,MM,MN,MO,MP,MQ,MR,MS,MT,MU,MV,MW,MX,MY,MZ,NA,NC,NE,NF,NG,NI,NL,NO,NP,NR,NU,NZ,OM,PA,PE,PF,PG,PH,PK,PL,PM,PN,PR,PT,PW,PY,QA,RE,RO,RS,RU,RW,SA,SB,SC,SS,SE,SG,SH,SI,SJ,SK,SL,SM,SN,SO,SR,ST,SV,SX,SY,SZ,TC,TD,TF,TG,TH,TJ,TK,TL,TM,TN,TO,TP,TR,TT,TV,TW,TZ,UA,UG,UM,US,UY,UZ,VA,VC,VE,VG,VI,VN,VU,WF,WS,YE,YT,YU,ZA,ZM,ZW
+$orderProcessCode=sap-order-process
+$pickupInStoreMode=DISABLED
+$customerAllowedToIgnoreSuggestions=true
+$paymentProvider=Mockup
+$expressCheckoutEnabled=false
+$checkoutGroup=b2bCheckoutGroup
+
+INSERT_UPDATE PromotionGroup;Identifier[unique=true];
+;greenleePromoGrp;
+
+# Base Store
+INSERT_UPDATE BaseStore;uid[unique=true];catalogs(id);currencies(isocode);net;taxGroup(code);storelocatorDistanceUnit(code);defaultCurrency(isocode);languages(isocode);defaultLanguage(isocode);deliveryCountries(isocode);submitOrderProcessCode;paymentProvider;pickupInStoreMode(code);customerAllowedToIgnoreSuggestions;expressCheckoutEnabled;maxRadiusForPoSSearch;checkoutFlowGroup;
+;$storeUid;$productCatalog,$classificationCatalog;$currencies;$net;us-taxes;miles;$defaultCurrency;$languages;$defaultLanguage;$deliveryCountries;$orderProcessCode;$paymentProvider;$pickupInStoreMode;$customerAllowedToIgnoreSuggestions;$expressCheckoutEnabled;300;$checkoutGroup;
+
+INSERT_UPDATE BaseStore2DeliveryModeRel;source(uid)[unique=true];target(code)[unique=true]
+;greenlee;1-SPG01A
+;greenlee;2-SPA11A
+;greenlee;3-SPA02A
+;greenlee;4-SPA03A
+;greenlee;5-SPG01B
+;greenlee;6-SPA11B
+;greenlee;7-SPA02B
+;greenlee;8-SPA03B
+#;greenlee;LTL01I
+
+
+insert_update SAPGlobalConfiguration;sapcommon_erpLogicalSystem
+;sample;

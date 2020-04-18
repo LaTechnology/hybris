@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+
+    <alias name="defaultConversionGroupService" alias="conversionGroupService" />
+    <bean id="defaultConversionGroupService" class="de.hybris.mediaconversionimageresizeplugin.service.impl.DefaultConversionGroupService">
+        <property name="conversionGroupDao"  ref="conversionGroupDao"/>
+    </bean>
+
+    <alias name="defaultConversionGroupDao" alias="conversionGroupDao" />
+    <bean id="defaultConversionGroupDao" class="de.hybris.mediaconversionimageresizeplugin.dao.impl.DefaultConversionGroupDao">
+        <property name="searchService"  ref="flexibleSearchService"/>
+    </bean>
+
+	<alias alias="liveEditImageResizePlugin"   name="mediaConversionImageResizePlugin" />
+	<bean id="mediaConversionImageResizePlugin" class="de.hybris.mediaconversionimageresizeplugin.DefaultMediaConversionImageResizePlugin">
+		<property name="mediaConversionService"  ref="mediaConversionService"/>
+		<property name="conversionGroupService"  ref="conversionGroupService"/>
+		<property name="mediaService" ref="mediaService" />
+		<property name="modelService" ref="modelService" />
+	</bean>
+</beans>

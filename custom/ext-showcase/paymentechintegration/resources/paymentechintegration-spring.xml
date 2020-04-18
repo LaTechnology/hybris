@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<alias alias="ptHOPPaymentFacade" name="defaultPTHOPPaymentFacade"/>
+	<bean id="defaultPTHOPPaymentFacade" class="com.paymentech.hop.facades.impl.DefaultPTHOPPaymentFacade" >
+		<property name="cartService" ref="cartService"/>
+		<property name="userService" ref="userService"/>
+		<property name="ptHOPPaymentService" ref="ptHOPPaymentService"/>
+		<property name="paymentSubscriptionResultDataConverter" ref="paymentSubscriptionResultDataConverter"/>
+	</bean>
+	
+	<alias alias="ptHOPPaymentService" name="defaultPTHOPPaymentService"/>
+	<bean id="defaultPTHOPPaymentService" class="com.paymentech.hop.services.impl.DefaultPTHOPPaymentService" >
+	      <property name="paymentDataConverter" ref="ptPaymentDataConverter"/>
+	      <property name="createHOPPaymentRequestStrategy" ref="createHOPPaymentRequestStrategy"/>
+    	  <property name="modelService" ref="modelService"/>
+    	  <property name="userService" ref="userService"/>
+	      <property name="commerceCheckoutService" ref="commerceCheckoutService"/>
+	      <property name="commonI18NService" ref="commonI18NService"/>
+	      <property name="customerEmailResolutionService" ref="customerEmailResolutionService"/>
+	      <property name="siteConfigService" ref="siteConfigService"/>
+	      <property name="userFacade" ref="userFacade"/>
+    </bean>
+    
+   	<alias name="defaultCreateHOPPaymentRequestStrategy" alias="createHOPPaymentRequestStrategy"/>
+	<bean id="defaultCreateHOPPaymentRequestStrategy" class="com.paymentech.hop.strategies.impl.DefaultCreateHOPPaymentRequestStrategy">
+		<property name="cartService" ref="cartService"/>
+		<property name="currencyConverter" ref="currencyConverter"/>
+		<property name="addressConverter" ref="addressConverter"/>
+		<property name="cartConverter" ref="cartConverter"/>
+		<property name="siteConfigService" ref="siteConfigService"/>
+	</bean>
+	
+	<alias name="ptPaymentDataConverter" alias="ptPaymentDataConverter"/>
+	<bean id="ptPaymentDataConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="de.hybris.platform.acceleratorservices.payment.data.PaymentData"/>
+		<property name="populators">
+			<list>
+				<ref bean="ptPaymentDataPopulator"/>
+			</list>
+		</property>
+	</bean>
+
+	<alias name="ptPaymentDataPopulator" alias="ptPaymentDataPopulator" />
+	<bean id="ptPaymentDataPopulator"
+		class="com.paymentech.hop.facades.populator.PTPaymentDataPopulator"
+		parent="abstractResultPopulator">
+		<property name="siteConfigService" ref="siteConfigService" />
+		<property name="sessionService" ref="sessionService" />
+	</bean>
+	
+	<alias alias="ptSecurePaymentClient" name="defaultPTSecurePaymentClient"/>
+	<bean id="defaultPTSecurePaymentClient" class="com.paymentech.rest.client.DefaultPTSecurePaymentClient" >
+	      <property name="postXMLURL" value="${paymentech.config.postXml.authorize.url}"/>
+	      <property name="timeOut" value="${paymentech.api.connection.timeout}"/>
+	      <property name="ptAPIPaymentService" ref="ptAPIPaymentService"/>
+    </bean>
+
+	<!-- JAXB Marshaller -->
+<!-- 	<bean id="ptJaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="classesToBeBound">
+			<list>
+				<value>com.paymentech.jaxb.request.Request</value>
+				<value>com.paymentech.jaxb.response.Response</value>
+			</list>
+		</property>
+	</bean>		 -->	
+	
+	<alias alias="ptAPIPaymentFacade" name="defaultPTAPIPaymentFacade"/>
+	<bean id="defaultPTAPIPaymentFacade" class="com.paymentech.api.facades.impl.DefaultPTAPIPaymentFacade" >
+		<property name="cartFacade" ref="cartFacade"/>
+		<property name="ptAPIPaymentService" ref="ptAPIPaymentService"/>
+		<property name="ptSecurePaymentClient" ref="ptSecurePaymentClient"/>
+		<property name="userService" ref="userService"/>
+		<property name="commonI18NService" ref="commonI18NService"/>
+		<property name="creditCardPaymentInfoConverter" ref="creditCardPaymentInfoConverter"/>
+	</bean>
+	
+	<alias alias="ptAPIPaymentService" name="defaultPTAPIPaymentService"/>
+	<bean id="defaultPTAPIPaymentService" class="com.paymentech.api.services.impl.DefaultPTAPIPaymentService" >
+	      <property name="configService" ref="configurationService"/>
+	      <property name="cartService" ref="cartService"/>
+	      <property name="modelService" ref="modelService"/>
+	      <property name="ptSecurePaymentClient" ref="ptSecurePaymentClient"/>
+	      <property name="commerceCheckoutService" ref="commerceCheckoutService"/>
+	      <property name="customerAccountService" ref="customerAccountService"/>
+    </bean>
+    
+	<bean id="ptPaymentInfoPopulator"
+			class="com.paymentech.api.facades.populator.PTPaymentInfoPopulator"/>		
+
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="creditCardPaymentInfoConverter" />
+		<property name="add" ref="ptPaymentInfoPopulator" />
+	</bean>	
+</beans>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="editor.xsd">
+	
+	<group qualifier="general" visible="true" initially-opened="true">
+		<label key="cockpit.config.label.General" />
+		<property qualifier="MediaTag.code" />
+		<property qualifier="MediaTag.description"/>
+	</group>
+
+</editor>

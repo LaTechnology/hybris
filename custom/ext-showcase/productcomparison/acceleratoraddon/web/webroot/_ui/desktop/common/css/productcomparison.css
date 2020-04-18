@@ -1,0 +1,184 @@
+.product_compare {
+	padding: 20px;
+}
+.product_compare h1 {
+	font-size: 2em;
+	float: left;
+	margin-top: 6px;
+}
+.product_compare button {
+	margin-bottom: 10px;
+}
+.product_compare .clear-items {
+	float: right;
+}
+.product_compare .prod_review {
+	margin: 0;	
+}
+.product_compare .top {
+	clear: both;
+}
+.product_compare p.empty {
+	clear: both;
+	background: #da4332;
+	font-size: 1.2em;
+	color: #ffffff;
+	padding: 5px 10px;
+}
+.product_compare .desc img {
+	float: right;
+}
+.product_compare .pic a {
+	background: #fff;
+	padding: 2px;
+	border: 1px solid #ccc;
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+.product_compare .pic a img {
+	vertical-align: top;
+}
+.product_compare table {
+	margin-bottom: 0;
+	table-layout: fixed;
+}
+.product_compare table th {
+	width: 125px;
+	padding: 3px 5px 3px 0;
+}
+.product_compare .middle table th.thDiff {
+	width: 105px;
+}
+.product_compare table td {
+	width: 150px;
+	border: 0 none;
+	padding: 3px 10px;
+}
+.product_compare .middle h2 {
+	padding-bottom: 0;
+	padding-top: 1em;
+}
+.product_compare .top th, 
+.product_compare .bottom th {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+.product_compare .top th,
+.product_compare .bottom th {
+	color: #0458a8;
+}
+.product_compare h2 {
+
+	border-bottom: 2px solid;
+	font-size: 1.2em;
+	margin: 0 0 0 0;
+	padding-bottom: 1em;
+	font-weight: bold;
+}
+.product_compare td.title h2 {
+	line-height: 2em;
+	border-bottom: 0 none;
+	padding-left: 0;
+} 
+.product_compare td.title span a {
+	background-image: url(../images/button/ico-prod-compare-close.png);
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+	display: block;
+	float: right;
+	margin-left: 10px;
+	margin-top: 6px;
+	position: relative;
+}
+.product_compare  td.title span a:hover {
+	background-image: url(../images/button/ico-prod-compare-close_h.png);
+}
+.product_compare .middle {
+	overflow-y: auto;
+	max-height: 400px;
+}
+.product_compare .thDiff {
+	background-image: url(../images/button/bullet_go.png);
+	background-repeat: no-repeat;
+	background-position: 0 50%;
+	padding-left: 20px;
+}
+.product_compare .diff {
+	font-weight: bold;
+	color: #3e8100;
+}
+.product_compare .costs .price {
+	display: block;
+}
+.product_compare .costs .was {
+	font-size: 0.8em;
+	margin-right: 3px;
+	font-weight: bold;
+	text-decoration: line-through;
+}
+.product_compare .costs .save {
+	color: #ED1C24;
+	margin-right: 3px;
+	font-size: 0.8em;
+}
+.product_compare .prod_add_to_cart form button {
+	float: left;
+	min-width: inherit;
+	margin-bottom: 0;
+}
+.product_compare .prod_add_to_cart label {
+	width: inherit;
+	margin-right: 10px;
+}
+.product_compare .collect_from_store button {
+	margin-left: 0;
+}
+.product_compare .stars {
+	display: inline-block;
+	margin-bottom: 0;
+}
+.product_compare p.price,
+.product_compare p.average-rating {
+	margin-bottom: 0;
+}
+.product_compare .clear-items .neutral {
+	border: 2px solid rgb(119, 119, 119);
+}
+.product_compare button.large {
+	margin-top: 8px;
+}
+tr.desc h2 {
+	padding-bottom: 0;
+}
+/* Colorbox specific clases to handle varying attribute height values
+**************************/
+#colorbox .product_compare {
+	padding: 5px 20px;
+}
+#colorbox .product_compare .clear-items {
+	float: left;
+	margin-left: 20px;
+}
+#colorbox .product_compare .top {
+	margin-bottom: 10px;
+}
+#colorbox .product_compare .middle {
+	overflow-y: auto;
+	height: 325px;
+	margin-bottom: 0;
+	max-height: none;
+	margin-right: -16px;
+}
+#colorbox .product_compare .middle.half {
+	height: 125px;
+}
+#colorbox .product_compare .bottom {
+	background: white;
+	width: 810px;
+	margin-top: 10px;
+}
+#colorbox {
+	border: 4px solid;
+}

@@ -1,0 +1,24 @@
+#--------------------------------------------------------------------------------------------------------------------------                               				
+#  GSM-30 
+#1. Remove all executed and failed synchronization records older than 60 days.
+#--------------------------------------------------------------------------------------------------------------------------                               				
+
+INSERT_UPDATE  CleanUpCronJob 					; code[unique=true]            		 ; job(code)                 			;xDaysOld; active ; sessionCurrency(isocode);nodeId ; sessionUser(uid)   ; sessionLanguage(isoCode)[default=en]
+                                				; GreenleeCleanUpCronJobsPerformable ; cleanupCronJobsPerformable 			; 60     ;true    ; USD                     ;0      ; admin  	        ;
+
+INSERT_UPDATE Trigger;cronJob(code)[unique=true]		;second;	minute	;hour	;day;	month;	year;relative	;active	;maxAcceptableDelay
+					 ;GreenleeCleanUpCronJobsPerformable;0	   ;	0		;0		;60	;	-1	 ;	-1	;false		;true	;-1
+
+
+                                				
+#--------------------------------------------------------------------------------------------------------------------------                               				
+#  GSM-30 
+# 2. Remove log fields that are associated with the Jobs older than 60 days.
+#--------------------------------------------------------------------------------------------------------------------------                               				
+
+INSERT_UPDATE  CronJob 							; code[unique=true]            		; job(code)                 			; active ; sessionCurrency(isocode);nodeId ; sessionUser(uid)   ; sessionLanguage(isoCode)[default=en]
+                                				; GreenleeCronJobCleaningLogEntries ; cleanUpLogsJobPerformable 			; true   ; USD                     ;0      ; admin  	        ;
+
+INSERT_UPDATE Trigger;cronJob(code)[unique=true]		;second;	minute	;hour	;day;	month;	year;relative	;active	;maxAcceptableDelay
+					 ;GreenleeCronJobCleaningLogEntries ;0	   ;	0		;0		;60	;	-1	 ;	-1	;false		;true	;-1
+                                				

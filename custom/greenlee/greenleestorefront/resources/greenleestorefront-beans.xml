@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2015 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="beans.xsd">
+
+	<bean class="com.greenlee.helpmechoose.data.HelpMeChooseQuestionData">
+		<property name="question" type="String"/>
+		<property name="code" type="String"/>
+		<property name="levelOne" type="boolean"/>
+		<property name="answers" type="java.util.List&lt;HelpMeChooseAnswerData>"/>
+	</bean>
+	
+	<bean class="com.greenlee.helpmechoose.data.HelpMeChooseAnswerData">
+		<property name="targetURL" type="String"/>
+		<property name="code" type="String"/>
+		<property name="answer" type="String"/>
+		<property name="nextQuestion" type="com.greenlee.helpmechoose.data.HelpMeChooseQuestionData"/>
+		<property name="question" type="com.greenlee.helpmechoose.data.HelpMeChooseQuestionData"/>
+	</bean>
+	
+	<bean class="com.greenlee.orderhistory.data.PIHeaderDetails">
+		<property name="customerNumber" type="String"/>
+		<property name="name1" type="String"/>
+		<property name="salesOrderNo" type="String"/>
+		<property name="status" type="String"/>
+		<property name="description" type="String"/>
+		<property name="customerPurchaseOrderNo" type="String"/>
+		<property name="recordCreatedDate" type="String"/>
+		<property name="requestedDeliveryDateOfDocument" type="String"/>
+		<property name="documentCurrency" type="String"/>
+		<property name="netValueInDocumentCurrency" type="String"/>
+		<property name="recordCreatedDateShort" type="String"/>
+	</bean>
+	
+	<bean class="com.greenlee.orderhistory.data.PIPartyAddress">
+		<property name="partyNumber" type="String"/>
+		<property name="name1" type="String"/>
+		<property name="name2" type="String"/>
+		<property name="houseNumberAndStreet" type="String"/>
+		<property name="city" type="String"/>
+		<property name="region" type="String"/>
+		<property name="postalCode" type="String"/>
+		<property name="countryKey" type="String"/>
+	</bean>
+	
+	<bean class="com.greenlee.orderhistory.data.PITrackingItems">
+		<property name="route" type="String"/>
+		<property name="carrierURL" type="String"/>
+		<property name="delivery" type="String"/>
+		<property name="trackingNo" type="String"/>
+		<property name="serialNumber" type="String"/>
+	</bean>
+	<bean class="com.greenlee.orderhistory.data.TrackingSerialsItem">
+		<property name="deliveryItemNumber" type="String"/>
+		<property name="serialNumber" type="String"/>
+	</bean>
+	<bean class="de.hybris.platform.commercefacades.order.data.DeliveryModeData">
+		<property name="expeditedShipping" type="boolean"/>
+		<property name="accountNumberMaxLength" type="int"/>
+		<property name="acctNumberMandatory" type="boolean"/>
+	</bean>
+	
+	<bean class="com.greenlee.orderhistory.data.PIItems">
+		<property name="salesOrderItemNo" type="String"/>
+		<property name="materialNumber" type="String"/>
+		<property name="catalogNumber" type="String"/>
+		<property name="upcCode" type="String"/>
+		<property name="materialDescription" type="String"/>
+		<property name="higherLevelItemInBOM" type="String"/>
+		<property name="orderQuantity" type="String"/>
+		<property name="shippedQuantity" type="String"/>
+		<property name="openQuantity" type="String"/>
+		<property name="unitOfMeasure" type="String"/>
+		<property name="unitrice" type="String"/>
+		<property name="extPrice" type="String"/>
+		<property name="scheduleLineDate" type="String"/>
+		<property name="product" type="de.hybris.platform.commercefacades.product.data.ProductData"/>
+		<property name="trackingNoDetails" type="java.util.List&lt;PITrackingItems>"/>
+		<property name="serialNoDetails" type="java.util.List&lt;TrackingSerialsItem>"/>
+		<property name="status" type="String"/>
+	</bean>
+	
+	<bean class="com.greenlee.orderhistory.data.PIOrderItem">
+		<property name="name1" type="String"/>
+		<property name="salesOrderNo" type="String"/>
+		<property name="hybrisReferenceNo" type="String"/>
+		<property name="description" type="String"/>
+		<property name="status" type="String"/>
+		<property name="shipToDetails" type="com.greenlee.orderhistory.data.PIPartyAddress"/>
+		<property name="soldToDetails" type="com.greenlee.orderhistory.data.PIPartyAddress"/>
+		<property name="billToDetails" type="com.greenlee.orderhistory.data.PIPartyAddress"/>
+		<property name="customerPurchaseOrderNo" type="String"/>
+		<property name="paymentTerms" type="String"/>
+		<property name="netValueinDocumentCurrency" type="String"/>
+		<property name="recordCreatedDate" type="String"/>
+		<property name="documentRequestedDeliveryDate" type="String"/>
+		<property name="orderNote" type="String"/>
+		<property name="shipInstLongText" type="String"/>
+		<property name="shipToPONumber" type="String"/>
+		<property name="orderDetailLine" type="java.util.List&lt;PIItems>"/>
+		<property name="tax" type="String"/>
+		<property name="duty" type="String"/>
+		<property name="freight" type="String"/>
+		<property name="subTotal" type="String"/>
+	</bean>
+</beans>

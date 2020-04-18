@@ -1,0 +1,2180 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- [y] hybris Platform Copyright (c) 2000-2015 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris.greenl -->
+
+<items xsi:noNamespaceSchemaLocation="items.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+
+	<collectiontypes>
+
+		<collectiontype type="list" generate="true" autocreate="true"
+			elementtype="Gender" code="GenderList" />
+
+		<collectiontype type="list" generate="true" autocreate="true"
+			elementtype="CMSLinkComponent" code="linkList" />
+
+		<collectiontype type="set" generate="true" autocreate="true"
+			elementtype="SwatchColorEnum" code="SwatchColorSet" />
+
+	</collectiontypes>
+
+
+	<enumtypes>
+
+
+		<enumtype generate="true" autocreate="true" code="SwatchColorEnum"
+			dynamic="true">
+
+			<value code="BLACK" />
+
+			<value code="BLUE" />
+
+			<value code="BROWN" />
+
+			<value code="GREEN" />
+
+			<value code="GREY" />
+
+			<value code="ORANGE" />
+
+			<value code="PINK" />
+
+			<value code="PURPLE" />
+
+			<value code="RED" />
+
+			<value code="SILVER" />
+
+			<value code="WHITE" />
+
+			<value code="YELLOW" />
+
+		</enumtype>
+
+
+		<enumtype generate="true" autocreate="true" code="UserTypes"
+			dynamic="true">
+
+			<value code="B2B" />
+
+			<value code="B2C" />
+
+			<value code="B2E" />
+
+		</enumtype>
+
+
+		<enumtype generate="true" autocreate="true" code="HelpMeQuestionType"
+			dynamic="true">
+
+			<value code="SINGLE_RESPONSE" />
+
+			<value code="MULTI_RESPONSE" />
+
+		</enumtype>
+
+
+		<enumtype generate="false" autocreate="false"
+			code="PaymentTransactionType">
+
+			<value code="CARD_VERIFICATION" />
+
+		</enumtype>
+
+
+		<enumtype generate="false" autocreate="false" code="CreditCardType">
+
+			<value code="discover" />
+
+		</enumtype>
+
+
+		<enumtype generate="true" autocreate="false" code="ConsignmentStatus"
+			dynamic="true">
+
+			<value code="DELIVERY_BLOCK_RELEASED" />
+
+		</enumtype>
+
+	</enumtypes>
+
+
+	<relations>
+
+
+		<relation generate="true" autocreate="true"
+			code="GreenleeProduct2GreenleeProductMediaRel" localized="false">
+
+			<deployment typecode="12380" table="Product2ProMRel" />
+
+
+			<sourceElement type="GreenleeProduct" cardinality="many"
+				qualifier="greenleeProduct">
+
+				<modifiers optional="true" search="true" write="true"
+					read="true" />
+
+			</sourceElement>
+
+
+			<targetElement type="GreenleeProductMedia" cardinality="many"
+				qualifier="productArtifacts">
+
+				<modifiers optional="true" search="true" write="true"
+					read="true" />
+
+			</targetElement>
+
+		</relation>
+
+
+		<relation generate="true" autocreate="true"
+			code="GreenleeProduct2GreenleeProductMediaGroupRel" localized="false">
+
+			<deployment typecode="12370" table="Product2PMGRel" />
+
+
+			<sourceElement type="GreenleeProduct" cardinality="many"
+				qualifier="greenleeProduct">
+
+				<modifiers optional="true" search="true" write="true"
+					read="true" />
+
+			</sourceElement>
+
+
+			<targetElement type="GreenleeProductMediaGroup"
+				cardinality="many" qualifier="productArtifactsGroups">
+
+				<modifiers optional="true" search="true" write="true"
+					read="true" />
+
+			</targetElement>
+
+		</relation>
+
+
+		<relation generate="true" autocreate="true"
+			code="GreenleeProductMediaGroup2GreenleeProductMediaRel" localized="false">
+
+			<deployment typecode="12360" table="PGM2PmRel" />
+
+
+			<sourceElement type="GreenleeProductMediaGroup"
+				cardinality="many" qualifier="greenleeProductMediaGroup">
+
+				<modifiers optional="true" search="true" write="true"
+					read="true" />
+
+			</sourceElement>
+
+
+			<targetElement type="GreenleeProductMedia" cardinality="many"
+				qualifier="productMedia">
+
+				<modifiers optional="true" search="true" write="true"
+					read="true" />
+
+			</targetElement>
+
+		</relation>
+
+
+		<relation generate="true" autocreate="true"
+			code="GreenleeCustomer2B2BUnitRel" localized="false">
+
+			<deployment typecode="12345" table="Cust2UnitRel" />
+
+
+			<sourceElement type="GreenleeB2BCustomer" cardinality="many"
+				navigable="false" collectiontype="set">
+
+				<modifiers search="true" write="true" read="true" />
+
+			</sourceElement>
+
+
+			<targetElement type="B2BUnit" cardinality="many"
+				qualifier="allowedAccounts" collectiontype="set">
+
+				<modifiers search="true" write="true" read="true" />
+
+			</targetElement>
+
+		</relation>
+
+
+		<relation generate="true" autocreate="true"
+			code="GreenleeProduct2GreenleeProductFeatureTab" localized="false">
+
+			<deployment typecode="12347" table="Product2FeatureTabRel" />
+
+
+			<sourceElement type="GreenleeProduct" cardinality="many"
+				qualifier="greenleeProduct">
+
+				<modifiers optional="true" search="true" write="true"
+					read="true" />
+
+			</sourceElement>
+
+
+			<targetElement type="GreenleeProductFeatureTab"
+				cardinality="many" qualifier="productFeatureTabs">
+
+				<modifiers optional="true" search="true" write="true"
+					read="true" />
+
+			</targetElement>
+
+		</relation>
+
+		<!-- <relation localized="false" code="GreenleeOrder2OrderEntry" autocreate="true" 
+			generate="true"> <sourceElement type="GreenleeOrder" qualifier="greenleeOrder" 
+			cardinality="one"> <modifiers read="true" write="true" search="true" optional="true"/> 
+			</sourceElement> <targetElement type="OrderEntry" qualifier="orderlineItems" 
+			cardinality="many" collectiontype="list"></targetElement> </relation> -->
+
+
+
+		<relation generate="true" autocreate="true"
+			code="HelpMeChooseQuestion2AnswerRel" localized="false">
+
+
+			<sourceElement type="HelpMeChooseQuestion" cardinality="one"
+				qualifier="question">
+
+				<modifiers optional="true" search="true" write="true"
+					read="true" />
+
+			</sourceElement>
+
+
+			<targetElement type="HelpMeChooseAnswer" cardinality="many"
+				qualifier="answers">
+
+				<modifiers optional="true" search="true" write="true"
+					read="true" />
+
+			</targetElement>
+
+		</relation>
+
+	</relations>
+
+
+	<itemtypes>
+
+		<!-- Add your item definitions here -->
+
+
+
+		<typegroup name="Greenlee">
+
+
+			<itemtype generate="false" autocreate="false" code="ZoneDeliveryMode"
+				jaloclass="de.hybris.platform.deliveryzone.jalo.ZoneDeliveryMode"
+				extends="DeliveryMode">
+
+
+				<attributes>
+
+
+					<attribute type="java.lang.Double" autocreate="true"
+						qualifier="weightLowerLimit">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Double" autocreate="true"
+						qualifier="weightUpperLimit">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" autocreate="true"
+						qualifier="isExpeditedShipping">
+
+						<persistence type="property" />
+
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" autocreate="true"
+						qualifier="isAcctNumberMandatory">
+
+						<persistence type="property" />
+
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.Integer" autocreate="true"
+						qualifier="accountNumberMaxLength">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" autocreate="true"
+						qualifier="sapMappingCode">
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="false" autocreate="false" code="B2BUnit">
+
+				<description>Additional attributes for B2BUnit.</description>
+
+
+				<attributes>
+
+
+					<attribute type="UserTypes" qualifier="userType">
+
+						<description>Type of the user</description>
+
+						<modifiers />
+
+						<persistence type="property" />
+
+						<defaultvalue>em().getEnumerationValue("UserTypes","B2B")
+						</defaultvalue>
+
+					</attribute>
+
+					<!-- DEBMAS customization -->
+
+
+
+					<attribute type="localized:java.lang.String" qualifier="status">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="paymentTerms">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="freightTerms">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="incoTerms2">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="partentCustomerNumber">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="Currency" qualifier="currencyPreference">
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="false" autocreate="false" code="Address">
+
+
+				<attributes>
+
+					<!-- ADRMAS customization -->
+
+
+
+					<attribute type="localized:java.lang.String" qualifier="addressLine2">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="contactFirstName">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="contactLastName">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="countryName">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="soldToAddress">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="contactNumber">
+
+						<persistence type="property" />
+
+					</attribute>
+
+					<!-- Address customization for Account -->
+
+
+
+					<attribute type="java.lang.Boolean" qualifier="isBillTo">
+
+						<persistence type="property" />
+
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.String" qualifier="sapAddressId">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="isDropShip">
+
+						<persistence type="property" />
+
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="isSoldTo">
+
+						<persistence type="property" />
+
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="isShilTo">
+
+						<persistence type="property" />
+
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" generate="true"
+						qualifier="isSapSourcedAddress">
+
+						<persistence type="property" />
+
+						<modifiers optional="true" write="true" read="true" />
+
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.String" qualifier="selectedBillingAddressId">
+
+						<persistence type="property" />
+
+					</attribute>
+					<attribute type="java.lang.String" qualifier="livingstonString">
+						<modifiers optional="true" write="true" read="true" />
+						<persistence type="property" />
+
+					</attribute>
+
+					<attribute type="java.lang.Boolean" generate="true"
+						qualifier="primaryAddress">
+
+						<persistence type="property" />
+
+						<modifiers optional="true" write="true" read="true" />
+
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" generate="true"
+						qualifier="defaultShippingAddress">
+
+						<persistence type="property" />
+
+						<modifiers optional="true" write="true" read="true" />
+
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" generate="true"
+						qualifier="defaultBillingAddress">
+
+						<persistence type="property" />
+
+						<modifiers optional="true" write="true" read="true" />
+
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="true" autocreate="true" code="GreenleeB2BCustomer"
+				jaloclass="com.greenlee.core.jalo.GreenleeB2BCustomer" extends="B2BCustomer">
+
+				<deployment typecode="12344" table="GreenleeB2BCustomer" />
+
+
+				<attributes>
+
+
+					<attribute type="B2BUnit" qualifier="sessionB2BUnit">
+
+						<description>Selected B2BUnit</description>
+
+						<persistence type="dynamic" attributeHandler="sessionB2BUnitHandlerBean" />
+
+						<modifiers write="true" read="true" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+			<!-- Add your item definitions here -->
+
+
+
+			<itemtype generate="true" autocreate="true" code="GreenleeProduct"
+				jaloclass="com.greenlee.core.jalo.GreenleeProduct" extends="Product">
+
+				<description>GreenLeeProduct that contains additional attribute.
+				</description>
+
+
+				<attributes>
+
+
+					<attribute type="localized:java.lang.String" qualifier="catalogNumber">
+
+						<description>catalogNumber of the product.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="smallUPC">
+
+						<description>smallUPC.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="longUPC">
+
+						<description>longUPC.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="unspscNumber">
+
+						<description>unspscNumber.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="returnable">
+
+						<description>returnable.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="obsolete">
+
+						<description>obsolete.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="sapSegmentID">
+
+						<description>sapSegmentID.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="sapFamilyID">
+
+						<description>sapFamilyID.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="sapGroupID">
+
+						<description>sapGroupID.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="sapSubGroupID">
+
+						<description>sapSubGroupID.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="countryOfOrigin">
+
+						<description>countryOfOrigin.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="commissionGroupCode">
+
+						<description>commissionGroupCode.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Double" qualifier="weight">
+
+						<description>weight.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="weightUnits">
+
+						<description>weightUnits.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="b2bProduct">
+
+						<description>B2BProduct.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+						<defaultvalue>Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="b2cProduct">
+
+						<description>B2CProduct.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+						<defaultvalue>Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="b2eProduct">
+
+						<description>B2EProduct.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+						<defaultvalue>Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="htsCode">
+
+						<description>International harmonize code.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="rohsIndicator">
+
+						<description>ROHS Indicator.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="msdsFlag">
+
+						<description>MSDS Flag.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="videolink">
+
+						<description>Video Link to populate here</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="productFeatures">
+
+						<description>Features of a product</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+
+						<persistence type="property">
+
+
+							<columntype database="oracle">
+
+								<value>CLOB</value>
+
+							</columntype>
+
+
+							<columntype>
+
+								<value>HYBRIS.LONG_STRING</value>
+
+							</columntype>
+
+						</persistence>
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="requestToDemo">
+
+						<description>Request for Demo</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+						<defaultvalue>Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="dgIndicatorProfile">
+
+						<description>DG Indicator Profile.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="true" autocreate="true" code="GreenleeProductMedia"
+				jaloclass="com.greenlee.greenleecore.jalo.media.GreenleeProductMedia"
+				extends="Media">
+
+				<deployment typecode="12342" table="greenprodmedia" />
+
+
+				<attributes>
+
+
+					<attribute type="localized:java.lang.String" qualifier="materialNumber">
+
+						<persistence type="property" />
+
+						<modifiers optional="true" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="documentType">
+
+						<persistence type="property" />
+
+						<modifiers optional="true" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="serialNumber">
+
+						<persistence type="property" />
+
+						<modifiers optional="true" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="keyword">
+
+						<persistence type="property" />
+
+						<modifiers optional="true" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Integer" qualifier="groupSortOrderPriority">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Integer" qualifier="generalSortOrderPriority">
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="true" autocreate="true"
+				code="GreenleeProductMediaGroup" jaloclass="com.greenlee.core.jalo.GreenleeProductMediaGroup">
+
+				<deployment typecode="12351" table="greenprodmediagroup" />
+
+
+				<custom-properties>
+
+					<!-- marking the type as synchronizing capable here: -->
+
+
+
+					<property name="catalogItemType">
+
+						<value>java.lang.Boolean.TRUE</value>
+
+					</property>
+
+					<!-- define catalog version attribute here: -->
+
+
+
+					<property name="catalogVersionAttributeQualifier">
+
+						<value>"catalogVersion"</value>
+
+					</property>
+
+					<!-- define unique key attributes here; separate multiple attribute 
+						qualifiers by commas: -->
+
+
+
+					<property name="uniqueKeyAttributeQualifier">
+
+						<value>"groupCode"</value>
+
+					</property>
+
+
+					<property name="catalog.sync.default.root.type">
+
+						<value>Boolean.TRUE</value>
+
+					</property>
+
+
+					<property name="catalog.sync.default.root.type.order">
+
+						<value>Integer.valueOf(9)</value>
+
+					</property>
+
+				</custom-properties>
+
+
+				<attributes>
+
+
+					<attribute type="CatalogVersion" qualifier="catalogVersion">
+
+						<modifiers optional="false" search="true" write="true"
+							read="true" initial="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.String" qualifier="groupCode">
+
+						<modifiers optional="false" search="true" write="true"
+							read="true" unique="true" />
+
+						<persistence type="property" />
+
+						<defaultvalue>"testGroupCode"</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="groupName">
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+						<defaultvalue>"testGroupName"</defaultvalue>
+
+					</attribute>
+
+				</attributes>
+
+
+				<indexes>
+
+
+					<index name="GreenleeProductMediaGroupCode">
+
+						<key attribute="groupCode" />
+
+					</index>
+
+				</indexes>
+
+			</itemtype>
+
+			<!-- TypeGroups are for structure of this file only -->
+
+
+
+			<itemtype generate="true" autocreate="true"
+				code="GreenleeProductFeatureTab" jaloclass="com.greenlee.core.jalo.GreenleeProductFeatureTab">
+
+				<deployment typecode="12349" table="greenfeat" />
+
+
+				<custom-properties>
+
+					<!-- marking the type as synchronizing capable here: -->
+
+
+
+					<property name="catalogItemType">
+
+						<value>java.lang.Boolean.TRUE</value>
+
+					</property>
+
+					<!-- define catalog version attribute here: -->
+
+
+
+					<property name="catalogVersionAttributeQualifier">
+
+						<value>"catalogVersion"</value>
+
+					</property>
+
+					<!-- define unique key attributes here; separate multiple attribute 
+						qualifiers by commas: -->
+
+
+
+					<property name="uniqueKeyAttributeQualifier">
+
+						<value>"tabCode"</value>
+
+					</property>
+
+
+					<property name="catalog.sync.default.root.type">
+
+						<value>Boolean.TRUE</value>
+
+					</property>
+
+
+					<property name="catalog.sync.default.root.type.order">
+
+						<value>Integer.valueOf(10)</value>
+
+					</property>
+
+				</custom-properties>
+
+
+				<attributes>
+
+
+					<attribute type="CatalogVersion" qualifier="catalogVersion">
+
+						<modifiers optional="false" search="true" write="true"
+							read="true" initial="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.String" qualifier="tabCode">
+
+						<modifiers optional="false" write="true" read="true"
+							unique="true" />
+
+						<persistence type="property" />
+
+						<defaultvalue>"testTabCode"</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="tabName">
+
+						<modifiers optional="true" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="tabDescription">
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+
+						<persistence type="property">
+
+
+							<columntype database="oracle">
+
+								<value>CLOB</value>
+
+							</columntype>
+
+
+							<columntype database="sap">
+
+								<value>NCLOB</value>
+
+							</columntype>
+
+
+							<columntype>
+
+								<value>HYBRIS.LONG_STRING</value>
+
+							</columntype>
+
+						</persistence>
+
+
+						<custom-properties>
+
+
+							<property name="hmcIndexField">
+
+								<value>"thefield"</value>
+
+							</property>
+
+						</custom-properties>
+
+					</attribute>
+
+				</attributes>
+
+
+				<indexes>
+
+
+					<index name="GreenleeProductFeatureTabCode">
+
+						<key attribute="tabCode" />
+
+					</index>
+
+				</indexes>
+
+			</itemtype>
+
+
+			<itemtype generate="false" autocreate="false" code="OrderEntry">
+
+
+				<attributes>
+
+
+					<attribute type="localized:java.lang.String" qualifier="customerMaterialNumber">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="sapUserId">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="sapUserGroup">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="OrderEntryStatus" qualifier="orderEntryStatus">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Double" qualifier="subtotal">
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="false" autocreate="false" code="AbstractOrder">
+
+
+				<attributes>
+
+
+					<attribute type="localized:java.lang.String" qualifier="orderWeight">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="shipmentAccountNumber">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="shippingNote">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="isDropShipped">
+
+						<persistence type="property" />
+
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="StringCollection" qualifier="emailCCAddresses">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.util.Date" qualifier="shippedByDate">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="orderNotes">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="sapPriceAvailability">
+
+						<persistence type="property" />
+
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.Double" generate="true"
+						autocreate="true" qualifier="totalDuty">
+
+
+						<persistence type="property">
+
+
+							<columntype>
+
+								<value>java.math.BigDecimal</value>
+
+							</columntype>
+
+						</persistence>
+
+						<modifiers optional="true" search="false" write="true"
+							read="true" />
+
+						<defaultvalue>Double.valueOf(0.0d)</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="isErpPrice">
+
+						<persistence type="property" />
+
+						<defaultvalue>Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+					<attribute type="Address" qualifier="primaryAddress">
+					<persistence type="property" />
+					<modifiers optional="true" search="false" write="true" read="true" />
+					</attribute>
+					<attribute type="Address" qualifier="selectedBillingAddress">
+						<persistence type="property" />
+						<modifiers optional="true" search="false" write="true" read="true" />
+					</attribute>
+					
+					<attribute type="java.lang.String" qualifier="livingstonString">
+						<persistence type="property" />
+						<modifiers optional="true" search="false" write="true" read="true" />
+					</attribute>
+					
+					<attribute type="java.lang.String" qualifier="selectedDeliveryMode">
+						<persistence type="property" />
+						<modifiers optional="true" search="false" write="true" read="true" />
+					</attribute>
+					<attribute type="java.lang.Boolean" qualifier="errorInCart">
+						<persistence type="property" />
+						<defaultvalue>Boolean.FALSE</defaultvalue>
+					</attribute>
+					
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="false" autocreate="false" code="AbstractOrderEntry">
+
+
+				<attributes>
+
+
+					<attribute type="localized:java.lang.String" qualifier="warrantySerialNumbers">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="estimatedShipDate">
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+			<!-- User Registration -->
+
+
+
+			<itemtype generate="false" autocreate="false" code="B2BCustomer">
+
+
+				<attributes>
+
+
+					<attribute type="localized:java.lang.String" qualifier="userType">
+
+						<description>Type of the user</description>
+
+						<modifiers />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="companyName">
+
+						<description>Type of the user</description>
+
+						<modifiers />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="accountInformation">
+
+						<description>Type of the user</description>
+
+						<modifiers />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="accountInformationNumber">
+
+						<description>Type of the user</description>
+
+						<modifiers />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="accountNumber">
+
+						<description>Type of the user</description>
+
+						<modifiers />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="poNumber">
+
+						<description>Type of the user</description>
+
+						<modifiers />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="invoiceNumber">
+
+						<description>Type of the user</description>
+
+						<modifiers />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="userAddedByAdmin">
+
+						<description>This is to check and verify that, User is added by
+							Admin or not</description>
+
+						<modifiers />
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="false" autocreate="false" code="Customer">
+
+
+				<attributes>
+
+
+					<attribute type="java.lang.Boolean" qualifier="accountVerified">
+
+						<description>Customer account is verified for email.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+						<defaultvalue>Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="salesforceId">
+
+						<description>Salesforce ID generated from Salesforce Rest service
+						</description>
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="customerRefNumber">
+
+						<description>Paymentech customer refrence number generated during
+							Card Verification</description>
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="agreeToPrivacyPolicy">
+
+						<description>Customer agrees to privacy policy.</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+						<defaultvalue>Boolean.TRUE</defaultvalue>
+
+					</attribute>
+
+
+					<attribute type="java.lang.Boolean" qualifier="requestForInfo">
+
+						<description>Customer request for sales and marketing info.
+						</description>
+
+						<modifiers optional="true" search="true" write="true"
+							read="true" />
+
+						<persistence type="property" />
+
+						<defaultvalue>Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="false" autocreate="false"
+				code="CreditCardPaymentInfo">
+
+				<description>Extending CreditCardPaymentInfo type with additional
+					attributes.</description>
+
+
+				<attributes>
+
+
+					<attribute type="localized:java.lang.String" qualifier="customerRefNumber">
+
+						<description>Paymentech customer refrence number generated during
+							Card Verification</description>
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="true" autocreate="true" code="HelpMeChooseQuestion">
+
+				<description>Help me choose options model attributes.</description>
+
+				<deployment typecode="22230" table="HelpMeChooseQuestion" />
+
+
+				<attributes>
+
+
+					<attribute type="java.lang.String" qualifier="code">
+
+						<modifiers optional="false" write="true" read="true"
+							unique="true" />
+
+						<description>optionValue</description>
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="question">
+
+						<description>optionValue</description>
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="boolean" qualifier="levelOne">
+
+						<description>optionValue</description>
+
+						<persistence type="property" />
+
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+				</attributes>
+
+
+				<indexes>
+
+
+					<index name="HelpMeChooseQuestionCode">
+
+						<key attribute="code" />
+
+					</index>
+
+				</indexes>
+
+			</itemtype>
+
+
+			<itemtype generate="true" autocreate="true" code="HelpMeChooseAnswer">
+
+				<description>Help me choose options model attributes.</description>
+
+				<deployment typecode="22231" table="HelpMeChooseAnswer" />
+
+
+				<attributes>
+
+
+					<attribute type="java.lang.String" qualifier="code">
+
+						<modifiers optional="false" write="true" read="true"
+							unique="true" />
+
+						<description>optionValue</description>
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="answer">
+
+						<description>optionValue</description>
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="targetURL">
+
+						<description>optionValue</description>
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="HelpMeChooseQuestion" qualifier="nextQuestion">
+
+						<description>optionValue</description>
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+
+				<indexes>
+
+
+					<index name="HelpMeChooseAnswerCode">
+
+						<key attribute="code" />
+
+					</index>
+
+				</indexes>
+
+			</itemtype>
+
+
+			<itemtype generate="false" autocreate="false" code="Consignment">
+
+				<description>Extending Consignment type with additional attributes.
+				</description>
+
+
+				<attributes>
+
+
+					<attribute type="java.lang.Double" qualifier="consignmentValue">
+
+						<modifiers optional="true" write="true" read="true"
+							unique="false" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Double" qualifier="taxBreakUp">
+
+						<modifiers optional="true" write="true" read="true"
+							unique="false" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Double" qualifier="dutyBreakUp">
+
+						<modifiers optional="true" write="true" read="true"
+							unique="false" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Double" qualifier="promotionBreakUp">
+
+						<modifiers optional="true" write="true" read="true"
+							unique="false" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.Double" qualifier="freightBreakUp">
+
+						<modifiers optional="true" write="true" read="true"
+							unique="false" />
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+		</typegroup>
+
+		<!-- prod document search -->
+
+
+
+		<typegroup name="BaseSite">
+
+
+			<itemtype generate="false" autocreate="false" code="BaseSite">
+
+				<description>Extending BaseSite type with additional attributes.
+				</description>
+
+
+				<attributes>
+
+
+					<attribute type="SolrFacetSearchConfig"
+						qualifier="solrFacetProductDocumentSearchConfiguration">
+
+						<description>Solr search configuration for this site.
+						</description>
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="false" autocreate="false" code="BaseStore">
+
+				<description>Extending BaseStore type with additional attributes.
+				</description>
+
+
+				<attributes>
+
+
+					<attribute type="SolrFacetSearchConfig"
+						qualifier="solrFacetProductDocumentSearchConfiguration">
+
+						<description>Solr search configuration for this site.
+						</description>
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="true" autocreate="true" code="ProductDocument"
+				jaloclass="com.greenlee.core.jalo.ProductDocument">
+
+				<deployment typecode="12346" table="productDocument" />
+
+
+				<attributes>
+
+
+					<attribute type="localized:java.lang.String" qualifier="URL">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="documentName">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="documentType">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.String" qualifier="documentSize">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="java.lang.String" qualifier="documentMime">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="documentProductReference">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="keyword">
+
+						<persistence type="property" />
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="description">
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+		</typegroup>
+
+		<!-- GreenLee Promotion Component for Alerts harsha -->
+
+
+
+		<typegroup name="GreenleeCMSComponents">
+
+
+			<itemtype generate="true" autocreate="true"
+				code="GreenleePromoAlertComponent" jaloclass="com.greenlee.core.jalo.GreenleePromoAlertComponent"
+				extends="CMSParagraphComponent">
+
+				<description>Creating a new component for promotion alerts
+				</description>
+
+
+				<attributes>
+
+
+					<attribute type="linkList" qualifier="promoLinks">
+
+						<description>Link Component List for Promotion Alerts
+						</description>
+
+						<persistence type="property" />
+
+						<modifiers dontOptimize="true" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+		</typegroup>
+
+		<!-- Content Search and Auto Complete -->
+
+
+
+		<typegroup name="BaseSite">
+
+
+			<itemtype generate="false" autocreate="false" code="BaseSite">
+
+				<description>Extending BaseSite type with additional attributes.
+				</description>
+
+
+				<attributes>
+
+
+					<attribute type="SolrFacetSearchConfig" qualifier="solrFacetContentSearchConfiguration">
+
+						<description>Solr search configuration for this site.
+						</description>
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="false" autocreate="false" code="BaseStore">
+
+				<description>Extending BaseStore type with additional attributes.
+				</description>
+
+
+				<attributes>
+
+
+					<attribute type="SolrFacetSearchConfig" qualifier="solrFacetContentSearchConfiguration">
+
+						<description>Solr search configuration for this site.
+						</description>
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="false" autocreate="false" code="ContentPage">
+
+				<description>Extending ContentPage for content search</description>
+
+
+				<attributes>
+
+
+					<attribute type="java.lang.Integer" qualifier="searchable">
+
+						<description>Solr search configuration for this site.
+						</description>
+
+						<persistence type="property" />
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+		</typegroup>
+
+
+		<typegroup name="Processes">
+
+
+			<itemtype generate="true" autocreate="true" code="ShareProductProcess"
+				extends="StoreFrontProcess">
+
+				<description>Represents process that is used for sharing product.
+				</description>
+
+
+				<attributes>
+
+
+					<attribute type="GreenleeProduct" qualifier="greenleeProductModel">
+
+						<persistence type="property" />
+
+						<description>Attribute contains product details used in this
+							process.</description>
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="toAddress">
+
+						<persistence type="property" />
+
+						<description>Attribute contains recipient's email in this process.
+						</description>
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="fromAddress">
+
+						<persistence type="property" />
+
+						<description>Attribute contains sender's email in this process.
+						</description>
+
+					</attribute>
+
+
+					<attribute type="localized:java.lang.String" qualifier="message">
+
+						<persistence type="property" />
+
+						<description>Attribute contains sender's message in this process.
+						</description>
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="false" autocreate="false"
+				code="StoreFrontCustomerProcess">
+
+
+				<attributes>
+
+
+					<attribute type="localized:java.lang.String" qualifier="verificationToken">
+
+						<persistence type="property" />
+
+						<description>Attribute contains token that is used in this
+							process.</description>
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+
+			<itemtype generate="false" autocreate="false"
+				code="ForgottenPasswordProcess">
+
+				<description>Represents process that is used for retrieving
+					forgotten password.</description>
+
+
+				<attributes>
+
+
+					<attribute type="boolean" qualifier="userAddedByAdmin">
+
+						<description>optionValue</description>
+
+						<persistence type="property" />
+
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+
+					</attribute>
+
+				</attributes>
+
+			</itemtype>
+
+		</typegroup>
+
+	</itemtypes>
+
+</items>

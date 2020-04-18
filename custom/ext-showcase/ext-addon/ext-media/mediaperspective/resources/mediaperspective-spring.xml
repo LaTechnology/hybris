@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+
+	<bean id="mediaperspectivetLabelLocator" class="de.hybris.platform.cockpit.util.ConfigurableCockpitLabelLocator" scope="singleton" lazy-init="false">
+		<property name="resourceFolder" value="/mediaperspective/localization/"/>
+	</bean>
+	
+	<bean id="cockpitMediaPreviewHandler" class="com.hybris.platform.mediaperspective.servicelayer.model.attributehandler.CockpitMediaPreviewHandler">
+		<property name="mimeTypeGrouper" ref="defaultMimeTypeGrouper"/>
+	</bean>
+	
+	<bean id="defaultMimeTypeGrouper" class="com.hybris.platform.mediaperspective.media.impl.DefaultMediaHelper">
+		<property name="defaultPreviewURL" value="/cmscockpit/cmscockpit/images/cms-cockpit-icons-other.png"/>
+		<property name="imageMimeTypes">
+			<set value-type="java.lang.String">
+				<value>image/jpeg</value>
+				<value>image/png</value>
+				<value>image/gif</value>
+			</set>
+		</property>
+		<property name="mimeTypeGroups">
+			<map key-type="java.lang.String" value-type="com.hybris.platform.mediaperspective.media.impl.MimeTypeGroup">
+				<entry key="text/csv" value-ref="textMimeTypeGroup"/>
+				<entry key="text/html" value-ref="textMimeTypeGroup"/>
+				<entry key="text/plain" value-ref="textMimeTypeGroup"/>
+				<entry key="text/vcard" value-ref="textMimeTypeGroup"/>
+				<entry key="text/xml" value-ref="textMimeTypeGroup"/>
+				<entry key="application/xml" value-ref="textMimeTypeGroup"/>
+				<entry key="application/pdf" value-ref="pdfMimeTypeGroup"/>
+				<entry key="application/zip" value-ref="archiveMimeTypeGroup"/>
+				<entry key="video/mpeg" value-ref="videoMimeTypeGroup"/>
+				<entry key="video/mp4" value-ref="videoMimeTypeGroup"/>
+				<entry key="video/ogg" value-ref="videoMimeTypeGroup"/>
+				<entry key="video/quicktime" value-ref="videoMimeTypeGroup"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="textMimeTypeGroup" class="com.hybris.platform.mediaperspective.media.impl.MimeTypeGroup">
+		<property name="previewImageURL" value="/cmscockpit/cmscockpit/images/cms-cockpit-icons-text.png"></property>
+	</bean>
+	<bean id="pdfMimeTypeGroup" class="com.hybris.platform.mediaperspective.media.impl.MimeTypeGroup">
+		<property name="previewImageURL" value="/cmscockpit/cmscockpit/images/cms-cockpit-icons-pdf.png"/>
+	</bean>
+	<bean id="archiveMimeTypeGroup" class="com.hybris.platform.mediaperspective.media.impl.MimeTypeGroup">
+		<property name="previewImageURL" value="/cmscockpit/cmscockpit/images/cms-cockpit-icons-archive.png"/>
+	</bean>
+	<bean id="videoMimeTypeGroup" class="com.hybris.platform.mediaperspective.media.impl.MimeTypeGroup">
+		<property name="previewImageURL" value="/cmscockpit/cmscockpit/images/cms-cockpit-icons-video.png"/>
+	</bean>
+	
+	<bean id="mediaPerspectiveSystemSetup" class="com.hybris.platform.mediaperspective.systemsetup.MediaPerspectiveSystemSetup" >
+		<property name="modelService" ref="modelService" />
+		<property name="flexibleSearchService" ref="flexibleSearchService" />
+		<property name="processCodeGenerator" ref="processCodeGenerator" />
+	</bean>
+			
+</beans>

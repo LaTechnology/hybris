@@ -1,0 +1,182 @@
+body {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+html {
+    font-family: sans-serif;
+    // 1
+    -ms-text-size-adjust: 100%;
+    // 2
+    -webkit-text-size-adjust: 100%;
+    // 2
+    font-size: 14px;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+    color: inherit;
+    // 1
+    font: inherit;
+    // 2
+    margin: 0;
+    // 3
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+input {
+    line-height: normal;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+td,
+th {
+    padding: 0;
+}
+table.mainTable {
+    @media only screen and(max-width: 768px) {
+        width: 100%;
+    }
+	box-sizing: border-box;
+    width: 50%;
+	display: block;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 14px;
+	
+	* {
+		box-sizing: border-box;
+		max-width: 100%;
+	}
+	
+	tbody {
+		display: block;
+	}
+
+    tr {
+        margin-top: 20px;
+        display: block;
+    }
+    td {
+        display: block;
+        width: 100%;
+        text-align: left;
+    }
+    label {
+        color: #000;
+        font-family: Verdana, Geneva, sans-serif;
+        text-transform: uppercase;
+        font-weight: 500;
+    }
+    input[type="password"],
+    input[type="text"] {
+        display: block;
+        width: 100%;
+        padding: 8.5px;
+        margin-top: 1px;
+        font-size: 1rem;
+        line-height: 1.5;
+        background-color: #ffffff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+        -webkit-transition: border-color 0.15s ease-in-out 0s, -webkit-box-shadow 0.15s ease-in-out 0s;
+        transition: border-color 0.15s ease-in-out 0s, -webkit-box-shadow 0.15s ease-in-out 0s;
+        -moz-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        -o-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s, -webkit-box-shadow 0.15s ease-in-out 0s;
+        outline: none;
+        &:focus {
+            -box-shadow: 0 0 2px #ff8c01;
+            border: 1px solid #ff8c01;
+        }
+    }
+    button {
+        cursor: pointer;
+        display: inline-block;
+        padding: 14px 30px;
+        font-size: 16px;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        color: #4f4f4f;
+        text-transform: uppercase;
+        border-radius: 3px;
+        width: 100%;
+        background: #cecbcb;
+        background: -moz-linear-gradient(left, #cecbcb 0%, #e6e4e4 100%);
+        background: -webkit-gradient(left top, right top, color-stop(0%, #cecbcb), color-stop(100%, #e6e4e4));
+        background: -webkit-linear-gradient(left, #cecbcb 0%, #e6e4e4 100%);
+        background: -o-linear-gradient(left, #cecbcb 0%, #e6e4e4 100%);
+        background: -webkit-gradient(linear, left top, right top, from(#cecbcb), to(#e6e4e4));
+        background: linear-gradient(to right, #cecbcb 0%, #e6e4e4 100%);
+        border: 0;
+        width: 200px;
+    }
+    select {
+        height: 40px;
+        padding: 5px;
+        margin-top: 1px;
+        border: 0;
+        font-size: 14px;
+        border: 1px solid #ccc;
+		width: 100%;
+    }
+    .creTypeField {
+        width: 150px;
+    }
+    .creCVV2WhatLink {
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 20px;
+        color: #666666;
+        text-decoration: underline;
+    }
+    .creExpirationRow td:after,
+    .creExpirationRow td:before {
+        display: table;
+        content: " ";
+    }
+    .creExpirationRow td:after {
+        clear: both;
+    }
+    .creExpirationRow td select {
+        box-sizing: border-box;
+        width: 70px;
+        float: left;
+        margin-right: 20px;
+    }
+    #cancelButton {
+        display: none;
+    }
+}
+.creProvinceLabel {
+    visibility: hidden;
+}
+.creProvinceLabel:before {
+    visibility: visible;
+    content: 'State/Province/Region';
+    text-transform: uppercase;
+}
+
+.creAddressOneRow .creAddressOneLabel {
+	visibility: hidden;
+}
+
+@media (max-width: 350px) {
+	table.mainTable .creAddressOneRow {
+		margin-top: 35px;
+	}
+}

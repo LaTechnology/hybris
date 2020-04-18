@@ -1,0 +1,11 @@
+#Wed, 29 May 2013 16:15:59 -0400
+#Ant properties
+#Wed May 29 16:15:59 EDT 2013
+builddate=20130529 1615
+description=mediaconversionimageresizeplugin
+name=mediaconversionimageresizeplugin
+vendor=hybris
+version=5.0.1.0-SNAPSHOT
+
+revision=19863
+svnurl=https\://partnersvn.hybris.de/hybris/projectaccelerator/trunk/projectaccelerator/mediaconversionimageresizeplugin

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2015 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+
+--><!--
+ All hybris buildcallbacks.xml macrodefinitions:
+ 
+ Build/Documentation
+ 
+	 before/after ant macro "clean"
+		 <macrodef name="greenleecore_before_clean"/>
+		 <macrodef name="greenleecore_after_clean"/>
+
+	 before/after ant macro "build"
+		 <macrodef name="greenleecore_before_build"/>
+		 <macrodef name="greenleecore_after_build"/>
+
+	 before/after ant macro "compile_core" - the core module of the extension
+		 <macrodef name="greenleecore_before_compile_core">
+		 <macrodef name="greenleecore_after_compile_core">
+
+	 before/after ant macro "compile_web" - the web module of the extension
+		 <macrodef name="greenleecore_before_compile_web" />
+		 <macrodef name="greenleecore_after_compile_web" />
+
+	 before/after ant macro "compile_hmc" - the hmc module of the extension
+		 <macrodef name="greenleecore_before_compile_hmc" />
+		 <macrodef name="greenleecore_after_compile_hmc" />
+ 
+ Preparing extension
+ 
+	 will be called in the beginning of the ant call and only once (also when using multiple 
+	 ant targets e.g. ant build yunittest)
+		 <macrodef name="greenleecore_only_once_prepare"/>
+ 
+ Creating ear module/production
+ 
+	 before/after ant macro "ear"
+		 <macrodef name="greenleecore_before_ear"/>
+		 <macrodef name="greenleecore_after_ear"/>
+
+	 before/after ant macro "production" - for hybris server only
+		 <macrodef name="greenleecore_before_production" />
+		 <macrodef name="greenleecore_after_production" />
+ 
+ JUnit Test
+ 
+	 before/after ant macro "yunitinit" 
+		 <macrodef name="greenleecore_before_yunitinit" />
+		 <macrodef name="greenleecore_after_yunitinit" />
+
+	 before/after ant macro "yunit"
+		 <macrodef name="greenleecore_before_yunit" />
+		 <macrodef name="greenleecore_after_yunit" /> 
+
+ Distribution package
+ 
+ 	 before/after ant macro "dist" - internal target; only for use when platform is available in source code
+		 <macrodef name="greenleecore_after_dist"/>
+		 <macrodef name="greenleecore_before_dist"/>
+
+	 before/after ant macro "dist_copy" - internal target; only for use when platform is available in source code
+		 <macrodef name="greenleecore_before_dist_copy"/>
+		 <macrodef name="greenleecore_after_dist_copy"/>
+
+--><project name="greenleecore_buildcallbacks">
+
+	<macrodef name="greenleecore_after_build">
+		<sequential>
+			<impexGenerate extname="greenleecore"/>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="greenleecore_after_clean">
+		<sequential>
+			<delete failonerror="false" file="${ext.greenleecore.path}/resources-lang/touch_impexgen"/>
+		</sequential>
+	</macrodef>
+	
+
+	<macrodef name="greenleecore_after_dist_copy">
+		<sequential>
+			<if>
+				<available file="${ext.greenleecore.path}/../recipes/" type="dir"/>
+				<then>
+					<copy preservelastmodified="true" todir="${destination.folder}/../installer/recipes">
+						<fileset dir="${ext.greenleecore.path}/../recipes/"/>
+					</copy>
+					<if>
+						<istrue value="${dist.development.dist}"/>
+						<then>
+							<copy preservelastmodified="true" todir="${destination.develop.folder}/../installer/recipes">
+								<fileset dir="${ext.greenleecore.path}/../recipes/"/>
+							</copy>
+						</then>
+					</if>
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+	
+
+</project>

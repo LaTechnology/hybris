@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<link href="css/style.css" rel="stylesheet">
+		<title>GreenLee</title>
+	</head>
+	<body>
+		<main data-currency-iso-code="USD">
+		<header><!-- header -->
+		<div class="navbar navbar-default">
+			<div class="container">
+				<div class="sitelogo checkout-sitelogo">
+					<a href title>
+						<img src="image/header/logo.svg"/>
+					</a>
+				</div>
+				<div class="pull-right secure">
+					<span>Secure Transaction</span>
+				</div>
+			</div>
+		</div>
+		</header><!-- /.header -->
+		
+		<div class="greenlee-body">
+			<div class="checkout-wrap">
+				<div class="container">
+					<div class="row">
+					<div class="col-md-9">
+						<div class="checkout-accordion">
+							<div class="accordion-step">
+								<div class="checkout-step clearfix success" data-rel="step1">
+									
+									<div class="pull-left">
+										<div class="step-num">
+										<span><i class="fa fa-check"></i></span>
+									</div>
+									<div class="title">
+										<h3>Shipping address</h3>
+									</div>
+									</div>
+									<div class="step-right">
+										<span>Ms. Diana Palmer</span><a href="">Change</a>
+									</div>
+								</div>
+								<div class="checkout-content" id="step1">
+									<div class="row label-bottom">
+										<div class="col-md-6">
+											<label>Select from your saved address</label>
+										</div>
+										<div class="col-md-6 checkout-address">
+											<a href="">Add a new address</a>
+										</div>
+									</div>
+									<div id="addressbook" class="clearfix owl-carousel owl-theme active address-checkout">
+										<div class="addressEntry main-address item">
+											<div class="address-item">
+												<form action="/checkout/multi/delivery-address/select" method="GET">
+													<div class="checkbox checkbox-circle">
+														<input type="checkbox" name="selectedAddressCode" value="8796158590995" id="checkbox1" checked/>
+														<label for="checkbox1">
+															<h5>Ms. Diana Palmer</h5>
+															<address>
+																4455 Boeing Dr,<br>
+																Rockford, IL 61109<br>
+																USA
+															</address>
+														</label>
+													</div>
+													<div class="address-links clearfix">
+														<ul>
+															<li class="first"><a href="" class="remove">remove</a></li>
+															<li><a href="" class="edit">Edit</a></li>
+														</ul>
+													</div>
+													<button type="submit" class="btn btn-primary btn-block">
+													Continue</button>
+												</form>
+											</div>
+										</div>
+										<div class="addressEntry item">
+											<div class="address-item">
+												<form action="/checkout/multi/delivery-address/select" method="GET">
+													<div class="checkbox checkbox-circle">
+														<input type="checkbox" name="selectedAddressCode" value="8796158590999" id="checkbox2"/>
+														<label for="checkbox2">
+															<h5>Ms. Diana Palmer</h5>
+															<address>
+																4455 Boeing Dr,<br>
+																Rockford, IL 61109<br>
+																USA
+															</address>
+														</label>
+													</div>
+													<button type="submit" class="btn-white btn-border">
+													Select this address</button>
+												</form>
+											</div>
+										</div>
+										<div class="addressEntry item">
+											<div class="address-item">
+												<form action="/checkout/multi/delivery-address/select" method="GET">
+													<div class="checkbox checkbox-circle">
+														<input type="checkbox" name="selectedAddressCode" value="8796158590994" id="test"/>
+														<label for="test">
+															<h5>Ms. Diana Palmer</h5>
+															<address>
+																4455 Boeing Dr,<br>
+																Rockford, IL 61109<br>
+																USA
+															</address>
+														</label>
+													</div>
+													<button type="submit" class="btn-white btn-border">
+													Select this address</button>
+												</form>
+											</div>
+										</div>
+									</div>
+									<div class="add-address address-checkout">
+									<div class="row">
+										<div class="col-md-4">
+											<div class="form-group">
+												<label for="">First Name *</label>
+												<input id="" name="firstName" class="form-control" type="text" value="">
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<label for="">Last Name *</label>
+												<input id="" name="lastName" class="form-control" type="text" value="">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4">
+											<div class="form-group">
+												<label for="">Address line 1 *</label>
+												<input id="" name="" class="form-control" type="text" value="">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4">
+											<div class="form-group">
+												<label for="">Address line 2</label>
+												<input id="" name="" class="form-control" type="text" value="">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4">
+											<div class="form-group">
+												<label for="">City *</label>
+												<input id="" name="" class="form-control" type="text" value="">
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<label for="">State / Province / Region</label>
+												<div class="controls isBorder usertype-selector">
+													<span class="select-wrapper"><select name="usertype" class="custom-select">
+														<option value="" disabled="disabled" selected="">select</option>
+														<option value="">Option 1</option>
+														<option value="">Option 1</option>
+														<option value="">Option 1</option>
+														</select><span class="holder">select</span></span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-4">
+												<div class="form-group has-error">
+													<label for="">Zip *</label>
+													<input id="" name="" class="form-control" type="text" value="">
+													<span class="error">Please enter valid data</span>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label for="">Country *</label>
+													<div class="controls isBorder usertype-selector">
+														<span class="select-wrapper"><select id="" name="usertype" class="custom-select">
+															<option value="" disabled="disabled" selected="">select</option>
+															<option value="">United states</option>
+															<option value="">India</option>
+															<option value="">United Kingdom</option>
+															</select><span class="holder">select</span></span>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-4">
+													<div class="form-group">
+														<label for="">Your email address *</label>
+														<input id="" name="" class="form-control" type="text" value="">
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-4">
+													<div class="form-group">
+														<label for="">Phone number *</label>
+														<input id="" name="" class="form-control" type="text" value="">
+													</div>
+												</div>
+											</div>
+											<div class="checkbox checkbox-group">
+												<input id="checkbox1" class="remember" type="checkbox">
+												<label for="checkbox1">Use this as my default delivery address</label>
+											</div>
+											<div class="row form-actions">
+												<div class="col-md-3">
+													<button type="submit" class="btn-white btn-login">Save address</button>
+												</div>
+											</div>
+										</div>	
+											</div>
+										</div>
+										<div class="accordion-step">
+											<div class="checkout-step clearfix success" data-rel="step2">
+												<div class="pull-left">
+										<div class="step-num">
+										<span><i class="fa fa-check"></i></span>
+									</div>
+									<div class="title">
+										<h3>Shipping method</h3>
+									</div>
+									</div>
+									<div class="step-right">
+										<span>UPS</span><a href="">Change</a>
+									</div>
+											</div>
+											<div class="checkout-content" id="step2">
+												<div class="shipping-method">
+												<div class="row">
+													<div class="col-sm-3">
+														<div class="form-group first">
+														  <label for="">Choose a shipping option</label>      
+														  <div class="controls isBorder usertype-selector">
+															<select name="usertype" class="custom-select">
+															  <option value="" disabled="disabled" >select</option>
+															  <option value="" selected="">Standard xx</option>
+															  <option value="">UPS - Expedited</option>						
+															</select>
+														  </div>
+														</div>
+														<div class="form-group ship-date">
+														  <label for="">Ship on</label>      
+														  <input  class="form-control" type="text" value="" placeholder="AS SOON AS POSSIBLE" name="date" id="date">
+														</div>
+														<div class="form-group">
+														  <label for="">SQR Number</label>      
+														  <input id="" name="" class="form-control" type="text" value="" >
+														</div>
+														<div class="form-group shipping-note">
+															<a href="" class="text-underline">Add a shipping note</a>
+															<div class="note-content">
+															<div class="close-note">
+																 <i class="gl gl-remove"></i>
+															</div>
+																 <textarea class="form-control" rows="5" id="comment" placeholder="Can you please make sure..."></textarea>
+															</div>
+														</div>
+														<div class="form-group shipping-note">
+															<a class=" text-underline" href="">Add email recepients</a>
+															<div class="note-content">
+															<div class="close-note">
+																 <i class="gl gl-remove"></i>
+															</div>
+																 <textarea class="form-control" rows="5" id="comment" ></textarea>
+																 <p>Separate multiple email addresses by a comma.</p>
+															</div>
+														</div>
+														<button type="submit" class="btn btn-primary btn-block">
+													Continue</button>
+													</div>
+		  										</div>
+		  										</div>
+											</div>
+										</div>
+										<div class="accordion-step">
+											<div class="checkout-step active" data-rel="step3">
+												<div class="step-num">
+													<span>3</span>
+												</div>
+												<div class="title">
+													<h3>Payment Method</h3>
+												</div>
+											</div>
+											<div class="checkout-content active" id="step3">
+												<div class="row label-bottom">
+										<div class="col-md-6">
+											<label>Select from your saved Cards</label>
+										</div>
+										<div class="col-md-6 checkout-address">
+											<a href="">Add a new Payment method</a>
+										</div>
+									</div>
+									<div id="paymentmethod" class="clearfix owl-carousel owl-theme active address-checkout saved-cards">
+										<div class="addressEntry main-address item ">
+											<div class="address-item shipping-address">
+												<form action="/checkout/multi/delivery-address/select" method="GET">
+													<div class="checkbox checkbox-circle">
+														<input type="checkbox" name="selectedAddressCode" value="8796158590995" id="checkbox14" checked/>
+														<label for="checkbox1">
+															<h5>MasterCard ending **** 8149</h5>
+															<p>Expires on 08/208</p>
+															<img src="image/order/master-card.jpg">
+															<p class="label-address">BILLING ADDRESS</p>
+															<p class="pay-title">Mr. John Doe</p>
+															<address>
+																4455 Boeing Dr,<br>
+																Rockford, IL 61109<br>
+																USA
+															</address>
+														</label>
+													</div>
+													
+												
+												</form>
+											</div>
+										</div>
+										<div class="addressEntry item">
+											<div class="address-item">
+												<form action="/checkout/multi/delivery-address/select" method="GET">
+													<div class="checkbox checkbox-circle">
+														<input type="checkbox" name="selectedAddressCode" value="8796158590999" id="checkbox24"/>
+														<label for="checkbox24">
+															<h5>MasterCard ending **** 8149</h5>
+															<p>Expires on 08/208</p>
+															<img src="image/order/master-card.jpg">
+															<p class="label-address">BILLING ADDRESS</p>
+															<p class="pay-title">Mr. John Doe</p>
+															<address>
+																4455 Boeing Dr,<br>
+																Rockford, IL 61109<br>
+																USA
+															</address>
+														</label>
+													</div>
+													<button type="submit" class="btn-white btn-border">
+													Select this card</button>
+												</form>
+											</div>
+										</div>
+										<div class="addressEntry item">
+											<div class="address-item">
+												<form action="/checkout/multi/delivery-address/select" method="GET">
+													<div class="checkbox checkbox-circle">
+														<input type="checkbox" name="selectedAddressCode" value="8796158590999" id="checkbox47"/>
+														<label for="checkbox47">
+															<h5>MasterCard ending **** 8149</h5>
+															<p>Expires on 08/208</p>
+															<img src="image/order/master-card.jpg">
+															<p class="label-address">BILLING ADDRESS</p>
+															<p class="pay-title">Mr. John Doe</p>
+															<address>
+																4455 Boeing Dr,<br>
+																Rockford, IL 61109<br>
+																USA
+															</address>
+														</label>
+													</div>
+													<button type="submit" class="btn-white btn-border">
+													Select this card</button>
+												</form>
+											</div>
+										</div>
+									</div>
+										<div class="form-group">
+										<button type="submit" class="btn btn-primary btn-order">
+																	place order</button>
+																	</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="cart-right">
+										<div class="cart-block">
+											<div class="cart-title">
+												Order Summary
+												<a class="pencil-link" href=""><i class="fa fa-pencil-square-o"></i></a>
+											</div>
+											<div class="check-count">(2 items)</div>
+											
+											<table class="cart-summary">
+												<tbody>
+													<tr class="subtotal">
+														<td>Subtotal</td>
+														<td class="subtotal text-right">$289.98</td>
+													</tr>
+													
+													<tr>
+														<td>Shipping</td>
+														<td class="text-right">-</td>
+													</tr>
+													<tr>
+														<td>Taxes</td>
+														<td class="text-right">-</td>
+													</tr>
+												</tbody>
+												<tfoot>
+												<tr>
+													<th class="ct-total">Total</th>
+													<th class="checkout-total">$269.98</th>
+												</tr>
+												</tfoot>
+											</table>
+										</div>
+										<div class="checkout-items">
+											<a href="#"><span>Show items</span><i class="fa fa-angle-down"></i></a>
+											<div class="checkout-listitems clearfix">
+												<div class="cart-item">
+								                      <div class="thumb"> <a href="/p/300938"><img src="image/home/range.png" alt="AirScout 306 Wi-Fi Testing Kit ASK306"> </a> </div>
+								                      <div class="details"> <a href="/Open-Catalogue/Cameras/Digital-Cameras/Digital-Compacts/Photosmart-E317-Digital-Camera/p/300938">
+								                        <div class="name">AirScout 302 Wi-Fi Testing Kit<span class="item-list">(ASK302)</span></div>
+								                        </a>
+								                        <div class="item-list"> Quantity 01 </div>								                        
+								                        <div class="item-list">Estimated ship date: 02/02/2016 </div>
+								                        <div class="item-list price">$ 2,395</div>
+								                      </div>
+								                    </div>
+								                 <div class="cart-item">
+								                      <div class="thumb"> <a href="/p/300938"><img src="image/home/range.png" alt="AirScout 306 Wi-Fi Testing Kit ASK306"> </a> </div>
+								                      <div class="details"> <a href="/Open-Catalogue/Cameras/Digital-Cameras/Digital-Compacts/Photosmart-E317-Digital-Camera/p/300938">
+								                        <div class="name">AirScout 302 Wi-Fi Testing Kit<span class="item-list">(ASK302)</span></div>
+								                        </a>
+								                        <div class="item-list"> Quantity 01 </div>								                        
+								                        <div class="item-list">Estimated ship date: 02/02/2016 </div>
+								                        <div class="item-list price">$ 2,395</div>
+								                      </div>
+								                    </div>
+											</div>
+										</div>
+										<div class="ct-helpblock">
+											<div class="cart-help">
+												<div class="help-info">
+													<h5><i class="fa fa-question-circle"></i>Any questions?</h5>
+													<a class="support" href="tel:1-800-198-9384">1-800-198-9384</a>
+													<a href="mailto:support@airscoutwifi.com">support@airscoutwifi.com</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<footer class="checkout-footer">
+						<div class="container container-footer">
+							
+							<span>Copyright © 2016 Greenlee Textron Inc., a subsidiary of Textron Inc. All rights reserved.</span>
+							
+							
+						</div>
+						
+						
+					</footer>
+					</main>
+					<script type="text/javascript" src="js/home.js"></script>
+				</body>
+			</html>

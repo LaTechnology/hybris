@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "jquery": "^2.1.4"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "*",
+    "css-loader": "*",
+    "file-loader": "*",
+    "gulp": "*",
+    "gulp-autoprefixer": "*",
+    "gulp-bower": "*",
+    "gulp-clean-css": "^2.0.10",
+    "gulp-csso": "^2.0.0",
+    "gulp-iconfont": "^5.0.1",
+    "gulp-iconfont-css": "^2.0.0",
+    "gulp-jsbeautifier": "^2.1.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-ruby-sass": "*",
+    "gulp-scss-lint": "^0.3.9",
+    "gulp-sourcemaps": "*",
+    "style-loader": "*",
+    "webpack": "*",
+    "webpack-dev-server": "*"
+  }
+}

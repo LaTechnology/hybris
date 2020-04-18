@@ -1,0 +1,112 @@
+#
+# Import Sample Product Cockpit User
+# 
+
+$passwordEncoding=md5
+$defaultPassword=1234
+$setPassword=@password[translator=de.hybris.platform.impex.jalo.translators.ConvertPlaintextToEncodedUserPasswordTranslator][default='$passwordEncoding:$defaultPassword']
+
+INSERT_UPDATE UserGroup;UID[unique=true];groups(uid)[mode=append]
+;productmanagergroup;cockpitgroup,employeegroup
+;digitalmarketingmanagergroup;productmanagergroup
+;creativegroup;productmanagergroup
+
+INSERT_UPDATE Employee;UID[unique=true];$setPassword;description;name;groups(uid);sessionLanguage(isocode);sessionCurrency(isocode)
+;productmanager;;Product manager;Product Manager;productmanagergroup;en;USD
+;digitalmarketingmanager;;Digital marketing manager;Digital marketing manager;digitalmarketingmanagergroup;en;USD
+;creativemanager;;Creative manager;Creative manager;creativegroup;en;USD
+
+
+INSERT_UPDATE CatalogVersion;catalog(id)[unique=true];version[unique=true];writePrincipals(uid);
+;greenleeProductCatalog;Online;productmanagergroup,productmanager;
+;greenleeProductCatalog;Staged;productmanagergroup,digitalmarketingmanagergroup,creativegroup;
+;greenleeClassification;1.0;productmanagergroup,productmanager;
+
+
+INSERT_UPDATE CatalogVersion;catalog(id)[unique=true];version[unique=true];readPrincipals(uid)
+;greenleeProductCatalog;Online;productmanagergroup,productmanager;
+;greenleeProductCatalog;Staged;productmanagergroup,productmanager;
+;greenleeClassification;1.0;productmanagergroup,productmanager;
+
+
+#Workflow Template Creation
+INSERT_UPDATE WorkflowTemplate;code[unique=true];name[lang=en];owner(uid);activationscript;visibleForPrincipals(uid);
+;ProductEnrichmentWorkflowTemplate;Product Enrichment Template;admin;"(action.equals(""create""))&&(((de.hybris.platform.servicelayer.type.TypeService) Registry.getApplicationContext().getBean(""typeService"")).isAssignableFrom(""GreenleeProduct"", itemType.getCode()))";cockpitgroup; 
+
+#Workflow Manual Action Templates
+INSERT_UPDATE WorkflowActionTemplate;code[unique=true];name[lang=en];principalAssigned(uid)[mode=append];workflow(code)[unique=true];sendEmail;emailAddress;rendererTemplate(code);actionType(code)
+;Product_Created;"New product is created from SAP into Hybris";digitalmarketingmanagergroup;ProductEnrichmentWorkflowTemplate;false;;;start
+;Product_Attribution;"Add/edit product attributes and description";productmanagergroup;ProductEnrichmentWorkflowTemplate;false;;;normal
+;Product_Creative;"Upload/assign images, videos and manuals to product";creativegroup;ProductEnrichmentWorkflowTemplate;false;;;normal
+;ProductManagerApproval;"Product data quality check";productmanagergroup;ProductEnrichmentWorkflowTemplate;false;;;normal
+;PEW_End;Product Enrichment Workflow End;digitalmarketingmanagergroup;ProductEnrichmentWorkflowTemplate;false;;;end
+
+#Workflow Automated Action Templates
+INSERT_UPDATE AutomatedWorkflowActionTemplate;code[unique=true];name[lang=en];principalAssigned(uid);workflow(code)[unique=true];sendEmail;emailAddress;rendererTemplate(code);actionType(code);jobHandler
+;Auto_Creative;Product Imaging Auto Complete;creativegroup;ProductEnrichmentWorkflowTemplate;false;;;normal;creativeConfirmationActionJob
+;Auto_Product_Attribution;Product Attribution Auto Complete;productmanagergroup;ProductEnrichmentWorkflowTemplate;false;;;normal;attributionConfirmationActionJob
+
+
+#Workflow Decision Templates
+INSERT_UPDATE WorkflowDecisionTemplate;code[unique=true];name[lang=en];actionTemplate(code);description[allownull=true];;;;;;
+
+;Start_WorkFlow;"Start workflow";Product_Created;;;;;;;
+;PushToProduction;"Push to production";Product_Created;;;;;;;
+
+;Product_Attribution_Complete;Product Attribution Complete;Product_Attribution
+;Product_Attribution_Errors_Rectified;Product Attribution Errors Rectified;Product_Attribution;;;;;;;
+
+;Auto_Product_Attribution_SUCCESS;Product Attribution Auto Validation Success;Auto_Product_Attribution;;;;;;;
+;Auto_Product_Attribution_FAILURE;Product Attribution Auto Validation Failure;Auto_Product_Attribution;;;;;;;
+
+;Product_Creative_Complete;Product Creative Complete;Product_Creative;;;;;;;
+
+;Auto_Creative_SUCCESS;Product Imaging Auto Validation Success;Auto_Creative;;;;;;;
+;Auto_Creative_FAILURE;Product Imaging Auto Validation Failure;Auto_Creative;;;;;;;
+
+;Product_Attribution_Incomplete;Product Attribution Incomplete;ProductManagerApproval;;;;;;;
+;Product_Creative_Incomplete;Product Creative Incomplete;ProductManagerApproval;;;;;;;
+;ProductManagerApproved;Product Manager Approved;ProductManagerApproval;;;;;;;
+
+#Workflow Action Template Links
+INSERT_UPDATE WorkflowActionTemplateLinkTemplateRelation;source(code)[unique=true];target(code)[unique=true];andConnectionTemplate;qualifier;;;;;;;
+
+;Start_WorkFlow;Product_Attribution;false;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+
+;Product_Attribution_Complete;Auto_Product_Attribution;false;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+;Product_Attribution_Incomplete;Product_Attribution;false;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+;Product_Attribution_Errors_Rectified;ProductManagerApproval;false;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+
+;Auto_Product_Attribution_SUCCESS;Product_Creative;false;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+;Auto_Product_Attribution_FAILURE;Product_Attribution;false;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+
+;Product_Creative_Complete;Auto_Creative;false;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+;Product_Creative_Incomplete;Product_Creative;false;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+
+;Auto_Creative_SUCCESS;ProductManagerApproval;false;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+;Auto_Creative_FAILURE;Product_Creative;false;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+
+;ProductManagerApproved;Product_Created;false;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+;PushToProduction;PEW_End;false;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+
+INSERT_UPDATE Employee;UID[unique=true];$setPassword;description;name;groups(uid)[mode=append];sessionLanguage(isocode)[default=en]
+;zchristman@textron.com;qwerr123!@;;Zachary Christman;productmanagergroup  
+;phaller@greenlee.textron.com;rewdw543#$2;;Polly Haller;productmanagergroup  
+;dkraft@greenlee.textron.com;bhtyi^&^14;;Deborah Kraft;productmanagergroup
+;acooper@greenlee.textron.com;xzcsa78&$(;;April Cooper;productmanagergroup 
+;jvellone@greenlee.textron.com;trewe$#123;;Jovanna Vellone;productmanagergroup  
+;manderson@greenlee.textron.com;cvbc66##$;;Mary Anderson;productmanagergroup  
+;HManda01@Textron.com;sdfcfg453@#;;Hymarao Mandalapu;productmanagergroup  
+;jhoang@greenlee.textron.com;qawse$%65;;Jeni Hoang;productmanagergroup  
+;bneys@greenlee.textron.com;cdfresd#$645;;Becky Neys;productmanagergroup  
+;tbombard@textron.com;mhjyu$%%&;;Taylor Bombard;productmanagergroup  
+;pnelson@greenlee.textron.com;asdxswe43%&;;Patty Nelson;productmanagergroup  
+;piyer@greenlee.textron.com;csdsa!$%23;;Pavithra Iyer;productmanagergroup  
+;mworden@greenlee.textron.com;lkujg43!@;;Michael Worden;productmanagergroup  
+;gmorrow@greenlee.textron.com;gftrt7^%4;;Gymell Morrow;productmanagergroup  
+;jbyrne@greenlee.textron.com;#$545cvvc;;Jason Byrne;productmanagergroup  
+;mmanivannan@greenlee.textron.com;&$sdfsdf@;;Manirajan Manivannan;productmanagergroup  
+;jbethina@greenlee.textron.com;1234;;Jagapathi Bethina;productmanagergroup  
+;hvadlamudi@textron.com;1234;;Harikrishna Vadlamudi;productmanagergroup  
+;smurikipudi@greenlee.textron.com;1234;;Sridhar Murikipudi;productmanagergroup  
+

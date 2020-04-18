@@ -1,0 +1,120 @@
+.product_compare h1 {
+	font-size: 2em;
+	float: left;
+	margin: 0 0 40px;
+}
+.product_compare .prod_review {
+	margin: 0;	
+}
+.product_compare p.empty {
+	clear: both;
+	background: #da4332;
+	font-size: 1.2em;
+	color: #ffffff;
+	padding: 5px 10px;
+}
+.product_compare .pic a {
+	background: #fff;
+	padding: 2px;
+	border: 1px solid #ccc;
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+.product_compare .pic a img {
+	vertical-align: top;
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+.product_compare table {
+	margin-bottom: 0;
+	table-layout: fixed;
+	clear: both;
+	max-width: 100%;
+}
+.product_compare table th {
+	width: 150px;
+	padding: 5px 5px 0 0;
+	vertical-align: top;
+	font-weight: normal;
+	text-transform: uppercase;
+}
+.product_compare table td {
+	width: 200px;
+	border: 0 none;
+	padding: 5px 10px;
+	vertical-align: top;
+}
+.product_compare table td.title {
+	vertical-align: top;
+	font-weight: bold;
+}
+.product_compare table td.headline {
+	padding: 2em 0 1em;
+	font-weight: normal;
+	text-transform: uppercase;
+	border-bottom: 1px solid;
+	font-size: 1.2em;
+}
+.product_compare table .btn {
+	margin-top: 10px;
+	width: 100%;
+}
+.product_compare .diff td {
+	font-weight: bold;
+}
+.product_compare .diff th:before {
+	font-family: "Glyphicons Halflings";
+	content: "\e101";
+	font-weight: normal;
+	margin-right: .3em;
+	color: #ff4444;
+	vertical-align: middle;
+}
+.product_compare .costs .was {
+	font-size: 0.8em;
+	margin-right: 3px;
+	font-weight: bold;
+	text-decoration: line-through;
+}
+.product_compare .costs .save {
+	color: #ff4444;
+	margin-right: 3px;
+	font-size: 0.8em;
+}
+.product_compare .stars {
+	display: inline-block;
+	margin-bottom: 0;
+}
+.product_compare p.price,
+.product_compare p.average-rating {
+	margin-bottom: 0;
+}
+.product_compare .clear-items .neutral {
+	border: 2px solid rgb(119, 119, 119);
+}
+.product_compare button.large {
+	margin-top: 8px;
+}
+tr.desc h2 {
+	padding-bottom: 0;
+}
+/* Colorbox
+**************************/
+#cboxContent h1 {
+	display: none;
+}
+@media screen and (min-width: 640px) {
+	#cboxContent .product_compare {
+		padding: 20px;
+	}
+}
+/* Compare Action
+**************************/
+.productcomparisonaction.btn-group {
+	table-layout: auto;
+}
+.productcomparisonaction.btn-group > .btn:first-child:not(:last-child) {
+	width: auto;
+}

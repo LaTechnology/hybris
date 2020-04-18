@@ -1,0 +1,34 @@
+$catalogVersion=catalogVersion(catalog(id[default='Default']),version[default='Online'])[unique=true,default='Default:Online'];;;;;;;;;;
+$descriptionIcon=descriptionIcon(code, catalogVersion(catalog(id[default='Default']),version[default='Online']));;;;;;;;;;
+
+
+INSERT_UPDATE Media;code[unique=true];$catalogVersion; mime;realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite=true];;;;;
+;mcc-icon-backoffice.png;;image/png;mcc-icon-platform.png; jar:com.hybris.addon.cockpits.constants.AddoncockpitsConstants&/addoncockpits/import/icons/mcc-icon-platform.png;;;;;
+;mcc-icon-solrfacetsearch.png;;image/png;mcc-icon-solrfacetsearch.png; jar:com.hybris.addon.cockpits.constants.AddoncockpitsConstants&/addoncockpits/import/icons/mcc-icon-solrfacetsearch.png;;;;;
+
+INSERT_UPDATE StaticLink;code[unique=true];area(code);sortorder;readPrincipals(uid);$descriptionIcon;url;extensionName;parentLink(code);;
+"#% if: de.hybris.platform.jalo.extension.ExtensionManager.getInstance().isExtensionInstalled(""backoffice"")";;;;;;;;;;
+;backoffice;platform;5;;mcc-icon-backoffice.png;{backoffice};backoffice;;;
+#% endif:;;;;;;;;;;
+
+"#% if: de.hybris.platform.jalo.extension.ExtensionManager.getInstance().isExtensionInstalled(""solrfacetsearch"")";;;;;;;;;;
+;solrfacetsearch;platform;6;;mcc-icon-solrfacetsearch.png;http://localhost:8983/solr;;;;
+#% endif:;;;;;;;;;;
+
+UPDATE StaticLink;code[unique=true];title[lang=en];description[lang=en];
+"#% if: de.hybris.platform.jalo.extension.ExtensionManager.getInstance().isExtensionInstalled(""backoffice"")";;;;;;;;;;
+;backoffice;Backoffice;Using our backoffice cockpit application, you can manage a number of different aspects accross different domains
+#% endif:;;;;;;;;;;
+
+"#% if: de.hybris.platform.jalo.extension.ExtensionManager.getInstance().isExtensionInstalled(""solrfacetsearch"")";;;;;;;;;;
+;solrfacetsearch;Solrfacetsearch;Gives you access to the solrfacetsearch web application where you can explore solr indexes and more
+#% endif:;;;;;;;;;;
+
+UPDATE StaticLink;code[unique=true];title[lang=de];description[lang=de];
+"#% if: de.hybris.platform.jalo.extension.ExtensionManager.getInstance().isExtensionInstalled(""backoffice"")";;;;;;;;;;
+;backoffice;Backoffice;Mit der Backoffice-anwendung kÃ¶nnen eine Reihe verschiedener Aspekte administriert werden.
+#% endif:;;;;;;;;;;
+
+"#% if: de.hybris.platform.jalo.extension.ExtensionManager.getInstance().isExtensionInstalled(""solrfacetsearch"")";;;;;;;;;;
+;solrfacetsearch;Solrfacetsearch;Zugriff auf die Solrfacetsearch Webanwendung. Hier kÃ¶nnen u.a. Solr-Indices untersucht werden.
+#% endif:;;;;;;;;;;

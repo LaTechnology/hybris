@@ -1,0 +1,54 @@
+# -----------------------------------------------------------------------
+# [y] hybris Platform
+#
+# Copyright (c) 2000-2013 hybris AG
+# All rights reserved.
+#
+# This software is the confidential and proprietary information of hybris
+# ("Confidential Information"). You shall not disclose such Confidential
+# Information and shall use it only in accordance with the terms of the
+# license agreement you entered into with hybris.
+#
+#
+# -----------------------------------------------------------------------
+
+# you can put key/value pairs here.
+# Use Config.getParameter(..) to retrieve the values during runtime.
+
+
+# Specifies the location of the spring context file putted automatically to the global platform application context.
+addoncommon.application-context=addoncommon-spring.xml
+
+ychinaacceleratorstorefront.additionalWebSpringConfigs.addoncommon=classpath:/addoncommon/web/spring/addoncommon-china-web-spring.xml
+yacceleratorstorefront.additionalWebSpringConfigs.addoncommon=classpath:/addoncommon/web/spring/addoncommon-b2c-web-spring.xml
+yb2bacceleratorstorefront.additionalWebSpringConfigs.addoncommon=classpath:/addoncommon/web/spring/addoncommon-b2b-web-spring.xml
+yb2bportalstorefront.additionalWebSpringConfigs.addoncommon=classpath:/addoncommon/web/spring/addoncommon-b2bportal-web-spring.xml
+
+cmscockpit.additionalWebSpringConfigs.addoncommon=classpath:/addoncommon/cockpits/web/spring/import-cmscockpit.xml
+btgcockpit.additionalWebSpringConfigs.addoncommon=classpath:/addoncommon/cockpits/web/spring/import-cmscockpit.xml
+productcockpit.additionalWebSpringConfigs.addoncommon=classpath:/addoncommon/cockpits/web/spring/import-productcockpit.xml
+reportcockpit.additionalWebSpringConfigs.addoncommon=classpath:/addoncommon/cockpits/web/spring/import-reportcockpit.xml
+admincockpit.additionalWebSpringConfigs.addoncommon=classpath:/addoncommon/cockpits/web/spring/import-admincockpit.xml
+cscockpit.additionalWebSpringConfigs.addoncommon=classpath:/addoncommon/cockpits/web/spring/import-cscockpit.xml
+
+addoncommon.css.paths.desktop.blue=/desktop/css/b2c.changes.css;/desktop/theme-blue/css/b2c.changes.css;/desktop/css/b2c.acc.carousel.extended.css;/desktop/theme-blue/css/b2c.acc.carousel.extended.css
+addoncommon.css.paths.desktop.black=/desktop/css/b2c.changes.css;/desktop/theme-black/css/b2c.changes.css;/desktop/css/b2c.acc.carousel.extended.css
+addoncommon.css.paths.desktop.green=/desktop/theme-green/css/b2b.changes.css
+addoncommon.css.paths.responsive.blue=/responsive/theme-blue/css/b2c.changes.css;/responsive/common/css/font-awesome.min.css
+
+addoncommon.javascript.paths.desktop=/common/js/acc.utils.js;/desktop/js/b2c.acc.carousel.extended.js;/desktop/js/b2b.acc.productlisting.extended.js
+addoncommon.javascript.paths.mobile=/common/js/acc.utils.js
+addoncommon.javascript.paths.responsive=/common/js/acc.utils.js
+
+storefront.supportedUiExperienceLevels=DESKTOP,MOBILE
+storefront.supportedUiExperienceLevels.electronics-cn=DESKTOP
+storefront.supportedUiExperienceLevels.electronics=DESKTOP,MOBILE
+storefront.supportedUiExperienceLevels.apparel-uk=DESKTOP,MOBILE
+storefront.supportedUiExperienceLevels.apparel-de=DESKTOP,MOBILE
+storefront.supportedUiExperienceLevels.powertools=DESKTOP
+storefront.supportedUiExperienceLevels.b2bportal=RESPONSIVE
+
+
+# X for b2b and responsive
+yb2bacceleratorstorefront.additionalWebSpringConfigs.addonsupport=classpath:/addonsupport/web/spring/addonsupport-web-spring.xml
+yb2bportalstorefront.additionalWebSpringConfigs.addonsupport=classpath:/addonsupport/web/spring/addonsupport-web-spring.xml

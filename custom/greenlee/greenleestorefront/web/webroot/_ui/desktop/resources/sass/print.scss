@@ -1,0 +1,365 @@
+@import "variables"; //@import "type";
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+@media print {
+     @include loop-grid-columns($grid-columns, md, width);
+    @include loop-grid-columns($grid-columns, md, pull);
+    @include loop-grid-columns($grid-columns, md, push);
+    @include loop-grid-columns($grid-columns, md, offset);
+    *,
+    *:after,
+    *:before {
+        background: transparent !important;
+        color: #000 !important; // Black prints faster: h5bp.com/s
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+    // Don't show links that are fragment identifiers,
+    // or use the `javascript:` pseudo protocol
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+    blockquote,
+    pre {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+    thead {
+        display: table-header-group; // h5bp.com/t
+    }
+    img,
+    tr {
+        page-break-inside: avoid;
+    }
+    img {
+        max-width: 100% !important;
+    }
+    h2,
+    h3,
+    p {
+        orphans: 3;
+        widows: 3;
+    }
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+    // Bootstrap specific changes start
+    // Bootstrap components
+    .navbar {
+        display: none;
+    }
+    .btn,
+    .dropup > .btn {
+        > .caret {
+            border-top-color: #000 !important;
+        }
+    }
+    .label {
+        border: 1px solid #000;
+    }
+    .table {
+        border-collapse: collapse !important;
+        td,
+        th {
+            background-color: #fff !important;
+        }
+    }
+    .table-bordered {
+        td,
+        th {
+            border: 1px solid #ddd !important;
+        }
+    }
+    @page:left {
+        margin: 0.5cm;
+    }
+    @page:right {
+        margin: 0.8cm;
+    }
+    // greenLee Spicific css
+    .overview .thumb {
+        width: 50%;
+        margin-right: -4px;
+        padding-right: 20px;
+        vertical-align: middle;
+        text-align: center;
+        display: inline-block;
+    }
+    .overview .details {
+        width: 50%;
+        margin-right: -4px;
+        padding-right: 20px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .msitesearch,
+    .product-wrp .rating,
+    .productComparePanel,
+    .sec-nav,
+    .ui-front,
+    header nav.pri-nav {
+        display: none;
+    }
+    .breadcrumb {
+        padding: 17px 0;
+        margin: 0;
+    }
+    .pdp-social ul {
+        margin: 0;
+        padding: 17px 0;
+        text-align: right;
+    }
+    .product-wrp .product-name {
+        padding: 20px 0 7px;
+    }
+    .pdp-list h4 {
+        margin: 0 7px;
+        text-align: left;
+    }
+    .padd-r0 {
+        padding-right: 0;
+    }
+    .padd-l0 {
+        padding-left: 0;
+    }
+    header .navbar-default {
+        position: static;
+    }
+    .greenlee-body {
+        margin-top: 0;
+    }
+    footer.footer {
+        position: static;
+        .ft-top {
+            display: none;
+        }
+    }
+    a[href]:after {
+        content: "";
+    }
+    .product-wrp {
+        text-align: left;
+    }
+    .pdp-links {
+        border: none;
+        .pdp-list {
+            float: none;
+            width: 100%;
+            padding: 0 2px;
+            .fa-angle-down {
+                display: none;
+            }
+            &.first h4 {
+                border: none;
+            }
+            ul {
+                position: static;
+                background: none;
+                padding: 0;
+                display: block;
+            }
+        }
+    }
+    .owl-carousel .owl-stage {
+        width: 100% !important;
+    }
+    .cart-switch,
+    .js-gallery-carousel.owl-carousel.owl-loaded,
+    .js-write-review,
+    .owl-video-play-icon {
+        display: none;
+    }
+    .tabs-container .overview .thumb {
+        width: 50%;
+    }
+    body {
+        margin: 0;
+    }
+    .footer.footer .ft-bot .footer-items.FooterLogoBanner {
+        page-break-after: auto;
+    }
+    .currency-selector {
+        display: none;
+    }
+    body,
+    html {
+        height: 99%;
+    }
+    .owl-item {
+        width: 100% !important;
+        img {
+            page-break-before: auto;
+            /* 'always,' 'avoid,' 'left,' 'inherit,' or 'right' */
+            page-break-after: auto;
+            /* 'always,' 'avoid,' 'left,' 'inherit,' or 'right' */
+            page-break-inside: avoid;
+            /* or 'auto' */
+        }
+    }
+    .container {
+        width: auto;
+    }
+    #prd-carousel.owl-carousel .owl-item {
+        width: 25% !important;
+    }
+    .notes,
+    .order-details-container .order-items {
+        display: block;
+        page-break-before: always;
+    }
+    .order-details-container .odr-dtls-top .col-md-4 {
+        width: 50% !important;
+        float: left;
+    }
+    .order-details-container .odr-dtls-top .col-md-6 {
+        width: 50% !important;
+    }
+    .odr-dtls-boxes .left .column {
+        display: table-cell;
+        text-align: center;
+        width: 33.3%;
+        border-right: 1px solid #999;
+        border-bottom: none;
+        vertical-align: top;
+        padding: 8px 10px 0;
+    }
+    .manage-order {
+        display: none;
+    }
+    .order-confirmation .thankYou-msg {
+        text-align: left;
+		padding:10px 0;
+    }
+	.order-confirmation .cart-unit,.order-confirmation .cart-qty,.order-confirmation .cart-total{
+		display:block !important;
+		float: left;
+		padding: 5px 0;
+		border-top: none;
+	}
+	
+	.order-confirmation .col-md-9{
+		width:100%;
+	}
+	.cart-unit {
+		width: 20.081081081081081%;
+		  text-align: left;
+	}
+	.cart-qty {
+		width: 85px;
+	}
+	.cart-total {
+		width: 13.081081%;
+	}
+	.order-items .cart-heading{
+		display:block !important;
+	}
+	.order-confirmation .cart-item {
+		width: 43.243243243243246%;
+		margin-right: 1%;
+		padding: 5px 0;
+		a{
+			text-decoration:none;
+		}
+	}
+    .odr-dtls-boxes .left .column > div {
+        display: inline-block;
+        text-align: left;
+    }
+    .odr-dtls-boxes .left {
+        padding: 15px 0;
+        width: 73%;
+        float: left;
+        display: table;
+        height: 220px;
+    }
+    .odr-dtls-boxes .order-summary {
+        float: left;
+        height: 220px;
+        padding: 0;
+        width: 27%;
+    }
+    .order-details-container .odr-dtls-boxes {
+        background-color: #cccccc !important;
+    }
+    .order-details-container .odr-dtls-boxes .left {
+        width: 100%;
+    }
+    .order-details-container .odr-dtls-boxes .left .column {
+        float: left;
+        width: 33.3%;
+        background-color: #cccccc !important;
+        border: none;
+        padding-right: 15px;
+    }
+    .order-details-container .odr-dtls-boxes .manage-order {
+        display: none;
+    }
+    .order-details-container .odr-dtls-boxes + .row .col-md-3,
+    .order-details-container .odr-dtls-boxes + .row .col-md-9 {
+        width: 100%;
+    }
+    .order-details-container .order-items .cart-heading {
+        display: block !important;
+        border-bottom: 1px solid #cccccc;
+    }
+    .order-details-container .order-items .cart-list {
+        display: block;
+    }
+    .order-details-container .order-items .col {
+        float: left;
+    }
+    .order-details-container .order-items .line {
+        width: 8%;
+    }
+    .order-details-container .order-items .material {
+        width: 16.70%;
+    }
+    .order-details-container .order-items .qty {
+        width: 11%;
+    }
+    .order-details-container .order-items .uom {
+        width: 11%;
+    }
+    .order-details-container .order-items .ship-qty {
+        width: 11%;
+    }
+    .order-details-container .order-items .open-qty {
+        width: 11%;
+    }
+    .order-details-container .order-items .unit-price {
+        text-align: right;
+        width: 15.43%;
+    }
+    .order-details-container .order-items .exit-price {
+        text-align: right;
+        width: 15.35%;
+    }
+    .order-details-container .order-items .prdt-img {
+        width: 11.35%;
+    }
+    .order-details-container .order-items .catalog {
+        width: 22.70%;
+    }
+    .order-details-container .order-items .desc {
+        width: 22.70%;
+    }
+    .order-details-container .order-items .ship-date {
+        width: 34.05%;
+    }
+    .hidden-lg,
+    .hidden-md {
+        display: none !important;
+    }
+}

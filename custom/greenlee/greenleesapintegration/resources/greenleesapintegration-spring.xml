@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!--
+	The hybris platform provides one single Spring application context for beans located at the jalo layer.
+	Each extension can add beans to this context by specifying them at this configuration file.
+	 
+	You can use and/or redefine beans defined at configuration files of other extensions as well as
+	adding new one.
+		
+	If you want to locate this file at a different location or want to use several files for better,
+	structuring, please use the '<yourextension>.application-context' property at your project.properties file.
+	There you can specify a comma separated list of files where first is tried to find a file per classpath and
+	then per file system.
+
+	
+	If you want to configure beans for your web module please have a look at
+	your web/webroot/WEB-INF/<extname>-web-spring.xml.
+	-->
+	
+	<!--  Example how to override a manager -->
+	<!--
+	<bean id="core.productManager"   class="com.greenlee.sapintegration.jalo.GreenleesapintegrationProductManager" 	init-method="init"	destroy-method="destroy" />
+	-->
+	
+	
+ 	<!--  Example how to configure the class to use for jalo session creation -->
+	<!--
+	<bean id="jalosession"   class="de.hybris.platform.jalo.JaloSessionFactory">
+		<property name="targetClassName" value="com.greenlee.sapintegration.jalo.GreenleesapintegrationJaloSession"/>
+	</bean>
+	-->
+
+	
+	<!--  Example how to override an item  -->
+	<!-- 
+	<bean id="de.hybris.platform.jalo.product.Product" class="com.greenlee.sapintegration.jalo.GreenleesapintegrationProduct" scope="prototype" />		
+ 	-->
+
+	<!--  
+	 Example how to register and use an AOP aspect 
+     Also see http://static.springframework.org/spring/docs/2.5.x/reference/aop.html	
+     -->
+	
+	<!-- 
+	<bean id="greenleesapintegrationProfBean" class="com.greenlee.sapintegration.aop.GreenleesapintegrationProfilingAspect"/>
+	<aop:config proxy-target-class="true">
+  		<aop:aspect id="greenleesapintegrationProfAspect" ref="greenleesapintegrationProfBean" >
+    	  <aop:pointcut id="profiledMethods" 
+	      	expression="execution(* getModificationTime(..))" />  	            
+	   		<aop:around pointcut-ref="profiledMethods" method="profile" />
+  		</aop:aspect>
+	</aop:config>
+	 -->
+
+	
+	<!-- some other examples of a pointcut that matches everything:
+
+    	  <aop:pointcut id="profiledMethods" 
+	      	expression="bean(de.hybris.platform.jalo.user.Customer) &amp;&amp; 
+	      	            !execution(* getPK(..))" />  	            
+	       <aop:pointcut id="profiledMethods" expression="execution(* *(..))" />	
+	  -->
+	
+	<alias name="defaultSapDataHubInboundOrderEntryHelper" alias="sapDataHubInboundOrderEntryHelper" />
+	<bean id="defaultSapDataHubInboundOrderEntryHelper" class="com.greenlee.sapintegration.orderexchange.datahub.inbound.impl.DefaultGreenleeDataHubInboundOrderEntryHelper"
+		parent="sapAbstractDataHubOrderInboundHelper">
+		<property name="sapOrderEntryCancelService" ref="sapOrderexchangeOrderEntryCancelService" />
+	</bean>		
+	
+	<alias name="defaultGreenleeOrderCancelStateMappingStrategy" alias="defaultOrderCancelStateMappingStrategy" />
+	<bean id="defaultGreenleeOrderCancelStateMappingStrategy" class="com.greenlee.sapintegration.orderexchange.cancellation.DefaultGreenleeOrderCancelStateMappingStrategy"
+		scope="prototype" />
+	
+	<alias name="sapOrderexchangeDefaultOrderEntryCancelService" alias="sapOrderexchangeOrderEntryCancelService" />
+	<bean id="sapOrderexchangeDefaultOrderEntryCancelService" class="com.greenlee.sapintegration.orderexchange.cancellation.DefaultGreenleeSapOrderEntryCancelService" parent="sapOrderexchangeOrderCancelService">
+		<property name="orderCancelCallbackService" ref="orderCancelCallbackService" />
+		<property name="eventService" ref="eventService" />
+		<property name="modelService" ref="modelService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+		<property name="orderCancelService" ref="orderCancelService" />
+		<property name="orderCancelRecordsHandler" ref="orderCancelRecordsHandler" />
+		<property name="userService" ref="userService" />
+	</bean>
+	
+	<alias name="defaultSapGreenleeDataHubInboundDeliveryHelper" alias="sapGreenleeDataHubInboundDeliveryHelper" />
+	<bean id="defaultSapGreenleeDataHubInboundDeliveryHelper" class="com.greenlee.sapintegration.orderexchange.datahub.inbound.impl.DefaultGreenleeDataHubInboundDeliveryHelper"
+		parent="sapDataHubInboundDeliveryHelper">
+		<property name="consignmentService" ref="consignmentService" />
+		<property name="eventService" ref="eventService" />
+		<property name="modelService" ref="modelService" />
+	</bean>
+	
+	<alias name="defaultSapOrderSDTextContributor" alias="sapOrderSDTextContributor" />
+	<bean id="defaultSapOrderSDTextContributor" class="com.greenlee.sapintegration.orderexchange.outbound.impl.DefaultGreenleeOrderSDTextContributor">
+		<property name="shippingNotesCode" value="${greenleeorderexchange.shippingNotes.code}" />
+		<property name="warrentyProductCode" value="${greenleeorderexchange.warrentyProduct.code}" />
+	</bean>
+	
+	<alias name="defaultSapGreenleeRawHybrisOrderBuilder" alias="sapRawHybrisOrderBuilder" />
+	<bean id="defaultSapGreenleeRawHybrisOrderBuilder" parent="defaultSapRawHybrisOrderBuilder">
+		<property name="contributors">
+			<list merge="true">
+				<ref bean="sapOrderSDTextContributor"></ref>
+			</list>
+		</property>
+	</bean>
+
+	<alias name="defaultGreenleeOrderContributor" alias="sapOrderContributor" />
+	<bean id="defaultGreenleeOrderContributor" class="com.greenlee.sapintegration.orderexchange.outbound.impl.DefaultGreenleeB2BOrderContributor" parent="defaultSapOrderContributor">
+		<property name="poType" value="${greenleeorderexchange.purchaseOrderType.code}" />
+		<property name="incoterms1" value="${greenleeorderexchange.incoterms.code}" />
+	</bean>
+
+	<bean id="greenleeSendEventOrderCancelNotification" class="com.greenlee.sapintegration.ordercancel.impl.GreenleeSendEventOrderCancelNotification" scope="tenant">
+		<property name="eventService" ref="eventService"/>
+		<property name="modelService" ref="modelService"/>
+		<property name="businessProcessService" ref="businessProcessService"/>
+	</bean>
+	
+ 	<alias name="greenleeWarehouseProcessingCancelRequestExecutor" alias="warehouseProcessingCancelRequestExecutor" />
+	<bean id="greenleeWarehouseProcessingCancelRequestExecutor"
+	      class="com.greenlee.sapintegration.ordercancel.impl.executors.GreenleeWarehouseProcessingCancelRequestExecutor" scope="prototype">
+	      <property name="modelService" ref="modelService"/>
+		<property name="orderStatusChangeStrategy" ref="enterCancellingStrategy"/>
+		<property name="warehouseAdapter" ref="defaultWarehouseAdapterMock"/>
+		<property name="greenleeOrderCancelNotificationServiceAdapter" ref="greenleeSendEventOrderCancelNotification"/>
+	</bean> 
+	
+	<alias name="defaultGreenleeSalesConditionsContributor" alias="sapSalesConditionsContributor" />
+	<bean id="defaultGreenleeSalesConditionsContributor" class="com.greenlee.sapintegration.orderexchange.outbound.impl.DefaultGreenleeSalesConditionsContributor" parent="defaultSapSalesConditionsContributor">
+		<property name="tax1" value="${saporderexchange.itemtax.code1}" />
+		<property name="couponDiscountCode" value="${greenleeorderexchange.couponDiscount.code}" />
+	</bean>
+	
+	<bean id="greenleeDeliveryConsignmentValidateInterceptor" class="com.greenlee.sapintegration.interceptors.GreenleeDeliveryConsignmentValidateInterceptor">
+		<property name="modelService" ref="modelService"/>
+		<property name="ptAPIPaymentFacade" ref="ptAPIPaymentFacade"/>
+		<property name="greenleePIDeliveryService" ref="greenleePIDeliveryService"/>		
+	</bean>
+	
+
+	<bean id="greenleeDeliveryConsignmentValidateInterceptorMapping"
+			class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="greenleeDeliveryConsignmentValidateInterceptor"/>
+		<property name="typeCode" value="Consignment"/>
+	</bean>
+	
+	<bean id="greenleeGoodsIssueConsignmentValidateInterceptor" class="com.greenlee.sapintegration.interceptors.GreenleeGoodsIssueConsignmentValidateInterceptor">
+		<property name="modelService" ref="modelService"/>
+		<property name="ptAPIPaymentFacade" ref="ptAPIPaymentFacade"/>
+	</bean>
+
+	<bean id="greenleeGoodsIssueConsignmentValidateInterceptorMapping"
+			class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="greenleeGoodsIssueConsignmentValidateInterceptor"/>
+		<property name="typeCode" value="Consignment"/>
+	</bean>
+	
+	<bean id="greenleeWeightUnitsDecorator" class="com.greenlee.sapintegration.productmaster.decorator.GreenleeWeightUnitsDecorator" />
+	
+	<alias name="defaultGreenleeB2BPartnerContributor" alias="sapPartnerContributor" />
+	<bean id="defaultGreenleeB2BPartnerContributor" class="com.greenlee.sapintegration.orderexchange.outbound.impl.DefaultGreenleeB2BPartnerContributor"
+		parent="defaultSapB2BPartnerContributor" />
+	
+		
+</beans>

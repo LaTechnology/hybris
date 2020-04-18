@@ -1,0 +1,53 @@
+############################   Sample data to create users. Need to be removed during go-live ######################################
+INSERT_UPDATE Address;&addrID;streetname;streetnumber;postalcode;town;country(isocode);phone1;owner(&b2bunitId)[unique=true];contactAddress[default=true];isSapSourcedAddress[default=true]
+;addr1;2A Greyfriars;;MK40 1HP;Bedford;GB;+44 20 8653 3471;​271381_1200_60_10;
+;addr2;Carlton Rd;;MK43 7JL;Bedford;GB;+44 20 50017070;338893_1410_30_10;
+;addr3;South Esplanade;Guernsey;GY1 1AH;St Peter Port;GG;+44 29 8159 4871;453617_1710_40_11;
+;addr4;Maritime House;;JE1 1HB;Jersey;JE;+44 20 3980 1991;10000017_1310_70_20;
+#;addr5;La Rue Coutanche;Trinity;JE3 5DU;Jersey;JE;+44 29 3975 1583;609434;
+#;addr6;Trumpington Street;;CB2 1RB;Cambridge;GB;+44 20 3286 5703;454079;
+#;addr7;21 Trumpington Road;;CB2 8AJ;Cambridge;GB;+44 116 739 4689;271497;
+#;addr8;West Road;;CB3 9DR;Cambridge;GB;+44 29 7804 6812;600966;
+#;addr9;Whitehill Road;;CB5 8LN;Cambridge;GB;+44 20 5228 1840;10000017;
+#;addr10;Mill Road;;CB1 3DF;Cambridge;GB;+44 20 2916 0904;10000018;
+
+INSERT_UPDATE B2BUnit;&b2bunitId;uid[unique=true];locName[lang=en];userType(code);groups(uid);contactAddress(&addrID);currencyPreference(isocode)
+;dummydistributor;dummydistributor;dummydistributor;B2B;;;USD
+;​271381;​271381;target;B2B;;;USD
+;​271381_1200_60_10;​271381_1200_60_10;Michigan Tools Company;B2B;​271381;addr1;USD
+;​271381_1200_61_11;​271381_1200_61_11;Ace Hardware;B2B;​271381;addr1;USD
+;​271381_1200_62_12;​271381_1200_62_12;Acme Tools;B2B;​271381;addr1;USD
+;​271381_1200_63_13;​271381_1200_63_13;Brewsky Machinery;B2B;​271381;addr1;USD
+;​271381_1200_64_14;​271381_1200_64_14;Carters;B2B;​271381;addr1;USD
+;​271381_1200_65_15;​271381_1200_65_15;Don Juan Marketing;B2B;​271381;addr1;USD
+;​271381_1200_66_16;​271381_1200_66_16;Eastman Kodak;B2B;​271381;addr1;USD
+;​271381_1200_67_17;​271381_1200_67_17;Energizer;B2B;​271381;addr1;USD
+;10000017;10000017;walmart;B2B;;;USD
+;10000017_1310_70_20;10000017_1310_70_20;Express tools;B2B;10000017;addr4;USD
+;10000017_1310_71_21;10000017_1310_71_21;Account name;B2B;10000017;addr4;USD
+;0010000012;0010000012;dummyb2c;B2C;;;USD
+;0010000014;0010000014;dummyb2e;B2E;;;USD
+;338893;338893;verifiedb2c-unit;B2C;;;USD
+;453617;453617;verifiedb2e-unit;B2E;;;USD
+;338893_1410_30_10;338893_1410_30_10;B2C Sub Org;B2C;338893;addr2;USD
+;453617_1710_40_11;453617_1710_40_11;B2E Sub Org;B2E;453617;addr3;USD
+###### 100050 and 100051 is the preconfigured B2BUnit id for B2C and B2E in SAP, so the same id has been used here ##############
+ 
+
+INSERT_UPDATE B2BUserGroup;uid[unique=true];locName[lang=en];Unit(uid)
+;greenleeb2bsalesconsultant;greenleeb2bsalesconsultant;dummydistributor
+;greenleeb2bsalesemployee;greenleeb2bsalesemployee;dummydistributor
+
+INSERT_UPDATE GreenleeB2BCustomer;uid[unique=true];email;name;groups(uid);active[default=true];passwordEncoding[default='sha-512'];password[default=Passw0rd];allowedAccounts(uid);
+;salesrep1@gmail.com;salesrep1@gmail.com;salesrep1@gmail.com;greenleeb2bsalesconsultant,dummydistributor,b2bcustomergroup;;;
+;employee1@gmail.com;employee1@gmail.com;employee1@gmail.com;greenleeb2bsalesemployee,dummydistributor,b2bcustomergroup;;;
+;target-admin@gmail.com;target-admin@gmail.com;target-admin@gmail.com;b2badmingroup,​271381,b2bcustomergroup;;;
+;target-user1@gmail.com;target-user1@gmail.com;target-user1@gmail.com;​271381,b2bcustomergroup;;;
+;target-user2@gmail.com;target-user2@gmail.com;target-user2@gmail.com;​271381,b2bcustomergroup;;;
+;walmart-admin@gmail.com;walmart-admin@gmail.com;walmart-admin@gmail.com;b2badmingroup,10000017,b2bcustomergroup;;;
+;walmart-user1@gmail.com;walmart-user1@gmail.com;walmart-user1@gmail.com;10000017,b2bcustomergroup;;;
+;b2c-user1@gmail.com;b2c-user1@gmail.com;b2c-user1@gmail.com;0010000012,b2bcustomergroup;;;
+;b2e-user1@gmail.com;b2e-user1@gmail.com;b2e-user1@gmail.com;0010000014,b2bcustomergroup;;;
+;b2c-verifieduser1@gmail.com;b2c-verifieduser1@gmail.com;b2c-verifieduser1@gmail.com;338893_1410_30_10,b2bcustomergroup;;;
+;b2e-verifieduser1@gmail.com;b2e-verifieduser1@gmail.com;b2e-verifieduser1@gmail.com;453617_1710_40_11,b2bcustomergroup;;;
+############################   Sample data to create users. Need to be removed during go-live ######################################

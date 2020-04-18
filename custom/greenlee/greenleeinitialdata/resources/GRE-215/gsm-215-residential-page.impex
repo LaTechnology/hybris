@@ -1,0 +1,325 @@
+
+#------------------
+# Residential Category Staged
+#-----------------
+#GSM-144 >> GSM-215
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#-----------------------------------------------------------------------------------------#
+#PageTemplate:ContentPage3Template
+#ContentSlotName:
+#ContentSlotForTemplate: 
+#-----------------------------------------------------------------------------------------#	
+
+INSERT_UPDATE PageTemplate;$contentCV[unique=true];uid[unique=true];name;frontendTemplateName;restrictedPageTypes(code);active[default=true]
+;;ContentPage3Template;Content Page 3 Template;layout/contentLayout3Page;ContentPage
+
+# Add Velocity templates that are in the CMS Cockpit. These give a better layout for editing pages
+# The FileLoaderValueTranslator loads a File into a String property. The templates could also be inserted in-line in this file.
+UPDATE PageTemplate;$contentCV[unique=true];uid[unique=true];velocityTemplate[translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+;;ContentPage3Template      ;$jarResourceCms/structure_contentPage3Template.vm
+
+# Content page 3 template
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='ContentPage3Template'];validComponentTypes(code);compTypeGroup(code)
+;SiteLogo;;;logo
+;HeaderLinks;;;headerlinks
+;SearchBox;;;searchbox
+;MiniCart;;;minicart
+;NavigationBar;;;navigation
+;BreadCrumbSlot;;;wide
+;Section1;;;wide
+;Section2;;;wide
+;Section2b;;;wide
+;Section3;;;narrow
+;Section4;;;narrow
+;Section5;;;narrow
+;Section5a;;;narrow
+;Section6;;;narrow
+;Section7a;;;narrow
+;Section7;;;narrow
+;Section7b;;;narrow
+;Footer;;;footer
+;TopHeaderSlot;;;wide
+;BottomHeaderSlot;;;wide
+;PlaceholderContentSlot;;;
+;Section8;;;wide
+;socialslot;;;wide
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='ContentPage3Template'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-residential;SiteLogo;;SiteLogoSlot;true
+;;HomepageLink-residential;HomepageNavLink;;HomepageNavLinkSlot;true
+;;MiniCart-residential;MiniCart;;MiniCartSlot;true
+;;NavigationBar-residential;NavigationBar;;NavigationBarSlot;true
+;;Footer-residential;Footer;;FooterSlot;true
+;;HeaderLinks-residential;HeaderLinks;;HeaderLinksSlot;true
+;;SearchBox-residential;SearchBox;;SearchBoxSlot;true
+;;TopHeaderSlot-residential;TopHeaderSlot;;TopHeaderSlot;true
+;;BottomHeaderSlot-residential;BottomHeaderSlot;;BottomHeaderSlot;true
+;;PlaceholderContentSlot-residential;PlaceholderContentSlot;;PlaceholderContentSlot;true
+;;BreadCrumb-residential;BreadCrumbSlot;;BreadCrumbCompSlot;true
+;;BottomFooter-residential;Section8;;BottomFooterSlot;true
+;;SocialContent-residential;socialslot;;SocialContentSlot;true
+
+#-----------------------------------------------------------------------------------------#
+#Media: residential-category-image,residential-category-image-mobile
+#MediaContainer: category-residential-container
+#Component: ResidentialCategoryBannerComponent,LiveBusinessCategoryTheBigPictureTextComponent
+#Position: Section1
+#Content Slot: Section1ContentSlot-residentialcategory-v215 
+#ContentSlotForPage: Section1-residentialcategory-v215
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; section-1-residential-banner-jpg        ; residential-category-image        ; $siteResource/images/theme/section-1-residential-banner.jpg                 ; image/jpg                  ; Residential Category           ;                                     ; desktop               
+                    ;                         ; m-section-1-residential-jpg; residential-category-image-mobile ; $siteResource/images/theme/m-section-1-residential.jpg               ; image/jpg                  ; Residential Category on Mobile ;                                     ; mobile                
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ; category-residential-container ; Category-residential-Container ; section-1-residential-banner-jpg,m-section-1-residential-jpg
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name;media(qualifier, $contentCV)   ; &componentRef                       
+                                              ;                         ; ResidentialCategoryBannerComponent ; Residential CategoryBannerComponent;category-residential-container ; ResidentialCategoryBannerComponent
+INSERT_UPDATE ContentPage ; $contentCV[unique=true] ; uid[unique=true]    ; searchable[allownull=true] ; name                      ; masterTemplate(uid,$contentCV)              ; label               ; defaultPage[default='true'] ; approvalStatus(code)[default='approved'] ; homepage[default='false']
+                          ;                         ; residentialcategory ; 0                          ; Residential Category Landing Page ; ContentPage3Template ; /residentialcategory
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section1ContentSlot-residentialcategory-v215  ; Residential Section1 Slot for CategoryLandingPage   ; true   ; ResidentialCategoryBannerComponent                                                                                                                         
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 
+                                 ;                         ; Section1-residentialcategory-v215    
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section1-residentialcategory-v215      ; Section1              ;                                                                 ; Section1ContentSlot-residentialcategory-v215            
+#-----------------------------------------------------------------------------------------#
+#Component: SwitchAccountComponent
+#Position: TopHeaderSlot
+#Content Slot: TopHeaderSlot-residentialcategory-v215 
+#ContentSlotForPage: TopHeaderContentSlotForPage-residentialcategory-v215
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE JspIncludeComponent;$contentCV[unique=true];uid[unique=true];name;page;actions(uid,$contentCV);&componentRef
+;;SwitchAccountComponent;Switch Account Component;/WEB-INF/views/desktop/pages/account/switchaccount.jsp;;SwitchAccountComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;TopHeaderSlot-residentialcategory-v215;Residential Category Top Header Slot for LandingPage;true;SwitchAccountComponent
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; TopHeaderContentSlotForPage-residentialcategory-v215      ; TopHeaderSlot              ;                                                                 ; TopHeaderSlot-residentialcategory-v215            
+
+#-----------------------------------------------------------------------------------------#
+#Media: live-category-banner-section6
+#MediaContainer: live-category-banner-section6-container
+#Component: LiveCategoryAirscoutCommunicationGraphBannerComponent,LiveBusinessCategoryTheBigPictureTextComponent
+#Position: Section2
+#Content Slot: Section2ContentSlot-residentialcategory-v215 
+#ContentSlotForPage: Section2-residentialcategory-v215
+#-----------------------------------------------------------------------------------------#								 
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; ResidentialCategoryOverviewLink      ; Residential Category Overview Link      ; "#overview"                     ; Overview                      ; ResidentialCategoryOverviewLink      ; ResidentialCategoryOverviewLink      ;                                    ;                                                 
+                               ;                         ; ResidentialCategoryFeaturesLink      ; Residential Category Features Link      ; "#features"                     ; Features                      ; ResidentialCategoryFeaturesLink      ; ResidentialCategoryFeaturesLink      ;                                    ;                                                 
+          											  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2ContentSlot-residentialcategory-v215  ; Residential Section2 Slot for CategoryLandingPage   ; true   ; ResidentialCategoryOverviewLink,ResidentialCategoryFeaturesLink                       
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2-residentialcategory-v215      ; Section2              ;                                                                 ; Section2ContentSlot-residentialcategory-v215            
+#-----------------------------------------------------------------------------------------#
+#Component: ResidentialCategorySelectModelsLink,LiveBusinessCategoryTheBigPictureTextComponent
+#Position: Section2b
+#Content Slot: Section2bContentSlot-residentialcategory-v215
+#ContentSlotForPage: Section2b-residentialcategory-v215
+#-----------------------------------------------------------------------------------------#								 
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; ResidentialCategorySelectModelsLink  ; Residential CategorySelectModels Link  ; "#models"                       ; Select a Model                ; ResidentialCategorySelectModelsLink  ; ResidentialCategorySelectModelsLink  ;                                    ; class="scrollTrigger btn"                       
+											  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2bContentSlot-residentialcategory-v215 ; Residential Section2b Slot for CategoryLandingPage  ; true   ; ResidentialCategorySelectModelsLink                                                                                                                        
+ 
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2b-residentialcategory-v215     ; Section2b             ;                                                                 ; Section2bContentSlot-residentialcategory-v215           
+
+#-----------------------------------------------------------------------------------------#
+#Component: ResidentialCategoryOverviewTextComponent
+#Position: Section3
+#Content Slot: Section3ContentSlot-residentialcategory-v215 
+#ContentSlotForPage: Section3-residentialcategory-v215
+#-----------------------------------------------------------------------------------------#								 
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                               ; name                                    ;content    ;  &componentRef                              
+                                    ;                         ; ResidentialCategoryOverviewTextComponent     ; Residential Category Overview Text        ; "<p style=""text-align: justify;font-weight:700;font-family: robotomedium,sans-serif;"">The AirScout Residential is revolutionalizing in-home Wi-Fi with an all-in-one design, validation and troubleshooting tool. This allows technicians to accurately measure and convey the current Wi-Fi environment, and improve it.</p><p style=""text-align: justify;"">The AirScout system performs a stress test on the home network, indicates the best router location and defines the optimal WiFi channel to ensure seamless connectivity in each room of the house.</p>" ;ResidentialCategoryOverviewTextComponent    
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                           ;                         ; Section3ContentSlot-residentialcategory-v215  ; Residential Section3 Slot for CategoryLandingPage   ; true   ; ResidentialCategoryOverviewTextComponent                                                                                                                   
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section3-residentialcategory-v215      ; Section3              ;                                                                 ; Section3ContentSlot-residentialcategory-v215            
+
+#-----------------------------------------------------------------------------------------#
+#Media: residential-category-banner-section6
+#MediaContainer: residential-category-banner-section6-container
+#Component: ResidentialCategoryHeadTheMapBannerComponent
+#Position: Section4
+#Content Slot: Section4ContentSlot-residentialcategory-v215 
+#ContentSlotForPage: Section4-residentialcategory-v215
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; section-4-residential-jpg        ; section-4-residential.jpg        ; $siteResource/images/theme/section-4-residential.jpg                 ; image/jpg                  ; Residential Category           ;                                     ; desktop               
+                    ;                         ;m-section-4-residential-jpg        ; m-section-4-residential.jpg        ; $siteResource/images/theme/m-section-4-residential.jpg                 ; image/jpg                  ;Mobile Residential Category           ;                                     ; mobile               
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ; section4-residential-category-container; Category-residential-Container ; section-4-residential-jpg,m-section-4-residential-jpg
+							 
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name								;media(qualifier, $contentCV)   ; &componentRef                       
+                                              ;                         ; ResidentialCategoryHeadTheMapBannerComponent ; Residential CategoryBannerComponent	;section4-residential-category-container; ResidentialCategoryHeadTheMapBannerComponent
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section4ContentSlot-residentialcategory-v215  ; Residential Section4 Slot for CategoryLandingPage   ; true   ; ResidentialCategoryHeadTheMapBannerComponent                                                                                                                         
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section4-residentialcategory-v215      ; Section4              ;                                                                 ; Section4ContentSlot-residentialcategory-v215            
+
+#-----------------------------------------------------------------------------------------#
+#Component: ResidentialTheAirScoutLiveDifferenceTextComponent
+#Position: Section5
+#Content Slot: Section5ContentSlot-residentialcategory-v215 
+#ContentSlotForPage: Section5-residentialcategory-v215
+#-----------------------------------------------------------------------------------------#								 
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                            ; name                                  ;content; &componentRef                              
+                                    ;                         ; ResidentialTheAirScoutLiveDifferenceTextComponent ; Residential TheAirScout Difference TextComponent;"<h2 style=""color: #7cc143;"">The AirScout Difference</h2>"  ;ResidentialTheAirScoutLiveDifferenceTextComponent
+	
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section5ContentSlot-residentialcategory-v215  ; Residential Section5 Slot for CategoryLandingPage   ; true   ; ResidentialTheAirScoutLiveDifferenceTextComponent
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section5-residentialcategory-v215      ; Section5              ;                                                                 ; Section5ContentSlot-residentialcategory-v215            
+
+
+#-----------------------------------------------------------------------------------------#
+#Component: ResidentialEasyToUseComponent,ResidentialRealWorldStressTestingBannerComponent,ResidentialIntelligentChannelSelectionBannerComponent,ResidentialHeatMapsBannerComponent
+#Position: Section5a
+#Content Slot: Section5aContentSlot-residentialcategory-v215 
+#ContentSlotForPage: Section5a-residentialcategory-v215
+#-----------------------------------------------------------------------------------------#
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]               ; realfilename      ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; icon-easy.png        			; icon-easy         ; $siteResource/images/theme/icon-easy.png                 					 ; image/jpg                  ; icon-easy             ;                                     ; desktop               
+                    ;                         ; icon-stress-test.png			; icon-stress-test  ; $siteResource/images/theme/icon-stress-test.png               			 ; image/jpg                  ; icon-stress-test ;                                     ; desktop                
+                    ;                         ; icon-channels.png        		; icon-channels     ; $siteResource/images/theme/icon-channels.png                 				 ; image/jpg                  ; icon-channels          ;                                     ; desktop               
+                    ;                         ; icon-heat-maps.png 				; icon-heat-maps	; $siteResource/images/theme/icon-heat-maps.png               				 ; image/jpg                  ; icon-heat-maps ;                                     ; desktop  								 
+
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                                 		; name                                          	; &componentRef                                    		; headline ; $picture[lang=$lang]  ; urlLink ;content[lang=$lang]     
+                              ;                         ; ResidentialEasyToUseComponent                    		; Residential EasyToUse Banner            			; ResidentialEasyToUseComponent               	   		;          ; icon-easy.png     	   ; "/"     ; "<h6>Easy to Use</h6> <p class=""MsoNormal"">This intuitive interface eliminates the need for expensive training or time out of the field.</p>"      
+                              ;                         ; ResidentialRealWorldStressTestingBannerComponent 		; Residential Real World Stress-Testing Banner  	; ResidentialRealWorldStressTestingBannerComponent 		;          ; icon-stress-test.png              ; "/"	 ; "<h6>Real World Stress-Testing</h6> <p class=""MsoNormal"">AirScout&reg; Residential utilizes the distributed clients to simulate real world stress testing and leverages this intelligence to optimize the network</p>"
+                              ;                         ; ResidentialIntelligentChannelSelectionBannerComponent ; Residential Intelligent Channel Selection Banner  ; ResidentialIntelligentChannelSelectionBannerComponent ;          ; icon-channels.png              ; "/" 	 ; "<h6>Intelligent Channel Selection</h6> <p class=""MsoNormal"">AirScout identifies the recommended channel plan and AP location, removing the guesswork.</p>"           
+                              ;                         ; ResidentialHeatMapsBannerComponent                    ; Residential Heat Maps Banner                   	; ResidentialHeatMapsBannerComponent               		;          ; icon-heat-maps.png            ; "/"  	 ; "<h6>Heat Maps</h6> <p class=""MsoNormal"">Easy to read heat maps allow for trouble-free planning and troubleshooting.</p>"         
+   
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]                ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section5aContentSlot-residentialcategory-v215  ; Residential Section5a Slot for CategoryLandingPage   ; true   ; ResidentialEasyToUseComponent,ResidentialRealWorldStressTestingBannerComponent,ResidentialIntelligentChannelSelectionBannerComponent,ResidentialHeatMapsBannerComponent
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section5a-residentialcategory-v215      ; Section5a              ;                                                                 ; Section5aContentSlot-residentialcategory-v215            
+
+#-----------------------------------------------------------------------------------------#
+#Media: residential-category-banner-section6
+#MediaContainer: residential-category-banner-section6-container
+#Component: ResidentialCategoryAirscoutCloudReportingComponent,LiveBusinessCategoryTheBigPictureTextComponent
+#Position: Section6
+#Content Slot: Section6ContentSlot-residentialcategory-v215 
+#ContentSlotForPage: Section6-residentialcategory-v215
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; section-6-residential-jpg        ; section-6-residential.jpg        ; $siteResource/images/theme/section-6-residential.jpg                 ; image/jpg                  ; Residential Category           ;                                     ; desktop               
+                    ;                         ; m-section-6-residential-jpg        ; m-section-6-residential.jpg        ; $siteResource/images/theme/m-section-6-residential.jpg                 ; image/jpg                  ; Residential Category           ;                                     ; mobile               
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ;section6-residential-category-container; Category-residential-Container ; section-6-residential-jpg,m-section-6-residential-jpg
+
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name								;media(qualifier, $contentCV)   ; &componentRef                       
+                                              ;                         ; ResidentialCategoryAirscoutCloudReportingComponent ; Residential CategoryBannerComponent	;section6-residential-category-container; ResidentialCategoryAirscoutCloudReportingComponent
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section6ContentSlot-residentialcategory-v215  ; Residential Section 6 Slot for CategoryLandingpage  ; true   ; ResidentialCategoryAirscoutCloudReportingComponent                                                                            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section6-residentialcategory-v215      ; Section6              ;                                                                 ; Section6ContentSlot-residentialcategory-v215            
+
+#-----------------------------------------------------------------------------------------#
+#Component: CategoryViewAllModelsLink,CategoryLandingProductListComponent
+#Position: Section7
+#Content Slot: Section7ContentSlot-residentialcategory-v215 
+#ContentSlotForPage: Section7-residentialcategory-v215
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE CMSLinkComponent        ; $contentCV[unique=true]        ; uid[unique=true]                           ; url                                                                    ;  &linkRef                            ; &componentRef                       
+                               ;                                ; CategoryViewAllModelsLink                  ; "/en/USD/search?q=%3Arelevance&text=#"  ; CategoryViewAllModelsLink            ; CategoryViewAllModelsLink                                    
+
+
+INSERT_UPDATE ProductListComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                ; productsFromContext[default=false] ; pagination[default=false] ; layout(code)[default='thumbViewLayout'] ; categoryCode ; &componentRef                      
+                                   ;                         ; ResidentialCategoryLandingProductListComponent ; Residential Category Landing ProductList Component ;                                    ;                           ;                                         ;      ; ResidentialCategoryLandingProductListComponent
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7ContentSlot-residentialcategory-v215 ; Residential Section7 Slot for CategoryLandingPage   ; true   ; ResidentialCategoryLandingProductListComponent                                                                                                             
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7-residentialcategory-v215      ; Section7              ;                                                                 ; Section7ContentSlot-residentialcategory-v215           
+#-----------------------------------------------------------------------------------------#
+#Component: ResidentialModelsTitleComponent,ResidentialCategoryViewAllModelsLink
+#Position: Section7a
+#Content Slot: Section7aContentSlot-residentialcategory-v215 
+#ContentSlotForPage: Section7a-residentialcategory-v215
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; ResidentialCategoryViewAllModelsLink ; Residential CategoryViewAllModels Link ; "/search?q=%3Arelevance&text=#" ; View all models & accessories ; ResidentialCategoryViewAllModelsLink ; ResidentialCategoryViewAllModelsLink ;                                    ; class=""                                        
+
+
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                               ; content		 ; name                                  ; &componentRef                              
+                                    ;                         ; ResidentialModelsTitleComponent              ; <h2>Models</h2> ; Residential Models Title               ; ResidentialModelsTitleComponent             
+
+INSERT_UPDATE ProductComparisonComponent ; &componentRef                       ; $contentCV[unique=true] ; uid[unique=true]                    ; name                         						;visible[default=true]  ;openPopup ; showCheckbox[default=false] 	 ; showCompareButton[default=true] ; closePopupAfterAddToCart[default=true]
+                                         ; ResidentialProductComparePageComponent  ;                         ; ResidentialProductComparePageComponent  ; Residential Product Compare Page Button    ; true     				; false    ;    false                             ;                                       
+								  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7aContentSlot-residentialcategory-v215 ; Residential Section7a Slot for CategoryLandingPage  ; true   ; ResidentialModelsTitleComponent,ResidentialProductComparePageComponent,ResidentialCategoryViewAllModelsLink                                                     
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7a-residentialcategory-v215     ; Section7a             ;                                                                 ; Section7aContentSlot-residentialcategory-v215           
+#-----------------------------------------------------------------------------------------#
+#Component: ResidentialHelpMeChooseTextOnlyBannerComponent
+#Position: Section7b
+#Content Slot: Section7bContentSlot-residentialcategory-v215 
+#ContentSlotForPage: Section7b-residentialcategory-v215
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                              ; name                                       ; &componentRef                                 ; headline ; $picture[lang=$lang]  ; content ; urlLink        
+                              ;                         ; ResidentialHelpMeChooseTextOnlyBannerComponent ; Residential Help Me Choose Text Only Banner ; ResidentialHelpMeChooseTextOnlyBannerComponent ;          ;                       ; "<h2>MAKE THE RIGHT CHOICE</h2><p><input name=""help"" type=""button"" value=""Help Me Choose"" /></p><p>Use this selector to choose the best AirScout<span style=""text-align: justify;"">&reg;</span>&nbsp;solution for your needs based on size and type of your Wi-Fi<span style=""text-align: justify;"">&reg;</span>&nbsp;installations.</p>"; "/helpmechoose"
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7bContentSlot-residentialcategory-v215 ; Residential Section7b Slot for CategoryLandingPage  ; true   ; ResidentialHelpMeChooseTextOnlyBannerComponent                                                                                                             
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7b-residentialcategory-v215     ; Section7b             ;                                                                 ; Section7bContentSlot-residentialcategory-v215           
+
+#-----------------------------------------------------------------------------------------#
+#Component: Footertextcomponent2,PoliciesAndTermsLink,FooterLogoBanner
+#Position: Section8
+#Content Slot: Section8ContentSlot-residentialcategory-v215 
+#ContentSlotForPage: Section8-residentialcategory-v215
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;linkName;&linkRef;&componentRef;target(code)[default='sameWindow'];styleAttributes
+;;PoliciesAndTermsLink;Policies and Terms Link;"/policies-and-terms";Privacy Policy | Terms of Use;PoliciesAndTermsLink;PoliciesAndTermsLink;newWindow;
+
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]         ;  visible   ;name                           ;content    ;  &componentRef                              
+                                    ;                         ; Footertextcomponent2     ;  true      ;Footer Text Component 2        ; "<p>&nbsp;Copyright &copy; 2016 Greenlee Textron Inc., a subsidiary of Textron Inc.&nbsp;</p>" ;Footertextcomponent2    
+
+INSERT_UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;$picture[lang=$lang];urlLink
+;;FooterLogoBanner;Footer Logo Component;FooterLogoBanner;footerlogo-image;"http://www.greenleecommunications.com"
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;Section8ContentSlot-residentialcategory-v215;Residential Category Section8 Slot for CategoryLandingPage;true;Footertextcomponent2,PoliciesAndTermsLink,FooterLogoBanner
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section8-residentialcategory-v215      ; Section8              ;                                                                 ; Section8ContentSlot-residentialcategory-v215           

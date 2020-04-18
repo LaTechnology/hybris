@@ -1,0 +1,92 @@
+.terms-wrp {
+    h1 {
+        text-transform: uppercase;
+        padding: 5px 0 25px;
+        border-bottom: 1px solid $light-grey;
+        text-align: center;
+        margin: 0;
+    }
+    ul {
+        margin: 0;
+        li {
+            border-bottom: 1px solid $light-grey;
+            &.active {
+                a {
+                    color: $horgange;
+                }
+            }
+            a {
+                padding: 15px 0;
+                display: block;
+                text-transform: uppercase;
+                color: $gray-lighter;
+                &:before {
+                    content: "\f105";
+                    font: normal normal normal 12px/1 FontAwesome;
+                    padding-right: 10px;
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+    .terms-content {
+        margin-top: 30px;
+    }
+    .tab-container {
+        background: $jumbotron-bg;
+        margin-bottom: 10px;
+        padding: 3px 0;
+        @media (min-width: $screen-md-min) {
+            padding: 15px;
+        }
+        .tabhead {
+            @include font-size(18px);
+            font-family: 'robotomedium';
+            cursor: pointer;
+            padding: 20px;
+            @media (min-width: $screen-md-min) {
+                padding: 22px;
+            }
+            &.active {
+                .fa {
+                    -webkit-transform: rotate(0deg);
+                    -moz-transform: rotate(0deg);
+                    -ms-transform: rotate(0deg);
+                    -o-transform: rotate(0deg);
+                    transform: rotate(0deg);
+                }
+            }
+            .fa {
+                float: right;
+                transition: 0.4s ease-out;
+                @include font-size(26px);
+                -webkit-transform: rotate(180deg);
+                -moz-transform: rotate(180deg);
+                -ms-transform: rotate(180deg);
+                -o-transform: rotate(180deg);
+                transform: rotate(180deg);
+            }
+        }
+        .tabbody {
+            padding: 0 20px;
+            h5 {
+                @include font-size(14px);
+                font-family: 'robotomedium';
+                text-transform: uppercase;
+            }
+            @media (min-width: $screen-md-min) {
+                padding: 0 22px;
+            }
+            &.active {
+                display: block;
+            }
+        }
+    }
+}
+.static-content {
+    a {
+        color: $horgange;
+        text-decoration: underline;
+    }
+}

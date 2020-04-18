@@ -1,0 +1,226 @@
+/*
+Product Details Page Compare Items
+************************/
+.productDescription input[type="checkbox"] {
+	margin: 17px 0 0 4px;
+}
+
+.nav_main li.La > a {
+    padding: 0 10px;
+}
+
+.nav_main .right {
+	margin-left: 10px;
+}
+
+/*
+Product Category Component
+************************/
+.prod_cat {
+	position: relative;
+	background: #e1e1e1;
+	border: 5px solid #ffffff;
+ 	-webkit-box-shadow: 0px 0px 4px 0px #ccc;
+            box-shadow: 0px 0px 4px 0px #ccc;
+	margin-bottom: 10px;
+	min-height: 220px;
+	padding: 10px;
+}
+
+.prod_cat .title h2 {
+	font-size: 1.4em;
+}
+
+.prod_cat .title,
+.prod_cat .thumb {
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.prod_cat .thumb {
+	background: #ffffff;
+	padding: 10px 0;
+}
+
+.pageStyle-canon .prod_cat .thumb a img,
+.pageStyle-sony .prod_cat .thumb a img {
+	width: auto;
+}
+
+.prod_cat .details a {
+
+}
+
+.prod_cat .action {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+.prod_cat .action img {
+
+}
+
+
+/*
+Buttons
+************************/
+button.positive,
+button.neutral,
+button.form { /* IE ignores [class] */
+	width: auto; /* cancel margin fix for other browsers */
+	/*padding: 2px 5px !important;
+	line-height: normal !important;*/
+	font-weight: bold;
+}
+button[disabled] {
+	opacity: 0.7;
+}
+a.positive,
+a.neutral,
+a.form { /* IE ignores [class] */
+	width: auto; /* cancel margin fix for other browsers */
+	/*line-height: 20px !important;*/
+	display: block;
+	float: left;
+	/*height: 14px !important;*/
+}
+button img {
+	margin-right: 5px;
+	vertical-align: middle;
+	width: 15px;
+}
+
+a.buyTheSetButton,
+button.addToCartButton {
+	padding: 0px 10px;
+}
+#nav_main li.parent:hover > a {
+	padding-left:9px;
+	padding-right:9px;
+}
+.span-24 > .scroller {
+	padding:15px 0;
+}
+.span-24 > .scroller:first-child, .section1 > .scroller:first-child {
+	margin-top:20px;
+}
+.span-24 > .scroller:last-child, .section1 > .scroller:last-child {
+	margin-bottom:20px;
+}
+.section1 > .scroller ul li {
+	width:230px;
+	margin:0 10px 0 0;
+}
+.section1 > .scroller .title {
+	font-size:1.167em;
+	font-weight:bold;
+	color:#666666;
+	border-bottom:1px solid #979797;
+	padding:0 0 5px 0;
+	text-transform:uppercase;
+	margin:0 0 15px 0;
+}
+.section1> .scroller ul li {
+	width:150px;
+}
+
+.nav_main .breadcrumb {
+    margin-bottom: 0px;
+}
+
+#nav_main {
+    margin-bottom: 20px;
+}
+
+.page-homepage #nav_main {
+    margin-bottom: 0px;
+}
+
+/*
+    Product List Page ::: ACTION CONCEPT
+*/
+
+.listAddPickupContainer > div {
+    width: 100%;
+    overflow: hidden;
+}
+
+.productList .productListItem .listAddPickupContainer .cart {
+    padding: 0px;
+}
+
+#header .headerContent .nav > li {
+    padding: 0 3px;
+}
+
+/*
+    jCarousel Arrows
+*****************/
+
+.pageType-CategoryPage .jcarousel-skin .jcarousel-prev[disabled], .pageType-CategoryPage .jcarousel-skin .jcarousel-next[disabled] {
+    opacity: 0 !important;
+}
+.pageType-CategoryPage .jcarousel-skin .jcarousel-prev-horizontal,
+.pageType-CategoryPage .jcarousel-skin .jcarousel-next-horizontal {
+    top: -33% !important;
+}
+.pageType-CategoryPage .jcarousel-skin .jcarousel-next-horizontal {
+    right: 0 !important;
+}
+.pageType-CategoryPage .jcarousel-skin .jcarousel-prev-horizontal {
+    left: 90% !important;
+}
+
+/*
+    Checkout page
+*****************/
+
+#checkoutContentPanel .contentPanelRight {
+    float: none;
+}
+
+ /* SHOW-2143 Pickup In Store Modal 'Store List' Bug
+*************************/
+.searchPOS {
+	position: relative;
+}
+.searchPOS .headline {
+	position: absolute;
+	top: 0;
+}
+.searchPOS form.searchPOSForm {
+	position: absolute;
+	top: 50px;
+	left: 212px;
+}
+.searchPOS .prod_grid.column {
+	position: absolute;
+	top: 50px;
+}
+.searchPOS .searchPOSResultsList {
+	position: absolute;
+	left: 212px;
+	top: 95px;
+	height: 460px;
+	margin: 0;
+}
+.searchPOS li.searchPOSResult {
+	width: 285px;
+	margin: 20px 14px 0 0;
+}
+.searchPOS .searchPOSPaging {
+	display: none;
+}
+
+.searchPOS .searchPOSResultsList {
+	overflow-y: scroll;
+}
+.searchPOS li.searchPOSResult {
+	float: left;
+
+}
+.searchPOS li.searchPOSResult button.positive {
+	position: absolute;
+	right: 0;
+	bottom: 0px;
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
+	<tlib-version>1.0</tlib-version>
+	<short-name>greenlee</short-name>
+	<uri>http://hybris.com/tld/greenlee</uri>
+
+	<tag>
+		<description>Formats b2bunit id on jsp</description>
+		<name>b2bunitid</name>
+		<tag-class>com.greenlee.storefront.tags.GreenleeB2BUnitFormatterTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>b2bunit id to be formatted</description>
+			<name>id</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+</taglib>

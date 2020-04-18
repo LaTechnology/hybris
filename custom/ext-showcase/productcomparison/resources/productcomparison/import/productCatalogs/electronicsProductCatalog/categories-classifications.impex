@@ -1,0 +1,15 @@
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$classCatalogVersion=catalogversion(catalog(id[default='ElectronicsClassification']),version[default='1.0'])[unique=true,default='ElectronicsClassification:1.0']
+$classSystemVersion=systemVersion(catalog(id[default='ElectronicsClassification']),version[default='1.0'])[unique=true]
+$class=classificationClass(ClassificationClass.code,$classCatalogVersion)[unique=true]
+$attribute=classificationAttribute(code,$classSystemVersion)[unique=true]
+
+
+UPDATE ClassAttributeAssignment;$class;$attribute;comparable[default=false]
+;622;Source data-sheet, 6617;
+;621;Source data-sheet, 6617;
+;624;Source data-sheet, 6617;
+;2103;Source data-sheet, 6617;
+;708;Source data-sheet, 6617;
+;706;Source data-sheet, 6617;
+

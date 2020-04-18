@@ -1,0 +1,11 @@
+#Mon, 06 May 2013 23:07:55 +0200
+#Ant properties
+#Mon May 06 23:07:55 CEST 2013
+builddate=20130506 2306
+description=liveeditaddon
+name=liveeditaddon
+vendor=hybris
+version=5.0.1.0-SNAPSHOT
+
+revision=68821
+svnurl=https\://svn.hybris.com/ebusiness/trunk/bin/ext-template/liveeditaddon

@@ -1,0 +1,112 @@
+/*Color*/
+$base-color: #333333;
+$light-grey: #cccccc;
+$lighter-grey: #e6e6e6;
+$greenlee: #86D200;
+$orange: #ffaa18;
+$horgange: #ff8c01;
+$highlight: #ff8b00;
+$white: #ffffff;
+$green: #7cc143;
+$dark-grey: #e7e7e7;
+$black: #000000;
+$gray-lighter: #666666;
+$banner-heading: #ff8a00;
+$view: #7f7f7f;
+$red: #ff0000;
+$about-span: #ff8b01;
+//$about-span:#7cc143;
+$footer-bg: #272525;
+$footer-text: #999999;
+$footer-border: rgba(255, 255, 255, 0.68);
+$mfooter-border: rgba(255, 255, 255, 0.5);
+$social-bg: $gray-lighter;
+$footer-title-border: #707070;
+$thankbg: #fef8ce;
+$btn-white-text: #4f4f4f;
+/*Font*/
+$robo-light: 'robotolight';
+$robo-medium: 'robotomedium';
+$robo-thin: 'robotothin';
+/*pdp*/
+$pdp-bg: #f6f6f6;
+$pdp-mbg: #fafafa;
+$pdp-border: #e8e7e7;
+$pinfo-border: #4f4f4f;
+$desc: #e8e7e7;
+$pdf: #ff0000;
+$pdp-links: #d6d6d6;
+$overview-li: #6cc700;
+$maintain-prd: #f3dbbf;
+$review-control: rgba(79, 79, 79, 0.5);
+$review-li: #efefef;
+$poppdp-bg: #f7f7f6;
+$pop-thumb: #e9eaec;
+$autocompletebg:#f3f1f2;
+/*cart*/
+$odd-li: #fbfbfb;
+$help-bg: #f5f5f5;
+$cart-border: rgba(5, 5, 5, 0.1);
+$mcart-border: rgba(204, 204, 204, 0.66);
+/*Checkout*/
+$step-bg: #ffab19;
+$step-green: #7cc143;
+/*Screen*/
+$mobile-min: 320px;
+/*account-switching*/
+$switch-bg: #e2e2e2;
+$switch-border: #84c54f;
+$mobile-header: rgba(204, 204, 204, 0.34);
+$popup-close: #868686;
+/*Account*/
+$account-side-bg: #f2f1f1;
+$state-success-bg: #F9F9EF !default;
+$state-success-text: #666 !default; //== Jumbotron
+//
+//##
+$jumbotron-padding: 55px 60px !default;
+$jumbotron-color: inherit !default;
+$jumbotron-bg: #f9f9f9 !default;
+$jumbotron-heading-color: inherit !default;
+$jumbotron-heading-font-size: 18px;
+/*type*/
+$spacer: 1rem !default;
+$headings-margin-bottom: $spacer / 2 !default;
+$headings-font-family: inherit !default;
+$headings-font-weight: 500 !default;
+$headings-line-height: 1.1 !default;
+$headings-color: inherit !default;
+$font-size-h1: 2.5rem !default;
+$font-size-h2: 2rem !default;
+$font-size-h3: 1.75rem !default;
+$font-size-h4: 1.5rem !default;
+$font-size-h5: 1.25rem !default;
+$font-size-h6: 1rem !default;
+/*Grid*/
+$grid-gutter-width: 20px !default;
+$screen-lg: 1300px !default;
+$container-large-desktop: 1260px + $grid-gutter-width !default;
+$container-desktop: 100% !default;
+$grabbing: url("../image/grabbing.png");
+// Breadcrumbs
+$breadcrumb-divider-color: $gray-lighter !default;
+$breadcrumb-color: $gray-lighter !default;
+$breadcrumb-divider: "/" !default;
+//form
+$input-border: $gray-lighter !default;
+//checkbox
+$font-family-icon: "FontAwesome" !default;
+$fa-var-check: "\f04d" !default;
+$check-icon: $fa-var-check !default;
+$border: #999999;
+/*Order details*/
+$left-bg: #f7f7f6;
+/*Category landing*/
+$menu-bdr: #ff8b01;
+//$menu-bdr:#7cc143;
+$details-txt: #808285;
+$thumb-bg: #f4f2f2;
+$model-gradient: #e8dbcf;
+$prdt-hover-bdr: #f3dbbf;
+
+$alert-success-bg:#A7E872;

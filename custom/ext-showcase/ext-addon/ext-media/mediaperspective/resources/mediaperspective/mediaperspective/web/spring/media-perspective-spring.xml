@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2011 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+
+<!-- 
+  WARNING: This is the Spring WEB configuration file. If you want to replace
+  items or managers you have to do this from the extensions core configuration 
+  file (promotioncockpit/resources/promotioncockpit-spring.xml) 
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+							xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+						http://www.springframework.org/schema/util
+           			http://www.springframework.org/schema/util/spring-util-3.1.xsd"
+	default-autowire="byName">
+	
+	<!-- 
+		media perspective.
+	 -->
+	
+		<bean id="MediaPerspective" class="com.hybris.platform.mediaperspective.session.impl.MediaPerspective" scope="session" parent="BasePerspective">
+		<property name="uid" value="mediaperspective.perspective.media" />  <!-- unique ID of the perspective -->
+		<property name="label" value="perspective.mediaperspective" />  <!-- localization key for the label of the perspective -->
+		<property name="navigationArea" ref="MediaperspectiveNavigationArea" />
+		<property name="browserArea">
+			<bean class="com.hybris.platform.mediaperspective.session.impl.MediaPerspectiveBrowserArea">
+				<property name="rootSearchTypeCode" value="Media"/>
+				<property name="viewURI" value="/cockpit/baseSearchBrowserArea.zul"/>
+				<property name="defaultBrowserViewMapping">
+					<map>
+						<entry key="cockpitgroup" value="GRID" />
+						<entry key="cmsmanagergroup" value="GRID" />
+					</map>
+				</property>
+			</bean>
+		</property>
+		<property name="editorArea">
+			<bean parent="BaseEditorAreaModel">
+				<property name="editorAreaController">
+					<ref bean="MediaPerspectiveEditorAreaController"/>
+				</property>
+			</bean>	
+		</property>
+		<property name="popupEditorArea">
+			<bean parent="BasePopupEditor">
+				<property name="editorAreaController" ref="MediaPerspectivePopupEditorAreaController"/>
+			</bean>
+		</property>
+		<property name="cockpitTypeService" ref="cockpitTypeService"/>		
+	</bean>
+	
+	<bean id="MediaPerspectiveEditorAreaController" class="de.hybris.platform.cockpit.session.impl.DefaultEditorAreaController" scope="session">
+		<property name="sectionRowRenderer">
+			<bean  parent="EditorSectionRowRenderer"/>
+		</property>
+		<property name="editorFactory">
+			<ref bean="EditorFactory"/>
+		</property>
+	</bean>
+	
+	<bean id="MediaPerspectivePopupEditorAreaController" class="com.hybris.platform.mediaperspective.session.impl.MediaPerspectivePopupEditorAreaController" scope="prototype">
+		<property name="sectionRowRenderer">
+			<bean  parent="EditorSectionRowRenderer"/>
+		</property>
+		<property name="editorFactory">
+			<ref bean="EditorFactory"/>
+		</property>
+	</bean>
+	
+	<bean id="MediaperspectiveNavigationArea" class="com.hybris.platform.mediaperspective.session.impl.MediaPerspectiveNavigationArea" scope="session" parent="BaseNavigationArea">
+		<property name="sectionModel">
+			<ref bean="MediaNavigationAreaModel"/>	
+		</property>
+		<property name="infoSlotRenderer">
+			<bean class="de.hybris.platform.cockpit.components.navigationarea.renderer.InfoBoxRenderer"/>
+		</property>
+		<property name="sections">
+			<list>
+				<ref bean="MediaCatalogNavigationSection" />	
+				<ref bean="MediaperspectiveUndoSection" />
+				<ref bean="MediaWorkflowSection" />
+			</list>
+		</property>
+		<property name="cockpitTypeService" ref="cockpitTypeService"/>
+	</bean>
+	<bean id="MediaCatalogNavigationSection"
+		class="com.hybris.platform.mediaperspective.session.impl.MediaPerspectiveSection"
+		scope="prototype" autowire="byName">
+		<property name="localizedLabel" value="navigationarea.catalogs" />
+		<property name="initiallySelected" value="false" />
+		<property name="visible" value="true" />
+		<property name="renderer">
+			<bean class="com.hybris.platform.mediaperspective.session.impl.MediaPerspectiveSectionSelectorRenderer" />
+		</property>		
+		<property name="subSections">
+			<list>
+				<ref bean="MediaPerspectiveSectionSelectorCatalogVersionRenderer" />
+			</list>
+		</property>
+		
+		<property name="navigationAreaModel" ref="MediaNavigationAreaModel" />
+		<property name="catalogService" ref="catalogService" />
+	</bean>
+	
+	<bean id="MediaPerspectiveSectionSelectorCatalogVersionRenderer"
+		class="com.hybris.platform.mediaperspective.session.impl.MediaPerspectiveSectionSelectorCatalogVersionRenderer"
+		scope="prototype" autowire="byName">
+		<property name="localizedLabel" value="navigationarea.catalogs" />
+		<property name="initiallySelected" value="false" />
+		<property name="visible" value="true" />
+		<property name="renderer">
+			<bean
+				class="com.hybris.platform.mediaperspective.session.impl.MediaCatalogVersionSectionSelectorSectionRenderer"
+				autowire="byName" />
+		</property>
+		<property name="cmsAdminSiteService" ref="cmsAdminSiteService" />
+			<property name="navigationAreaModel" ref="MediaNavigationAreaModel" />
+	</bean>
+	
+	<bean id="MediaNavigationAreaModel"
+		class="com.hybris.platform.mediaperspective.session.impl.MediaNavigationAreaModel"
+		scope="session">
+	</bean>
+	
+	<bean id="MediaperspectiveUndoSection" class="de.hybris.platform.cockpit.components.navigationarea.NavigationPanelSection" scope="prototype">
+		<property name="localizedLabel" value="navigationarea.history" />
+		<property name="visible" value="true" />
+		<property name="renderer">
+			<bean class="de.hybris.platform.cockpit.components.navigationarea.renderer.UndoSectionRenderer" />
+		</property>
+	</bean>
+	
+	<bean id="MediaWorkflowSection" class="de.hybris.platform.cockpit.components.navigationarea.NavigationPanelSection"
+		scope="prototype"> 
+		<property name="localizedLabel" value="navigationarea.workflow" />
+		<property name="visible" value="true" />
+		<property name="renderer">
+			<bean class="de.hybris.platform.cockpit.components.navigationarea.renderer.WorkflowSectionRenderer">
+
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="MediaPerspectiveActionColumn" class="de.hybris.platform.cockpit.components.listview.impl.DefaultActionColumnConfiguration"
+		scope="prototype">
+		<constructor-arg value="Actions" />
+		<property name="actions">
+			<list>
+				<ref bean="DeleteAction" />
+				<ref bean="ResizeMediaAction" />
+			</list>
+		</property>
+	</bean>
+	
+	
+	<bean id="ResizeMediaAction"
+		class="com.hybris.platform.mediaperspective.components.listview.impl.ResizeMediaAction"
+		scope="prototype" >
+		<property name="flexibleSearchService" ref="flexibleSearchService"></property>
+	</bean>
+	
+	<bean id="abstractPerspectiveToolbarAddition"
+	class="com.hybris.platform.mediaperspective.session.impl.AbstractMediaPerspectiveToolbarAddition"
+	abstract="true" scope="prototype" />
+	
+	<bean id="mediaTypePerspectiveToolbarAddition"
+		class="com.hybris.platform.mediaperspective.session.impl.MediaTypePerspectiveToolbarAddition"
+		parent="abstractPerspectiveToolbarAddition" scope="prototype" />
+	<bean id="mediaFolderPerspectiveToolbarAddition"
+		class="com.hybris.platform.mediaperspective.session.impl.MediaFolderPerspectiveToolbarAddition"
+		parent="abstractPerspectiveToolbarAddition" scope="prototype" />
+
+	<bean id="mediaTagPerspectiveToolbarAddition"
+		class="com.hybris.platform.mediaperspective.session.impl.MediaTagsPerspectiveToolbarAddition"
+		parent="abstractPerspectiveToolbarAddition" scope="prototype" />
+	
+	<util:list id="mediaPerspectiveToolbarRightAdditions" value-type="com.hybris.platform.mediaperspective.session.PerspectiveToolbarAddition" scope="prototype">
+		<ref local="mediaTypePerspectiveToolbarAddition"/>
+		<ref local="mediaFolderPerspectiveToolbarAddition"/>
+		<ref local="mediaTagPerspectiveToolbarAddition"/>
+	</util:list>
+	
+	<bean id="defaultMimeTypeGroup" class="com.hybris.platform.mediaperspective.media.impl.MimeTypeGroup">
+		<property name="identifier" value="IMAGES"/>
+		<property name="mimeTypes">
+			<util:list>
+				<value>image/jpeg</value>
+				<value>image/png</value>
+				<value>image/gif</value>
+			</util:list>
+		</property>
+	</bean>
+	
+	<util:list id="mimeTypeGroups" value-type="com.hybris.platform.mediaperspective.media.impl.MimeTypeGroup">
+		<ref local="defaultMimeTypeGroup"/>
+		<bean class="com.hybris.platform.mediaperspective.media.impl.MimeTypeGroup">
+			<property name="identifier" value="TEXT"/>
+			<property name="mimeTypes">
+				<util:list>
+					<value>text/csv</value>
+					<value>text/html</value>
+					<value>text/plain</value>
+					<value>text/vcard</value>
+					<value>text/xml</value>
+				</util:list>
+			</property>
+		</bean>
+		<bean class="com.hybris.platform.mediaperspective.media.impl.MimeTypeGroup">
+			<property name="identifier" value="APPLICATION"/>
+			<property name="mimeTypes">
+				<util:list>
+					<value>application/pdf</value>
+					<value>application/xml</value>
+					<value>application/zip</value>
+				</util:list>
+			</property>
+		</bean>
+		<bean class="com.hybris.platform.mediaperspective.media.impl.MimeTypeGroup">
+			<property name="identifier" value="VIDEOS"/>
+			<property name="mimeTypes">
+				<util:list>
+					<value>video/mpeg</value>
+					<value>video/mp4</value>
+					<value>video/ogg</value>
+					<value>video/quicktime</value>
+				</util:list>
+			</property>
+		</bean>
+	</util:list>
+
+</beans>
+	

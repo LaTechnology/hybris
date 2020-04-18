@@ -1,0 +1,65 @@
+#Workflow Template Creation
+INSERT_UPDATE WorkflowTemplate;code[unique=true];name[lang=en];owner(uid);activationscript;visibleForPrincipals(uid);
+;ProductEnrichmentWorkflowTemplate;Product Enrichment Template;admin;"(action.equals(""create""))&&(((de.hybris.platform.servicelayer.type.TypeService) Registry.getApplicationContext().getBean(""typeService"")).isAssignableFrom(""GreenleeProduct"", itemType.getCode()))";cockpitgroup; 
+
+#Workflow Manual Action Templates
+INSERT_UPDATE WorkflowActionTemplate;code[unique=true];name[lang=en];principalAssigned(uid)[mode=append];workflow(code)[unique=true];sendEmail;emailAddress;rendererTemplate(code);actionType(code)
+;Product_Created;"New product is created from SAP into Hybris";digitalmarketingmanagergroup;ProductEnrichmentWorkflowTemplate;false;;;start
+;Product_Attribution;"Add/edit product attributes and description";productmanagergroup;ProductEnrichmentWorkflowTemplate;false;;;normal
+;Product_Creative;"Upload/assign images, videos and manuals to product";digitalmarketingmanagergroup;ProductEnrichmentWorkflowTemplate;false;;;normal
+;ProductManagerApproval;"Product data quality check";productmanagergroup;ProductEnrichmentWorkflowTemplate;false;;;normal
+;PEW_End;Product Enrichment Workflow End;digitalmarketingmanagergroup;ProductEnrichmentWorkflowTemplate;false;;;end
+
+#Workflow Automated Action Templates
+INSERT_UPDATE AutomatedWorkflowActionTemplate;code[unique=true];name[lang=en];principalAssigned(uid);workflow(code)[unique=true];sendEmail;emailAddress;rendererTemplate(code);actionType(code);jobHandler
+;Auto_Creative;Product Imaging Auto Complete;digitalmarketingmanagergroup;ProductEnrichmentWorkflowTemplate;false;;;normal;creativeConfirmationActionJob
+;Auto_Product_Attribution;Product Attribution Auto Complete;productmanagergroup;ProductEnrichmentWorkflowTemplate;false;;;normal;attributionConfirmationActionJob
+;Auto_Product_Push_To_Production;Product Push to Production;productmanagergroup;ProductEnrichmentWorkflowTemplate;false;;;normal;pushToProductionActionJob
+
+
+#Workflow Decision Templates
+INSERT_UPDATE WorkflowDecisionTemplate;code[unique=true];name[lang=en];actionTemplate(code);description[allownull=true];;;;;;
+
+;Start_WorkFlow;"Start workflow";Product_Created;;;;;;;
+#;PushToProduction;"Push to production";Product_Created;;;;;;;
+
+;Product_Attribution_Complete;Product Attribution Complete;Product_Attribution
+;Product_Attribution_Errors_Rectified;Product Attribution Errors Rectified;Product_Attribution;;;;;;;
+
+;Auto_Product_Attribution_SUCCESS;Product Attribution Auto Validation Success;Auto_Product_Attribution;;;;;;;
+;Auto_Product_Attribution_FAILURE;Product Attribution Auto Validation Failure;Auto_Product_Attribution;;;;;;;
+
+;Product_Creative_Complete;Product Creative Complete;Product_Creative;;;;;;;
+
+;Auto_Creative_SUCCESS;Product Imaging Auto Validation Success;Auto_Creative;;;;;;;
+;Auto_Creative_FAILURE;Product Imaging Auto Validation Failure;Auto_Creative;;;;;;;
+
+;Product_Attribution_Incomplete;Product Attribution Incomplete;ProductManagerApproval;;;;;;;
+;Product_Creative_Incomplete;Product Creative Incomplete;ProductManagerApproval;;;;;;;
+;ProductManagerApproved;Product Manager Approved;Auto_Product_Push_To_Production;;;;;;;
+
+;Auto_Product_Push_To_Production_SUCCESS;Product Push to Online Version;PEW_End;;;;;;;
+
+#Workflow Action Template Links
+INSERT_UPDATE WorkflowActionTemplateLinkTemplateRelation;source(code)[unique=true];target(code)[unique=true];andConnectionTemplate;qualifier;;;;;;;
+
+;Start_WorkFlow;Product_Attribution;true;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+
+;Product_Attribution_Complete;Auto_Product_Attribution;true;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+;Product_Attribution_Incomplete;Product_Attribution;true;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+;Product_Attribution_Errors_Rectified;ProductManagerApproval;true;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+
+;Auto_Product_Attribution_SUCCESS;Product_Creative;true;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+;Auto_Product_Attribution_FAILURE;Product_Attribution;true;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+
+;Product_Creative_Complete;Auto_Creative;true;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+;Product_Creative_Incomplete;Product_Creative;true;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+
+;Auto_Creative_SUCCESS;ProductManagerApproval;true;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+;Auto_Creative_FAILURE;Product_Creative;true;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+
+;ProductManagerApproved;Auto_Product_Push_To_Production;true;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+
+;Auto_Product_Push_To_Production_SUCCESS;PEW_End;true;WorkflowActionTemplateLinkTemplateRelation;;;;;;;
+
+

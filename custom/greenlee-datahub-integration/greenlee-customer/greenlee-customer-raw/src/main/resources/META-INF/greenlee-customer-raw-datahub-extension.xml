@@ -1,0 +1,191 @@
+<!-- ~ [y] hybris Platform ~ ~ Copyright (c) 2000-2015 hybris AG ~ All rights reserved. ~ ~ This software is the confidential and proprietary 
+	information of hybris ~ ("Confidential Information"). You shall not disclose such Confidential ~ Information and shall use it only 
+	in accordance with the terms of the ~ license agreement you entered into with hybris. -->
+<extension xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.hybris.com/schema/"
+	xsi:schemaLocation="http://www.hybris.com/schema/ http://www.hybris.com/schema/datahub-metadata-schema-1.2.0.xsd" name="greenlee-customer-raw">
+
+	<dependencies>
+		<dependency>
+			<extension>greenlee-customer-canonical</extension>
+		</dependency>
+		<dependency>
+        	<extension>sapidocintegration</extension>			
+		</dependency>
+		<dependency>
+			<extension>sapcustomer-raw</extension>
+		</dependency>
+	</dependencies>
+
+	<rawItems>
+		<item>
+			<type>RawDEBMAS</type>
+			<description>SAP ERP Customer</description>
+			<attributes>
+				<!-- E1KNA1M : Master customer master basic data (KNA1) -->
+				<!-- Status -->
+				<attribute>
+					<name>E1KNA1M-ZGS_DEBMAS-ZG_STATUS</name>
+				</attribute>
+				<!-- Account Heirarchy Parent Customer Account Number -->
+				<attribute>
+					<name>E1KNA1M-ZGS_DEBMAS-ZG_PAR_CUS_NO</name>
+				</attribute>				
+				<!-- Payment Terms -->
+				<attribute>
+					<name>E1KNA1M-E1KNVVM-ZTERM</name>
+				</attribute>
+				<!-- Freight Terms -->
+				<attribute>
+					<name>E1KNA1M-E1KNVVM-INCO1</name>
+				</attribute>
+				<!-- Inco Terms2 -->
+				<attribute>
+					<name>E1KNA1M-E1KNVVM-INCO2</name>
+				</attribute>
+				<!-- Currency Preference -->
+				<attribute>
+					<name>E1KNA1M-E1KNVVM-WAERS</name>
+				</attribute>							
+			</attributes>
+		</item>
+		<item>
+			<type>RawADRMAS</type>
+			<description>SAP ERP Customer Address</description>
+			<attributes>
+				<!-- Contact First Name -->
+				<attribute>
+					<name>E1ADRMAS-E1BPAD1VL-NAME</name>
+				</attribute>
+				<!-- Contact Last Name -->
+				<attribute>
+					<name>E1ADRMAS-E1BPAD1VL-NAME_2</name>
+				</attribute>
+				<!-- Address Line 2 -->
+				<attribute>
+					<name>E1ADRMAS-E1BPAD1VL-STR_SUPPL1</name>
+				</attribute>
+				<!-- Address Country -->
+				<attribute>
+					<name>E1ADRMAS-E1BPAD1VL-COUNTRY</name>
+				</attribute>
+				<!-- Address Contact Number -->
+				<attribute>
+					<name>E1ADRMAS-E1BPADTEL-TELEPHONE</name>
+				</attribute>	
+			</attributes>
+		</item>
+	</rawItems>
+
+	<canonicalItems>
+		<item>
+			<type>CanonicalParty</type>
+			<attributes>			
+				<attribute>
+					<name>accountStatus</name>
+					<transformations>
+						<transformation>
+							<rawSource>RawDEBMAS</rawSource>
+							<expression>E1KNA1M-ZGS_DEBMAS-ZG_STATUS</expression>
+						</transformation>
+					</transformations>
+				</attribute>
+				<attribute>
+					<name>paymentTerms</name>
+					<transformations>
+						<transformation>
+							<rawSource>RawDEBMAS</rawSource>
+							<expression>E1KNA1M-E1KNVVM-ZTERM</expression>
+						</transformation>
+					</transformations>
+				</attribute>
+				<attribute>
+					<name>freightTerms</name>
+					<transformations>
+						<transformation>
+							<rawSource>RawDEBMAS</rawSource>
+							<expression>E1KNA1M-E1KNVVM-INCO1</expression>
+						</transformation>
+					</transformations>
+				</attribute>
+				<attribute>
+					<name>incoTerms2</name>
+					<transformations>
+						<transformation>
+							<rawSource>RawDEBMAS</rawSource>
+							<expression>E1KNA1M-E1KNVVM-INCO2</expression>
+						</transformation>
+					</transformations>
+				</attribute>
+				<attribute>
+					<name>currency</name>
+					<transformations>
+						<transformation>
+							<rawSource>RawDEBMAS</rawSource>
+							<expression>E1KNA1M-E1KNVVM-WAERS</expression>
+						</transformation>
+					</transformations>
+				</attribute>							
+				<attribute>
+					<name>parentNumber</name>
+					<transformations>
+						<transformation>
+							<rawSource>RawDEBMAS</rawSource>
+							<expression>E1KNA1M-ZGS_DEBMAS-ZG_PAR_CUS_NO</expression>
+						</transformation>
+					</transformations>
+				</attribute>				
+			</attributes>
+		</item>	
+		<item>
+			<type>CanonicalAddress</type>
+			<attributes>			
+				<attribute>
+					<name>contactFirstName</name>
+					<transformations>
+						<transformation>
+							<rawSource>RawADRMAS</rawSource>
+							<expression>E1ADRMAS-E1BPAD1VL-NAME</expression>
+						</transformation>
+					</transformations>
+				</attribute>
+				<attribute>
+					<name>contactLastName</name>
+					<transformations>
+						<transformation>
+							<rawSource>RawADRMAS</rawSource>
+							<expression>E1ADRMAS-E1BPAD1VL-NAME_2</expression>
+						</transformation>
+					</transformations>
+				</attribute>
+				<attribute>
+					<name>addressLine2</name>
+					<transformations>
+						<transformation>
+							<rawSource>RawADRMAS</rawSource>
+							<expression>E1ADRMAS-E1BPAD1VL-STR_SUPPL1</expression>
+						</transformation>
+					</transformations>
+				</attribute>
+				<attribute>
+					<name>addressCountry</name>
+					<transformations>
+						<transformation>
+							<rawSource>RawADRMAS</rawSource>
+							<expression>E1ADRMAS-E1BPAD1VL-COUNTRY</expression>
+						</transformation>
+					</transformations>
+				</attribute>
+				<attribute>
+					<name>addressContactNumber</name>
+					<transformations>
+						<transformation>
+							<rawSource>RawADRMAS</rawSource>
+							<expression>E1ADRMAS-E1BPADTEL-TELEPHONE</expression>
+						</transformation>
+					</transformations>
+				</attribute>				
+			</attributes>
+		</item>
+	</canonicalItems>
+
+</extension>

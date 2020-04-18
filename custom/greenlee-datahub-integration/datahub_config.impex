@@ -1,0 +1,41 @@
+# SAP Datahub configuration
+
+INSERT_UPDATE SAPHTTPDestination;authenticationType(code,itemtype(code))[allownull=true];httpDestinationName[unique=true];password;targetURL;userid
+;BASIC_AUTHENTICATION:HTTPAuthenticationType;HTTP-SAPPI-DEV;Welcome@1;http://192.168.20.132:8001/sap/bc/idoc_xml?sap-client=232;HYBRIS_IN;
+
+INSERT_UPDATE SAPRFCDestination;backendType(code,itemtype(code))[allownull=true];client[allownull=true];connectionType[allownull=true];group;instance;jcoCPICTrace(code,itemtype(code));jcoClientDelta[allownull=true];jcoMsServ;jcoRFCTrace[allownull=true];jcoSAPRouter;jcoTraceLevel(code,itemtype(code));jcoTracePath;maxConnections;maxWaitTime;messageServer;offlineMode[allownull=true];password[allownull=true];poolSize;pooledConnectionMode[allownull=true];rfcDestinationName[unique=true,allownull=true];sid;sncMode[allownull=true];sncPartnerName;sncQoP(code,itemtype(code));targetHost;userid[allownull=true]
+;ERP:BackendType;001;true;;30;GLOBAL_TRACELEVEL:JCoCPICTrace;true;sapmsPD1;false;;NO_TRACE:JCoTraceLevel;;10;10000;;false;ElvHYB15;5;true;PD1CLNT001;;false;;;SAPPIDEV;HYBRIS;
+
+INSERT_UPDATE  SAPConfiguration;SAPRFCDestination(rfcDestinationName);core_name[unique=true]
+;PD1CLNT001;SAP_ERP_BASESTORE_DEV
+
+INSERT_UPDATE SAPGlobalConfiguration;core_name[unique=true];replicateregistereduser[allownull=true];sapcommon_erpHttpDestination(httpDestinationName);sapcommon_erpLogicalSystem[allownull=true]
+;GLOBAL;true;HTTP-SAPPI-DEV;PD1CLNT001;
+
+INSERT_UPDATE SAPPricingSalesAreaToCatalog;catalogVersion(catalog(id),version);distributionChannel[unique=true];salesOrganization[unique=true];sapcommon_sapGlobalConfiguration(core_name)[allownull=true]
+;greenleeProductCatalog:Staged;10;1300;GLOBAL;
+;greenleeProductCatalog:Staged;10;1310;GLOBAL;
+
+#INSERT_UPDATE SAPBonusBuySiteToCatalog;catalogVersion(catalog(id),version);promotionGroup(Identifier);sapcommon_sapGlobalConfiguration(core_name)[allownull=true];site[unique=true]
+#;greenleeProductCatalog:Staged;greenleePromoGrp;GLOBAL;greenlee;
+
+INSERT_UPDATE SAPProductSalesAreaToCatalogMapping;catalogVersion(catalog(id),version);salesOrganization[unique=true];distributionChannel[unique=true];sapGlobalConfiguration(core_name)
+;greenleeProductCatalog:Staged;1300;10;GLOBAL
+;greenleeProductCatalog:Staged;1310;10;GLOBAL
+
+INSERT_UPDATE BaseStore;SAPConfiguration(core_name);uid[unique=true,allownull=true]
+;SAP_ERP_BASESTORE_DEV;greenlee;
+
+INSERT_UPDATE SAPDeliveryMode;deliveryMode(code)[unique=true];deliveryValue;sapConfiguration(core_name)[default=SAP_ERP_BASESTORE_DEV]
+;1-SPG01A;X0;
+;2-SPA11A;X0;
+;3-SPA02A;X0;
+;4-SPA03A;X0;
+;5-SPG01B;X0;
+;6-SPA11B;X0;
+;7-SPA02B;X0;
+;8-SPA03B;X0;
+#;LTL01I;X0;
+
+INSERT_UPDATE SAPProductIDDataConversion;conversionID[unique=true];matnrLength;displayLeadingZeros;displayLexicographic;mask
+;MATCONV;18;false;false;

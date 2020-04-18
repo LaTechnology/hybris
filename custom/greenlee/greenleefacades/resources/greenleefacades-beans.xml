@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- [y] hybris Platform Copyright (c) 2000-2015 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris. -->
+
+<beans xsi:noNamespaceSchemaLocation="beans.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+
+	<enum class="de.hybris.platform.commercefacades.product.ProductOption">
+
+		<value>SHOWADDTOCART</value>
+
+		<value>SHOWPRICE</value>
+
+	</enum>
+
+
+	<bean class="de.hybris.platform.commercefacades.product.data.ProductData">
+		<property name="genders" type="java.util.List&lt;com.greenlee.facades.product.data.GenderData>"/>
+	</bean>
+
+
+	<bean class="com.greenlee.facades.product.data.GenderData">
+
+		<property type="String" name="code" />
+
+		<property type="String" name="name" />
+
+	</bean>
+
+
+	<bean class="com.greenlee.facades.product.data.GreenleeProductFeatureTabData">
+
+		<property type="String" name="name" />
+
+		<property type="String" name="description" />
+
+	</bean>
+	
+	<bean class="de.hybris.platform.commercefacades.product.data.ProductData" >
+		<property name="catalogNumber" type="String"/>
+		<property name="smallUPC" type="String"/>
+		<property name="longUPC" type="String"/>
+		<property name="unspscNumber" type="String"/>
+		<property name="returnable" type="Boolean"/>
+		<property name="obsolete" type="Boolean"/>
+		<property name="sapSegmentID" type="String"/>
+		<property name="sapEan" type="String"/>
+		<property name="sapFamilyID" type="String"/>
+		<property name="sapGroupID" type="String"/>
+		<property name="sapSubGroupID" type="String"/>
+		<property name="countryOfOrigin" type="String"/>
+		<property name="commissionGroupCode" type="String"/>
+		<property name="weight" type="String"/>
+		<property name="weightUnits" type="String"/>
+		<property name="b2bProduct" type="Boolean"/>
+		<property name="b2cProduct" type="Boolean"/>
+		<property name="b2eProduct" type="Boolean"/>
+		<property name="showAddToCart" type="Boolean"/>
+		<property name="htsCode" type="String"/>
+		<property name="rohsIndicator" type="String"/>
+		<property name="msdsFlag" type="String"/>
+		<property name="videolink" type="String"/>
+		<property name="features" type="String"/>
+		<property name="requestToDemo" type="Boolean"/>
+		<property name="warrantyProduct" type="Boolean"/>
+		<property name="featureTabs" type="java.util.List&lt;com.greenlee.facades.product.data.GreenleeProductFeatureTabData>"/>
+		<property name="productArtifacts" type="java.util.List&lt;com.greenlee.greenleefacades.greenleeproduct.data.GreenleeProductMediaData>" />
+		<property name="productArtifactsGroups" type="java.util.List&lt;com.greenlee.greenleefacades.greenleeproduct.data.GreenleeProductMediaGroupData>" />
+		<property name="showPrice" type="boolean"/>
+	</bean>
+
+
+	<bean class="de.hybris.platform.b2bcommercefacades.company.data.B2BUnitData">
+
+		<property type="String" name="userType" />
+
+		<property type="de.hybris.platform.commercefacades.user.data.AddressData"
+			name="billingAddress" />
+
+		<property type="de.hybris.platform.commercefacades.user.data.AddressData"
+			name="shippingAddress" />
+
+	</bean>
+
+
+	<bean class="de.hybris.platform.commercefacades.user.data.CompanyData">
+
+		<property type="de.hybris.platform.commercefacades.user.data.AddressData"
+			name="contactAddress" />
+
+	</bean>
+
+
+	<bean class="de.hybris.platform.commercefacades.user.data.AddressData">
+
+		<property type="boolean" name="isSapSourcedAddress" />
+
+	</bean>
+
+
+	<enum class="de.hybris.platform.commercefacades.product.ProductOption">
+
+		<value>VIDEOLINK</value>
+
+		<value>REQUESTTODEMO</value>
+
+		<value>PRODUCTFEATURETAB</value>
+
+		<value>EXTENDEDATTRIBUTES</value>
+
+		<value>WARRANTYPRODUCT</value>
+
+	</enum>
+
+
+	<bean class="de.hybris.platform.commercefacades.user.data.CustomerData">
+
+		<property
+			type="de.hybris.platform.b2bcommercefacades.company.data.B2BUnitData"
+			name="sessionB2BUnit" />
+
+		<property type="String" name="sapConsumerID" />
+
+		<property type="String" name="sapFromDate" />
+
+		<property type="String" name="sapToDate" />
+
+		<property type="String" name="salesOrganization" />
+
+		<property type="String" name="distributionChannel" />
+
+		<property type="String" name="division" />
+
+		<property type="boolean" name="userAddedByAdmin" />
+
+		<property type="String" name="accountInformation" />
+
+		<property type="boolean" name="agreeToPrivacyPolicy" />
+
+		<property type="boolean" name="requestForInfo" />
+		<property type="String" name="companyName" />
+
+	</bean>
+
+	<!-- prod doc -->
+	
+	
+	<bean class="com.hybris.greenlee.search.facetdata.ProductDocumentSearchPageData&lt;STATE, RESULT>" 
+	extends="de.hybris.platform.commerceservices.search.facetdata.ProductSearchPageData&lt;STATE, RESULT>">
+		<description>POJO containing the result page for product search.</description>
+		<property name="freeTextSearch" type="String"/>
+		<property name="keywordRedirectUrl" type="String"/>
+		<property name="spellingSuggestion" type="de.hybris.platform.commerceservices.search.facetdata.SpellingSuggestionData&lt;STATE>"/>
+	</bean>
+	
+	<bean class="com.greenlee.search.data.ProductDocumentData">
+
+		<property type="String" name="URL" />
+
+		<property type="String" name="documentType" />
+
+		<property type="String" name="documentSize" />
+
+		<property type="String" name="documentMime" />
+
+		<property type="String" name="documentName" />
+
+		<property type="String" name="documentProductReference" />
+
+	</bean>
+		<bean class="de.hybris.platform.commercefacades.search.data.AutocompleteResultData">
+
+		<property name="productDocuments"
+		          type="java.util.List&lt;com.greenlee.search.data.ProductDocumentData>"/>
+	</bean>
+
+
+	<bean
+		class="com.greenlee.greenleefacades.greenleeproduct.data.GreenleeProductMediaData">
+
+		<property type="String" name="url" />
+
+		<property type="String" name="altText" />
+
+		<property type="Integer" name="generalPriority" />
+
+		<property type="Integer" name="groupPriority" />
+
+	</bean>
+
+
+	<enum class="de.hybris.platform.commercefacades.product.ProductOption">
+
+		<value>PRODUCTARTIFACTS</value>
+
+	</enum>
+
+
+	<bean class="de.hybris.platform.commercefacades.order.data.OrderEntryData">
+
+		<property type="String" name="namedDeliveryDate" />
+
+		<property type="boolean" name="isWarrantyProduct" />
+
+		<property type="String" name="warrantySerialNumbers" />
+
+	</bean>
+	
+	<!-- content search -->
+	<bean class="de.hybris.greenlee.facades.content.data.ContentData">
+
+		<property type="java.lang.String" name="title" />
+
+		<property type="java.lang.String" name="url" />
+
+		<property type="java.lang.String" name="text" />
+
+	</bean>
+	<bean class="de.hybris.greenlee.facades.search.facetdata.ContentSearchPageData&lt;STATE, RESULT>" extends="de.hybris.platform.commerceservices.search.facetdata.ProductSearchPageData&lt;STATE, RESULT>">
+		<description>POJO containing the result page for product search.</description>
+		<property name="freeTextSearch" type="String"/>
+		<property name="keywordRedirectUrl" type="String"/>
+		<property name="spellingSuggestion" type="de.hybris.platform.commerceservices.search.facetdata.SpellingSuggestionData&lt;STATE>"/>
+	</bean>
+	<bean class="de.hybris.platform.commercefacades.search.data.AutocompleteResultData">
+		<property name="content"
+		          type="java.util.List&lt;de.hybris.greenlee.facades.content.data.ContentData>"/>
+	</bean>
+		<!-- User Registration -->
+	
+	<bean class="com.greenlee.facades.customer.data.B2CRegisterData">
+
+		<property type="String" name="login" />
+
+		<property type="String" name="password" />
+
+		<property type="String" name="titleCode" />
+
+		<property type="String" name="firstName" />
+
+		<property type="String" name="lastName" />
+
+		<property type="String" name="mobile" />
+
+		<property type="String" name="userSelection" />
+
+		<property type="String" name="userType" />
+
+		<property type="String" name="companyName" />
+
+		<property type="String" name="accountInformation" />
+
+		<property type="String" name="accountInformationNumber" />
+
+		<property type="boolean" name="hasExistingGreenleeAccount" />
+
+		<property type="boolean" name="agreeToPrivacyPolicy" />
+
+		<property type="boolean" name="requestForInfo" />
+
+		<property type="String" name="currency" />
+
+		<property type="String" name="country" />
+
+	</bean>
+
+
+	<bean class="de.hybris.platform.commercefacades.order.data.AbstractOrderData">
+		<property name="emailccAddresses" type="java.util.List&lt;String>"/>
+		<property name="shippedByDate" type="java.util.Date"/>
+		<property name="shippingNote" type="String"/>
+		<property name="duty" type="de.hybris.platform.commercefacades.product.data.PriceData"/>
+		<property name="isErpPrice" type="boolean"/>
+		<property name="unit" type="de.hybris.platform.b2bcommercefacades.company.data.B2BUnitData"/>
+		<property name="sapPriceAvailability" type="boolean"/>
+	</bean>
+
+
+	<bean class="com.greenlee.facades.price.data.PriceDiffData">
+		<property name="productName" type="String"/>
+		<property name="actualPrice" type="de.hybris.platform.commercefacades.product.data.PriceData"/>
+		<property name="discountedPrice" type="de.hybris.platform.commercefacades.product.data.PriceData"/>
+		<property name="entryNumber" type="Integer"/>
+		<property name="estimatedShipDate" type="String" />
+	</bean>
+
+
+	<bean class="com.greenlee.facades.price.data.PriceDiffDataList">
+		<property name="errorMsg" type="String"/>
+		<property name="priceDiffRow" type="java.util.List&lt;com.greenlee.facades.price.data.PriceDiffData>"/>
+	</bean>
+
+
+	<bean class="com.greenlee.facades.price.data.OrderSimulationProductData">
+		<property name="productName" type="String" />
+		<property name="tax" type="Double" />
+		<property name="duty" type="Double" />
+		<property name="entryNumber" type="Integer" />
+		<property name="discountedPrice" type="Double" />
+		<property name="estimatedShipDate" type="String" />
+		<property name="currency" type="String" />
+		<property name="priceDifference" type="com.greenlee.facades.price.data.PriceDiffData"/>
+	</bean>
+
+
+	<bean class="com.greenlee.facades.price.data.OrderSimulationData">
+		<property name="errorMsg" type="String" />
+		<property name="totalTax" type="Double" />
+		<property name="shippingCost" type="Double" />
+		<property name="products" type="java.util.List&lt;com.greenlee.facades.price.data.OrderSimulationProductData>" />
+	</bean>
+
+	<bean class="com.greenlee.facades.customer.data.CustomerSimulationData">
+		<property name="errorMsg" type="String" />
+		<property name="simulationFlag" type="Boolean" />
+	</bean>
+	
+	<bean class="com.greenlee.facades.price.data.PriceSimulationData">
+		<property name="errorMsg" type="String" />
+		<property name="size" type="Integer" />
+		<property name="simulationFlag" type="Boolean" />
+	</bean>
+	
+	<bean class="de.hybris.platform.commercefacades.order.data.OrderEntryData">
+
+		<property type="String" name="estimatedShipDate" />
+
+	</bean>
+
+
+	<enum class="de.hybris.platform.commercefacades.product.ProductOption">
+
+		<value>PRODUCTARTIFACTSGROUPS</value>
+
+	</enum>
+
+
+	<bean
+		class="com.greenlee.greenleefacades.greenleeproduct.data.GreenleeProductMediaGroupData">
+		<property name="groupCode" type="String" />
+		<property name="groupName" type="String" />
+		<property name="productMedia" type="java.util.List&lt;com.greenlee.greenleefacades.greenleeproduct.data.GreenleeProductMediaData>" />
+	</bean>   
+
+	<bean class="com.greenlee.pi.data.PIAddress">
+
+		<property type="String" name="streetName" />
+
+		<property type="String" name="streetNumber" />
+
+		<property type="String" name="postalCode" />
+
+		<property type="String" name="town" />
+
+		<property type="String" name="country" />
+
+		<property type="String" name="gender" />
+
+		<property type="String" name="dob" />
+
+		<property type="String" name="company" />
+
+		<property type="String" name="poBox" />
+
+		<property type="String" name="phone1" />
+
+		<property type="String" name="phone2" />
+
+		<property type="String" name="mobilePhone" />
+
+		<property type="String" name="fax" />
+
+		<property type="String" name="email" />
+
+		<property type="String" name="title" />
+
+		<property type="String" name="firstName" />
+
+		<property type="String" name="middleName" />
+
+		<property type="String" name="middleName2" />
+
+		<property type="String" name="lastName" />
+
+		<property type="String" name="department" />
+
+		<property type="String" name="building" />
+
+		<property type="String" name="apartment" />
+
+		<property type="String" name="region" />
+
+		<property type="String" name="district" />
+
+	</bean>
+
+
+	<bean class="com.greenlee.pi.data.PICustomerData">
+		<property name="customerName" type="String"/>
+		<property name="emailId" type="String" />
+		<property name="baseReference" type="String" />
+		<property name="shippingAddress" type="com.greenlee.pi.data.PIAddress" />
+		<property name="billingAddress" type="com.greenlee.pi.data.PIAddress" />
+		<property name="sapCustomerNo" type="String"/>
+		<property name="billToCustomerNo" type="String" />
+		<property name="errorMessage" type="String" />
+	</bean>
+
+
+	<bean class="com.greenlee.pi.data.PIDeliveryData">
+
+		<property type="String" name="deliveryNo" />
+
+		<property type="String" name="orderNumber" />
+
+		<property type="String" name="consignmentNumber" />
+
+		<property type="String" name="errorMessage" />
+
+		<property type="String" name="status" />
+
+	</bean>
+
+
+	<bean
+		class="de.hybris.platform.commerceservices.service.data.CommerceCartParameter">
+
+		<property type="String" name="serialNumbers" />
+
+	</bean>
+
+
+	<bean class="de.hybris.platform.commercefacades.user.data.AddressData">
+
+		<property type="java.lang.String" name="district" />
+
+		<property type="java.lang.String" name="selectedBillingAddressId" />
+
+		<property type="Boolean" name="primaryAddress" />
+
+		<property type="Boolean" name="additionalBilling" />
+
+		<property type="Boolean" name="additionalShipping" />
+
+		<property type="Boolean" name="defaultShippingAddress" />
+
+		<property type="Boolean" name="defaultBillingAddress" />
+
+		<property type="java.lang.String" name="labelName" />
+		<property type="java.lang.String" name="livingstonString" />
+	</bean>
+
+
+	<bean class="de.hybris.platform.commercefacades.order.data.ConsignmentData">
+
+		<property type="de.hybris.platform.commercefacades.product.data.PriceData"
+			name="subTotal" />
+
+		<property type="de.hybris.platform.commercefacades.product.data.PriceData"
+			name="totalDiscounts" />
+
+		<property type="de.hybris.platform.commercefacades.product.data.PriceData"
+			name="deliveryCost" />
+
+		<property type="de.hybris.platform.commercefacades.product.data.PriceData"
+			name="totalTax" />
+
+		<property type="de.hybris.platform.commercefacades.product.data.PriceData"
+			name="totalPriceWithTax" />
+
+		<property type="de.hybris.platform.commercefacades.product.data.PriceData"
+			name="duty" />
+
+		<property type="java.util.Date" name="created" />
+
+	</bean>
+
+
+	<bean class="de.hybris.platform.commercefacades.order.data.CartData">
+
+		<property type="java.lang.String" name="shippingAccountNumber" />
+		<property type="java.lang.String" name="livingstonString" />
+		<property type="de.hybris.platform.commercefacades.user.data.AddressData" name="billingAddress" />
+		<property type="java.lang.String" name="selectedDeliveryMode" />
+		<property type="java.lang.String" name="errorInCart" />
+	</bean>
+
+</beans>

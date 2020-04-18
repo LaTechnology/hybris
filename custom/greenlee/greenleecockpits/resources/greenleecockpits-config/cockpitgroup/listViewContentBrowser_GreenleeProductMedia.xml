@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list-view xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="list-view.xsd"
+	unassigned-group-name="Other" header-popup-bean="listViewMenuPopupBuilderWithClassification">
+	<group name="General">
+		<property qualifier="GreenleeProductMedia.code" visible="true" />
+		<property qualifier="GreenleeProductMedia.generalSortOrderPriority" visible="true"/>
+		<property qualifier="GreenleeProductMedia.groupSortOrderPriority" visible="true"/>
+	</group>
+</list-view>

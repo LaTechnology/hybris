@@ -1,0 +1,35 @@
+
+
+$classCatalogVersion=catalogversion(catalog(id[default='PowertoolsClassification']),version[default='1.0'])[unique=true,default='PowertoolsClassification:1.0'];;;;;;;;
+$classSystemVersion=systemVersion(catalog(id[default='PowertoolsClassification']),version[default='1.0'])[unique=true];;;;;;;;
+$class=classificationClass(ClassificationClass.code,$classCatalogVersion)[unique=true];;;;;;;;
+$attribute=classificationAttribute(code,$classSystemVersion)[unique=true];;;;;;;;
+
+UPDATE ClassAttributeAssignment;$class;$attribute;comparable[default=false]
+;1316;Source data-sheet, 6617;
+;2968;Source data-sheet, 6617;
+;4545;Source data-sheet, 6617;
+;4591;Source data-sheet, 6617;
+;4593;Source data-sheet, 6617;
+;4597;Source data-sheet, 6617;
+;4598;Source data-sheet, 6617;
+;4604;Source data-sheet, 6617;
+
+;4673;Source data-sheet, 6617;
+;4734;Source data-sheet, 6617;
+;4739;Source data-sheet, 6617;
+;4783;Source data-sheet, 6617;
+;4850;Source data-sheet, 6617;
+;4913;Source data-sheet, 6617;
+;4969;Source data-sheet, 6617;
+;5358;Source data-sheet, 6617;
+;5362;Source data-sheet, 6617;
+;5458;Source data-sheet, 6617;
+
+
+
+
+
+
+
+

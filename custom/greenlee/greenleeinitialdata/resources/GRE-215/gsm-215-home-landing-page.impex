@@ -1,0 +1,182 @@
+#------------------
+# homepage Staged
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+
+#-----------------------------------------------------------------------------------------#
+#Home Page Main Banner (section 1 slot):
+#Component: enterprisebusinesscategoryBannerComponent
+#Position: Section1
+#Content Page: enterprisebusinesscategory
+#Content Slot: Section1ContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section1-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; section-1-homepage-banner        ; section-1-homepage-banner.jpg      ; $siteResource/images/theme/section-1-homepage-banner.jpg          ; image/jpg                  ; Homepage Category           ;                                     ; desktop               
+                    ;                         ; m-section-1-homepage-banner ;  m-section-1-homepage-banner.jpg ; $siteResource/images/theme/m-section-1-homepage-banner.jpg               ; image/jpg                  ;  Homepage on Mobile ;                                     ; mobile                
+
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ; GreenleeHomePageLandingBanner ; Greenlee HomePage Landing Page Banner ; section-1-homepage-banner , m-section-1-homepage-banner
+
+INSERT_UPDATE SimpleResponsiveBannerComponent;$contentCV[unique=true];uid[unique=true];media(qualifier, $contentCV);urlLink;&componentRef
+;;GreenLeeHompageResponsiveBannerComponent;GreenleeHomePageLandingBanner;https://www.youtube.com/embed/wnVFSl-CB4Y?rel=0;GreenLeeHompageResponsiveBannerComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;Section1HomepageSlot-Homepage;Section1 Slot for Homepage;true;GreenLeeHompageResponsiveBannerComponent
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='homepage'];contentSlot(uid,$contentCV)[unique=true]
+;;Section1Homepage-Homepage;Section1;;Section1HomepageSlot-Homepage
+
+#-----------------------------------------------------------------------------------------#
+#Component: SwitchAccountComponent
+#Position: TopHeaderContentSlot-Homepage
+#Content Slot: TopHeaderContentSlotForPage-enterprisebusinesscategory 
+#ContentSlotForPage: TopHeaderContentSlotForPage-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE JspIncludeComponent;$contentCV[unique=true];uid[unique=true];name;page;actions(uid,$contentCV);&componentRef
+;;SwitchAccountComponent;Switch Account Component;/WEB-INF/views/desktop/pages/account/switchaccount.jsp;;SwitchAccountComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;TopHeaderContentSlot-Homepage;Homepage Category Top Header Slot for LandingPage;true;SwitchAccountComponent
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='homepage'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; TopHeaderContentSlotForPage-Homepage      ; TopHeaderSlot              ;                                                                 ; TopHeaderContentSlot-Homepage           
+
+#-----------------------------------------------------------------------------------------#
+#Component: EnterpriseBusinessCategoryOverviewLink,EnterpriseBusinessCategoryFeaturesLink
+#Position: Section2A
+#Content Slot: Section2ASlot-Homepage 
+#ContentSlotForPage: Section2A-Homepage
+#-----------------------------------------------------------------------------------------#	
+
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ;homepage-greenleeresidence-01        ; residential-banners-01.png      ; $siteResource/images/theme/residential-banners-01.png                 ; image/jpg                  ; Homepage Category           ;                                     ; desktop               
+                    ;                         ;homepage-greenleeresidence-02        ; residential-banners-02.png      ; $siteResource/images/theme/residential-banners-02.png                 ; image/jpg                  ; Homepage Category           ;                                     ; desktop               
+                    ;                         ;homepage-greenleesmallbusiness-01        ; small-banners-01.png     ; $siteResource/images/theme/small-banners-01.png                 ; image/jpg                  ; Homepage Category           ;                                     ; desktop               
+                    ;                         ;homepage-greenleesmallbusiness-02        ; small-banners-02.png   ; $siteResource/images/theme/small-banners-02.png                 ; image/jpg                  ; Homepage Category           ;                                     ; desktop               
+                    ;                         ;homepage-greenleeenterprise-01        ; enterprise-banners-01.png     ; $siteResource/images/theme/enterprise-banners-01.png                  ; image/jpg                  ; Homepage Category           ;                                     ; desktop               
+                    ;                         ;homepage-greenleeenterprise-02        ;enterprise-banners-02.png    ; $siteResource/images/theme/enterprise-banners-02.png                 ; image/jpg                  ; Homepage Category           ;                                     ; desktop               
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ; homepage-greenleeresidence-section2a-container; Home Page Container ;homepage-greenleeresidence-01,homepage-greenleeresidence-02
+                             ;                         ; homepage-greenleesmallbusiness-section2a-container; Home Page Container ;homepage-greenleesmallbusiness-01,homepage-greenleesmallbusiness-02
+                             ;                         ; homepage-greenleeenterprise-section2a-container; Home Page Container ;homepage-greenleeenterprise-01,homepage-greenleeenterprise-02
+
+INSERT_UPDATE BannerComponent;$contentCV[unique=true];uid[unique=true];name;$picture[lang=$lang];&componentRef;content;urlLink
+;;ResidenceBannerComponent-MenuBar;Greenlee Residence Component for Menu;homepage-greenleeresidence-01;ResidenceBannerComponent-MenuBar;"";/residentialcategory
+;;SmallBusinessComponent-MenuBar;Greenlee Business Component for Menu;homepage-greenleesmallbusiness-01;SmallBusinessComponent-MenuBar;"";/livebusinesscategory
+;;EnterpriseBannerComponent-MenuBar;Greenlee Enterprise Component for Menu;homepage-greenleeenterprise-01;EnterpriseBannerComponent-MenuBar;"";/enterprisecategory
+#;;ResidenceBannerComponent-MenuBar-02;Greenlee Residence Component for Menu;homepage-greenleeresidence-02;ResidenceBannerComponent-MenuBar-02;"<h2>RESIDENTIAL</h2> <p>RAPID WIFI HOME SURVEY AND TROUBLESHOOTING</p> <span>Learn more</span>";/residentialcategory
+#;;SmallBusinessComponent-MenuBar-02;Greenlee Business Component for Menu;homepage-greenleesmallbusiness-02;SmallBusinessComponent-MenuBar-02;"<h2>SMALL BUSINESS</h2> <p>WI-FI SURVEY AND TROUBLESHOOTING FOR SMALL BUSINESS</p><span>Learn more</span>";/livebusinesscategory
+#;;EnterpriseBannerComponent-MenuBar-02;Greenlee Enterprise Component for Menu;homepage-greenleeenterprise-02;EnterpriseBannerComponent-MenuBar-02;"<h2>ENTERPRISE</h2><h2><p>WI-FI SURVEY AND TROUBLESHOOTING FOR ENTERPRISE</p> <span>Learn more</span></h2>";/enterprisecategory
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;Section2AHomepageSlot-Homepage;Section2A Body Slot for Homepage;true;ResidenceBannerComponent-MenuBar, SmallBusinessComponent-MenuBar,EnterpriseBannerComponent-MenuBar
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='homepage'];contentSlot(uid,$contentCV)[unique=true]
+;;Section2AHomepage-Homepage;Section2A;;Section2AHomepageSlot-Homepage
+
+#-----------------------------------------------------------------------------------------#
+#Component: AirscoutFeatureSimpleBannerComponent
+#Position: Section3
+#Content Slot: Section3ContentSlot-Homepage 
+#ContentSlotForPage: Section3-Homepage
+#-----------------------------------------------------------------------------------------#							 
+ 							 
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; section-3-homepage        ;section-3-homepage.jpg       ; $siteResource/images/theme/section-3-homepage.jpg                 ; image/jpg                  ; Home Page Category         ;                                     ; desktop               
+                    ;                         ; m-section-3-homepage        ; m-section-3-homepage.jpg        ; $siteResource/images/theme/m-section-3-homepage.jpg                 ; image/jpg                  ; Home Page Category on mobile          ;                                     ; mobile               
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ; homepage-section3media-container; Home Page Container ;section-3-homepage,m-section-3-homepage 
+							 
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name								;media(qualifier, $contentCV)   ; &componentRef                   
+                                              ;                         ; AirscoutFeatureSimpleBannerComponent ; Airscout Feature SimpleBanner Component; homepage-section3media-container; AirscoutFeatureSimpleBannerComponent
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section3HomepageContentSlot-Homepage  ; Section3 Slot for Home Page   ; true   ; AirscoutFeatureSimpleBannerComponent                                                                       
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='homepage'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section3Homepage-Homepage      ; Section3              ;                                                                 ; Section3HomepageContentSlot-Homepage          
+#-----------------------------------------------------------------------------------------#
+#Media: enterprise-category-banner-section4a
+#MediaContainer: enterprise-category-banner-section4-container
+#Component: EnterpriseBusinessCategoryApplicationPointsBannerComponent
+#Position: Section3A
+#Content Slot: Section3AContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section3A-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+ 							 
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; section-3a-homepage     ;section-3a-homepage.jpg       ; $siteResource/images/theme/section-3a-homepage.jpg                   ; image/jpg                  ; Homepage Category           ;                                     ; desktop               
+                    ;                         ; m-section-3a-homepage        ; m-section-3a-homepage.jpg       ; $siteResource/images/theme/m-section-3a-homepage.jpg                 ; image/jpg                  ; Homepage Category           ;                                     ; mobile               
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ;homepage-section3amedia-container; Category Homepage Container ; section-3a-homepage,m-section-3a-homepage
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name								;media(qualifier, $contentCV)   ; &componentRef     ;     urlLink                 
+                                              ;                         ; AirscoutVideoSimpleBannerComponent ;AirscoutVideo SimpleBanner Component;homepage-section3amedia-container; AirscoutVideoSimpleBannerComponent;https://www.youtube.com/embed/wnVFSl-CB4Y?rel=0
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section3AHomepageContentSlot-Homepage  ;  Section3A Slot for CategoryLandingPage   ; true   ; AirscoutVideoSimpleBannerComponent                                                                       
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='homepage'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section3AHomepage-Homepage      ; Section3A              ;                                                                 ; Section3AHomepageContentSlot-Homepage            
+ 
+
+#-----------------------------------------------------------------------------------------#
+#Component: MakeTheRightChoiceJspIncludeComponent
+#Position: Section4 -Final
+#Content Page: Homepage
+#Content Slot: Section4Slot-Homepage
+#ContentSlotForPage:Section4-Homepage
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; section-4-bkg     ;section-4-bkg.png       ; $siteResource/images/theme/section-4-bkg.png                   ; image/jpg                  ; Homepage Category           ;                                     ; desktop               
+ 
+INSERT_UPDATE JspIncludeComponent;$contentCV[unique=true];uid[unique=true];name;page;actions(uid,$contentCV);&componentRef
+;;MakeTheRightChoiceJspIncludeComponent;Make The Right Choice Component;/WEB-INF/views/desktop/pages/helpmechoose/maketherightchoice.jsp;;MakeTheRightChoiceJspIncludeComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;Section4HomepageSlot-Homepage;Section4 Slot for Homepage;true;MakeTheRightChoiceJspIncludeComponent
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='homepage'];contentSlot(uid,$contentCV)[unique=true]
+;;Section4Homepage-Homepage;Section4;;Section4HomepageSlot-Homepage
+
+#-----------------------------------------------------------------------------------------#
+#Component: TestimonialRotatingComponent,TestimonialParagraphComponent
+#Position: Section5
+#Content Page: Homepage
+#Content Slot: Section5Slot-Homepage
+#ContentSlotForPage:Section5-Homepage
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE RotatingImagesComponent;$contentCV[unique=true];uid[unique=true];visible
+;;TestimonialRotatingComponent;false
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];visible
+;;TestimonialParagraphComponent;false
+#-----------------------------------------------------------------------------------------#
+#Component: GreenleeHomepageProductCarouselComponent,DefaultProductComparePageComponent
+#Position: Section6
+#Content Page: Homepage
+#Content Slot: Section6Slot-Homepage
+#ContentSlotForPage:Section6-Homepage
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE ProductCarouselComponent;$contentCV[unique=true];uid[unique=true];visible
+;;GreenleeHomepageProductCarouselComponent;false
+INSERT_UPDATE ProductComparisonComponent;$contentCV[unique=true];uid[unique=true];visible;showCheckbox
+;;DefaultProductComparePageComponent;true;false

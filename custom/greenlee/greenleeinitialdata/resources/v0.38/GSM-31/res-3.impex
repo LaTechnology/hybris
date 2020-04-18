@@ -1,0 +1,81 @@
+
+#------------------
+# Business Staged
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############          Residential Business Category Landing page              #################
+							 
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                               ; name                                    ;content    ;  &componentRef                              
+                                    ;                         ; ResidentialCategoryOverviewTextComponent     ; Residential Category Overview Text        ; "<p style=""text-align: justify;"">The AirScout&reg; system provides rapid and largely automated means of surveying an entire residence for effective Wi-Fi&reg; service. AirScout&reg; testing works in parallel with existing workflows. Installer can get on with other preparatory tasks while the AirScout&reg; system surveys the premises automatically. During the testing phase the AirScout&reg; system optimizes settings and location of the Access Points, identifies and helps resolve issues affecting network performance (such as signal quality, congestion and interference) and validates services (such as streaming video, streaming audio, and more).</p><p style=""text-align: justify;"">Upon test completion, the AirScout&reg; solution produces a series of the heatmaps visually representing whether the WLAN requirements are being met. &nbsp;Based on the results the installer may proceed with deploying Wi-Fi&reg; based on AirScout&reg; recommendations.</p>" ;ResidentialCategoryOverviewTextComponent    
+										  
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]                        ; active ; cmsComponents(&componentRef)                                                                                                                              
+                           ;                         ; Section3ContentSlot-ResCatPage  ; true   ; ResidentialCategoryOverviewTextComponent                                                                                                                   
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                           ;                         ; Section3ContentSlot-ResCatPage  ; Residential Section3 Slot for CategoryLandingPage   ; true   ; ResidentialCategoryOverviewTextComponent                                                                                                                   
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                   ;                         ; Section3-residentialcategory      ; Section3              ;                                                                 ; Section3ContentSlot-ResCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section3-residentialcategory      ; Section3              ;                                                                 ; Section3ContentSlot-ResCatPage            
+
+#------------------
+# Business online
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Online'])[default=$contentCatalog:Online]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############          Residential Business Category Landing page              #################
+							 
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                               ; name                                    ;content    ;  &componentRef                              
+                                    ;                         ; ResidentialCategoryOverviewTextComponent     ; Residential Category Overview Text        ; "<p style=""text-align: justify;"">The AirScout&reg; system provides rapid and largely automated means of surveying an entire residence for effective Wi-Fi&reg; service. AirScout&reg; testing works in parallel with existing workflows. Installer can get on with other preparatory tasks while the AirScout&reg; system surveys the premises automatically. During the testing phase the AirScout&reg; system optimizes settings and location of the Access Points, identifies and helps resolve issues affecting network performance (such as signal quality, congestion and interference) and validates services (such as streaming video, streaming audio, and more).</p><p style=""text-align: justify;"">Upon test completion, the AirScout&reg; solution produces a series of the heatmaps visually representing whether the WLAN requirements are being met. &nbsp;Based on the results the installer may proceed with deploying Wi-Fi&reg; based on AirScout&reg; recommendations.</p>" ;ResidentialCategoryOverviewTextComponent    
+										  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                           ;                         ; Section3ContentSlot-ResCatPage  ; Residential Section3 Slot for CategoryLandingPage   ; true   ; ResidentialCategoryOverviewTextComponent                                                                                                                   
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                   ;                         ; Section3-residentialcategory      ; Section3              ;                                                                 ; Section3ContentSlot-ResCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section3-residentialcategory      ; Section3              ;                                                                 ; Section3ContentSlot-ResCatPage            

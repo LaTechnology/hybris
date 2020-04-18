@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+
+  
+-->
+<extensioninfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="extensioninfo.xsd">
+
+	<extension	name="mediaconversionimageresizeplugin"
+				abstractclassprefix="Generated"
+				classprefix="Mediaconversionimageresizeplugin"
+				managername="MediaconversionimageresizepluginManager"
+				managersuperclass="de.hybris.platform.jalo.extension.Extension"
+				description="mediaconversionimageresizeplugin extension"
+				>
+
+		<!-- you should add all required extensions to this list, except platform extensions which are automatically required -->         
+		<!-- <requires-extension name="cms"/> -->
+		<requires-extension name="mediaconversion"/>
+		<requires-extension name="liveeditaddon"/>
+
+		<coremodule	packageroot="de.hybris.mediaconversionimageresizeplugin" manager="de.hybris.mediaconversionimageresizeplugin.jalo.MediaconversionimageresizepluginManager" generated="true"
+					/>
+
+	</extension>
+
+</extensioninfo>

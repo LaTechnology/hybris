@@ -1,0 +1,1848 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2015 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris. -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:file="http://www.springframework.org/schema/integration/file"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration 
+	http://www.springframework.org/schema/integration/spring-integration.xsd
+	http://www.springframework.org/schema/integration/file 
+	http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config />
+
+	<bean id="baseDirectoryForGreenlee" class="java.lang.String">
+		<constructor-arg value="#{baseDirectory}/${tenantId}/greenlee" />
+	</bean>
+
+	<!-- 1) Scan for files -->
+	<file:inbound-channel-adapter id="batchFilesClassification"
+		directory="#{baseDirectoryForGreenlee}" filename-regex="(.*)-(\d+)\.csv" comparator="fileOrderComparator">
+		<int:poller fixed-rate="1000" />
+	</file:inbound-channel-adapter>
+
+
+	<!-- 2) move the file to processing and create header -->
+	<file:outbound-gateway request-channel="batchFilesClassification"
+		reply-channel="batchFilesClassificationProc" directory="#{baseDirectoryForGreenlee}/processing"
+		delete-source-files="true" />
+	<int:service-activator input-channel="batchFilesClassificationProc"
+		output-channel="batchFilesHeaderInit" method="execute" ref="greenleeClassificationHeaderSetupTask" />
+	<bean id="greenleeClassificationHeaderSetupTask"
+		class="com.greenlee.greenleesalsifyservices.dataimport.batch.task.GreenleeHeaderSetupTask">
+		<property name="catalog" value="greenleeClassification" /> 
+		<property name="net" value="false" />
+		<property name="storeBaseDirectory" ref="baseDirectoryForGreenlee" />				<property name="fieldSeparator" value="," />				<property name="attributecode" value="UNSPSC" />		<property name="headerLastIndex" value="All Assets Linked to Products" />				<property name="csvReaderService" ref="csvReaderService" />
+	</bean>
+	
+	<!-- 3) transform csv to impex file -->
+	<int:service-activator input-channel="batchFilesHeaderInit"
+		output-channel="batchFilesHeader" method="execute" ref="classificationBatchTransformerTask" />
+	<bean id="classificationBatchTransformerTask"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.task.ImpexTransformerTask"
+		init-method="initConvertersMap">
+		<property name="fieldSeparator" value="," />
+		<property name="encoding" value="UTF-8" />
+		<property name="linesToSkip" value="1" />
+		<property name="cleanupHelper" ref="cleanupHelper" />
+	</bean>
+
+	<!-- 3) Transformer converters mappings -->
+
+	<!-- Insert or Update Greenlee Classification Class -->
+	<bean id="greenleeClassificationClassConverterMapping"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+		p:mapping="gre_classification_class" p:converter-ref="greenleeClassificationClassConverter" />
+
+	<bean id="greenleeClassificationClassConverter"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+		<property name="header">
+			<value>
+				#{defaultImpexProductHeader}
+				# Classification Class
+				$productCatalog=greenleeProductCatalog
+				$catalogVersion=catalogVersion(catalog(id[default='greenleeProductCatalog']),version[default='Staged'])[unique=true,default='greenleeProductCatalog':Staged]
+				$categories=categories(code, $catalogVersion)[unique=true]	
+				$products=products(code, $catalogVersion)[unique=true]				
+				$systemClassification=catalogVersion(catalog(id[default='greenleeClassification']),version[default='1.0'])[unique=true,default='greenleeClassification:1.0']
+				$systemVersion=systemVersion(catalog(id[default='greenleeClassification']),version[default='1.0'])[unique=true]
+				$lang=en
+				INSERT_UPDATE ClassificationClass;$systemClassification;$products;code[unique=true];externalID;name[lang=$lang]
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>;;{+0};{+1};{+1};{+2};</value>
+		</property>
+		<property name="type" value="ClassificationClass" />
+		 
+	</bean>
+
+	<!-- Insert or Update Greenlee Classification Attributes -->
+	<bean id="greenleeClassificationAttributesConverterMapping"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+		p:mapping="gre_classification_attribute" p:converter-ref="greenleeClassificationAttributesConverter" />
+
+	<bean id="greenleeClassificationAttributesConverter"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+		<property name="header">
+			<value>
+				#{defaultImpexProductHeader}
+				# Classification Class
+				$catalogVersion=catalogVersion(catalog(id[default='greenleeClassification']),version[default='1.0'])[unique=true,default='greenleeClassification:1.0']
+				$systemVersion=systemVersion(catalog(id[default='greenleeClassification']),version[default='1.0'])[unique=true]
+				$lang=en
+				INSERT_UPDATE ClassificationAttribute[cacheUnique=true];code[unique=true];externalID;name[lang=$lang];$systemVersion[virtual=true,unique=true];
+			</value>
+		</property>
+		<property name="impexRow">
+			 <value>
+						;1001;1001;{+0};
+						;1002;1002;{+1};
+						;1003;1003;{+2};
+						;1004;1004;{+3};
+						;1005;1005;{+4};
+						;1006;1006;{+5};
+						;1007;1007;{+6};
+						;1008;1008;{+7};
+						;1009;1009;{+8};
+						;1010;1010;{+9};
+						;1011;1011;{+10};
+						;1012;1012;{+11};
+						;1013;1013;{+12};
+						;1014;1014;{+13};
+						;1015;1015;{+14};
+						;1016;1016;{+15};
+						;1017;1017;{+16};
+						;1018;1018;{+17};
+						;1019;1019;{+18};
+						;1020;1020;{+19};
+						;1021;1021;{+20};
+						;1022;1022;{+21};
+						;1023;1023;{+22};
+						;1024;1024;{+23};
+						;1025;1025;{+24};
+						;1026;1026;{+25};
+						;1027;1027;{+26};
+						;1028;1028;{+27};
+						;1029;1029;{+28};
+						;1030;1030;{+29};
+						;1031;1031;{+30};
+						;1032;1032;{+31};
+						;1033;1033;{+32};
+						;1034;1034;{+33};
+						;1035;1035;{+34};
+						;1036;1036;{+35};
+						;1037;1037;{+36};
+						;1038;1038;{+37};
+						;1039;1039;{+38};
+						;1040;1040;{+39};
+						;1041;1041;{+40};
+						;1042;1042;{+41};
+						;1043;1043;{+42};
+						;1044;1044;{+43};
+						;1045;1045;{+44};
+						;1046;1046;{+45};
+						;1047;1047;{+46};
+						;1048;1048;{+47};
+						;1049;1049;{+48};
+						;1050;1050;{+49};
+						;1051;1051;{+50};
+						;1052;1052;{+51};
+						;1053;1053;{+52};
+						;1054;1054;{+53};
+						;1055;1055;{+54};
+						;1056;1056;{+55};
+						;1057;1057;{+56};
+						;1058;1058;{+57};
+						;1059;1059;{+58};
+						;1060;1060;{+59};
+						;1061;1061;{+60};
+						;1062;1062;{+61};
+						;1063;1063;{+62};
+						;1064;1064;{+63};
+						;1065;1065;{+64};
+						;1066;1066;{+65};
+						;1067;1067;{+66};
+						;1068;1068;{+67};
+						;1069;1069;{+68};
+						;1070;1070;{+69};
+						;1071;1071;{+70};
+						;1072;1072;{+71};
+						;1073;1073;{+72};
+						;1074;1074;{+73};
+						;1075;1075;{+74};
+						;1076;1076;{+75};
+						;1077;1077;{+76};
+						;1078;1078;{+77};
+						;1079;1079;{+78};
+						;1080;1080;{+79};
+						;1081;1081;{+80};
+						;1082;1082;{+81};
+						;1083;1083;{+82};
+						;1084;1084;{+83};
+						;1085;1085;{+84};
+						;1086;1086;{+85};
+						;1087;1087;{+86};
+						;1088;1088;{+87};
+						;1089;1089;{+88};
+						;1090;1090;{+89};
+						;1091;1091;{+90};
+						;1092;1092;{+91};
+						;1093;1093;{+92};
+						;1094;1094;{+93};
+						;1095;1095;{+94};
+						;1096;1096;{+95};
+						;1097;1097;{+96};
+						;1098;1098;{+97};
+						;1099;1099;{+98};
+						;1100;1100;{+99};
+						;1101;1101;{+100};
+						;1102;1102;{+101};
+						;1103;1103;{+102};
+						;1104;1104;{+103};
+						;1105;1105;{+104};
+						;1106;1106;{+105};
+						;1107;1107;{+106};
+						;1108;1108;{+107};
+						;1109;1109;{+108};
+						;1110;1110;{+109};
+						;1111;1111;{+110};
+						;1112;1112;{+111};
+						;1113;1113;{+112};
+						;1114;1114;{+113};
+						;1115;1115;{+114};
+						;1116;1116;{+115};
+						;1117;1117;{+116};
+						;1118;1118;{+117};
+						;1119;1119;{+118};
+						;1120;1120;{+119};
+						;1121;1121;{+120};
+						;1122;1122;{+121};
+						;1123;1123;{+122};
+						;1124;1124;{+123};
+						;1125;1125;{+124};
+						;1126;1126;{+125};
+						;1127;1127;{+126};
+						;1128;1128;{+127};
+						;1129;1129;{+128};
+						;1130;1130;{+129};
+						;1131;1131;{+130};
+						;1132;1132;{+131};
+						;1133;1133;{+132};
+						;1134;1134;{+133};
+						;1135;1135;{+134};
+						;1136;1136;{+135};
+						;1137;1137;{+136};
+						;1138;1138;{+137};
+						;1139;1139;{+138};
+						;1140;1140;{+139};
+						;1141;1141;{+140};
+						;1142;1142;{+141};
+						;1143;1143;{+142};
+						;1144;1144;{+143};
+						;1145;1145;{+144};
+						;1146;1146;{+145};
+						;1147;1147;{+146};
+						;1148;1148;{+147};
+						;1149;1149;{+148};
+						;1150;1150;{+149};
+						;1151;1151;{+150};
+						;1152;1152;{+151};
+						;1153;1153;{+152};
+						;1154;1154;{+153};
+						;1155;1155;{+154};
+						;1156;1156;{+155};
+						;1157;1157;{+156};
+						;1158;1158;{+157};
+						;1159;1159;{+158};
+						;1160;1160;{+159};
+						;1161;1161;{+160};
+						;1162;1162;{+161};
+						;1163;1163;{+162};
+						;1164;1164;{+163};
+						;1165;1165;{+164};
+						;1166;1166;{+165};
+						;1167;1167;{+166};
+						;1168;1168;{+167};
+						;1169;1169;{+168};
+						;1170;1170;{+169};
+						;1171;1171;{+170};
+						;1172;1172;{+171};
+						;1173;1173;{+172};
+						;1174;1174;{+173};
+						;1175;1175;{+174};
+						;1176;1176;{+175};
+						;1177;1177;{+176};
+						;1178;1178;{+177};
+						;1179;1179;{+178};
+						;1180;1180;{+179};
+						;1181;1181;{+180};
+						;1182;1182;{+181};
+						;1183;1183;{+182};
+						;1184;1184;{+183};
+						;1185;1185;{+184};
+						;1186;1186;{+185};
+						;1187;1187;{+186};
+						;1188;1188;{+187};
+						;1189;1189;{+188};
+						;1190;1190;{+189};
+						;1191;1191;{+190};
+						;1192;1192;{+191};
+						;1193;1193;{+192};
+						;1194;1194;{+193};
+						;1195;1195;{+194};
+						;1196;1196;{+195};
+						;1197;1197;{+196};
+						;1198;1198;{+197};
+						;1199;1199;{+198};
+						;1200;1200;{+199};
+						;1201;1201;{+200};
+						;1202;1202;{+201};
+						;1203;1203;{+202};
+						;1204;1204;{+203};
+						;1205;1205;{+204};
+						;1206;1206;{+205};
+						;1207;1207;{+206};
+						;1208;1208;{+207};
+						;1209;1209;{+208};
+						;1210;1210;{+209};
+						;1211;1211;{+210};
+						;1212;1212;{+211};
+						;1213;1213;{+212};
+						;1214;1214;{+213};
+						;1215;1215;{+214};
+						;1216;1216;{+215};
+						;1217;1217;{+216};
+						;1218;1218;{+217};
+						;1219;1219;{+218};
+						;1220;1220;{+219};
+						;1221;1221;{+220};
+						;1222;1222;{+221};
+						;1223;1223;{+222};
+						;1224;1224;{+223};
+						;1225;1225;{+224};
+						;1226;1226;{+225};
+						;1227;1227;{+226};
+						;1228;1228;{+227};
+						;1229;1229;{+228};
+						;1230;1230;{+229};
+						;1231;1231;{+230};
+						;1232;1232;{+231};
+						;1233;1233;{+232};
+						;1234;1234;{+233};
+						;1235;1235;{+234};
+						;1236;1236;{+235};
+						;1237;1237;{+236};
+						;1238;1238;{+237};
+						;1239;1239;{+238};
+						;1240;1240;{+239};
+						;1241;1241;{+240};
+						;1242;1242;{+241};
+						;1243;1243;{+242};
+						;1244;1244;{+243};
+						;1245;1245;{+244};
+						;1246;1246;{+245};
+						;1247;1247;{+246};
+						;1248;1248;{+247};
+						;1249;1249;{+248};
+						;1250;1250;{+249};
+						;1251;1251;{+250};
+						;1252;1252;{+251};
+						;1253;1253;{+252};
+						;1254;1254;{+253};
+						;1255;1255;{+254};
+						;1256;1256;{+255};
+						;1257;1257;{+256};
+						;1258;1258;{+257};
+						;1259;1259;{+258};
+						;1260;1260;{+259};
+						;1261;1261;{+260};
+						;1262;1262;{+261};
+						;1263;1263;{+262};
+						;1264;1264;{+263};
+						;1265;1265;{+264};
+						;1266;1266;{+265};
+						;1267;1267;{+266};
+						;1268;1268;{+267};
+						;1269;1269;{+268};
+						;1270;1270;{+269};
+						;1271;1271;{+270};
+						;1272;1272;{+271};
+						;1273;1273;{+272};
+						;1274;1274;{+273};
+						;1275;1275;{+274};
+						;1276;1276;{+275};
+						;1277;1277;{+276};
+						;1278;1278;{+277};
+						;1279;1279;{+278};
+						;1280;1280;{+279};
+						;1281;1281;{+280};
+						;1282;1282;{+281};
+						;1283;1283;{+282};
+						;1284;1284;{+283};
+						;1285;1285;{+284};
+						;1286;1286;{+285};
+						;1287;1287;{+286};
+						;1288;1288;{+287};
+						;1289;1289;{+288};
+						;1290;1290;{+289};
+						;1291;1291;{+290};
+						;1292;1292;{+291};
+						;1293;1293;{+292};
+						;1294;1294;{+293};
+						;1295;1295;{+294};
+						;1296;1296;{+295};
+						;1297;1297;{+296};
+						;1298;1298;{+297};
+						;1299;1299;{+298};
+						;1300;1300;{+299};
+						;1301;1301;{+300};
+						;1302;1302;{+301};
+						;1303;1303;{+302};
+						;1304;1304;{+303};
+						;1305;1305;{+304};
+						;1306;1306;{+305};
+						;1307;1307;{+306};
+						;1308;1308;{+307};
+						;1309;1309;{+308};
+						;1310;1310;{+309};
+						;1311;1311;{+310};
+						;1312;1312;{+311};
+						;1313;1313;{+312};
+						;1314;1314;{+313};
+						;1315;1315;{+314};
+						;1316;1316;{+315};
+						;1317;1317;{+316};
+						;1318;1318;{+317};
+						;1319;1319;{+318};
+						;1320;1320;{+319};
+						;1321;1321;{+320};
+						;1322;1322;{+321};
+						;1323;1323;{+322};
+						;1324;1324;{+323};
+						;1325;1325;{+324};
+						;1326;1326;{+325};
+						;1327;1327;{+326};
+						;1328;1328;{+327};
+						;1329;1329;{+328};
+						;1330;1330;{+329};
+						;1331;1331;{+330};
+						;1332;1332;{+331};
+						;1333;1333;{+332};
+						;1334;1334;{+333};
+						;1335;1335;{+334};
+						;1336;1336;{+335};
+						;1337;1337;{+336};
+						;1338;1338;{+337};
+						;1339;1339;{+338};
+						;1340;1340;{+339};
+						;1341;1341;{+340};
+						;1342;1342;{+341};
+						;1343;1343;{+342};
+						;1344;1344;{+343};
+						;1345;1345;{+344};
+						;1346;1346;{+345};
+						;1347;1347;{+346};
+						;1348;1348;{+347};
+						;1349;1349;{+348};
+						;1350;1350;{+349};
+						;1351;1351;{+350};
+						;1352;1352;{+351};
+						;1353;1353;{+352};
+						;1354;1354;{+353};
+						;1355;1355;{+354};
+						;1356;1356;{+355};
+						;1357;1357;{+356};
+						;1358;1358;{+357};
+						;1359;1359;{+358};
+						;1360;1360;{+359};
+						;1361;1361;{+360};
+						;1362;1362;{+361};
+						;1363;1363;{+362};
+						;1364;1364;{+363};
+						;1365;1365;{+364};
+						;1366;1366;{+365};
+						;1367;1367;{+366};
+						;1368;1368;{+367};
+						;1369;1369;{+368};
+						;1370;1370;{+369};
+						;1371;1371;{+370};
+						;1372;1372;{+371};
+						;1373;1373;{+372};
+						;1374;1374;{+373};
+						;1375;1375;{+374};
+						;1376;1376;{+375};
+						;1377;1377;{+376};
+						;1378;1378;{+377};
+						;1379;1379;{+378};
+						;1380;1380;{+379};
+						;1381;1381;{+380};
+						;1382;1382;{+381};
+						;1383;1383;{+382};
+						;1384;1384;{+383};
+						;1385;1385;{+384};
+						;1386;1386;{+385};
+						;1387;1387;{+386};
+						;1388;1388;{+387};
+						;1389;1389;{+388};
+						;1390;1390;{+389};
+						;1391;1391;{+390};
+						;1392;1392;{+391};
+						;1393;1393;{+392};
+						;1394;1394;{+393};
+						;1395;1395;{+394};
+						;1396;1396;{+395};
+						;1397;1397;{+396};
+						;1398;1398;{+397};
+						;1399;1399;{+398};
+						;1400;1400;{+399};
+						;1401;1401;{+400};
+						;1402;1402;{+401};
+						;1403;1403;{+402};
+						;1404;1404;{+403};
+						;1405;1405;{+404};
+						;1406;1406;{+405};
+						;1407;1407;{+406};
+						;1408;1408;{+407};
+						;1409;1409;{+408};
+						;1410;1410;{+409};
+						;1411;1411;{+410};
+						;1412;1412;{+411};
+						;1413;1413;{+412};
+						;1414;1414;{+413};
+						;1415;1415;{+414};
+						;1416;1416;{+415};
+						;1417;1417;{+416};
+						;1418;1418;{+417};
+						;1419;1419;{+418};
+						;1420;1420;{+419};
+						;1421;1421;{+420};
+						;1422;1422;{+421};
+						;1423;1423;{+422};
+						;1424;1424;{+423};
+						;1425;1425;{+424};
+						;1426;1426;{+425};
+						;1427;1427;{+426};
+						;1428;1428;{+427};
+						;1429;1429;{+428};
+						;1430;1430;{+429};
+						;1431;1431;{+430};
+						;1432;1432;{+431};
+						;1433;1433;{+432};
+						;1434;1434;{+433};
+						;1435;1435;{+434};
+						;1436;1436;{+435};
+						;1437;1437;{+436};
+						;1438;1438;{+437};
+						;1439;1439;{+438};
+						;1440;1440;{+439};
+						;1441;1441;{+440};
+						;1442;1442;{+441};
+						;1443;1443;{+442};
+						;1444;1444;{+443};
+						;1445;1445;{+444};
+						;1446;1446;{+445};
+						;1447;1447;{+446};
+						;1448;1448;{+447};
+						;1449;1449;{+448};
+						;1450;1450;{+449};
+						;1451;1451;{+450};
+						;1452;1452;{+451};
+						;1453;1453;{+452};
+						;1454;1454;{+453};
+						;1455;1455;{+454};
+						;1456;1456;{+455};
+						;1457;1457;{+456};
+						;1458;1458;{+457};
+						;1459;1459;{+458};
+						;1460;1460;{+459};
+						;1461;1461;{+460};
+						;1462;1462;{+461};
+						;1463;1463;{+462};
+						;1464;1464;{+463};
+						;1465;1465;{+464};
+						;1466;1466;{+465};
+						;1467;1467;{+466};
+						;1468;1468;{+467};
+						;1469;1469;{+468};
+						;1470;1470;{+469};
+						;1471;1471;{+470};
+						;1472;1472;{+471};
+						;1473;1473;{+472};
+						;1474;1474;{+473};
+						;1475;1475;{+474};
+						;1476;1476;{+475};
+						;1477;1477;{+476};
+						;1478;1478;{+477};
+						;1479;1479;{+478};
+						;1480;1480;{+479};
+						;1481;1481;{+480};
+						;1482;1482;{+481};
+						;1483;1483;{+482};
+						;1484;1484;{+483};
+						;1485;1485;{+484};
+						;1486;1486;{+485};
+						;1487;1487;{+486};
+						;1488;1488;{+487};
+						;1489;1489;{+488};
+						;1490;1490;{+489};
+						;1491;1491;{+490};
+						;1492;1492;{+491};
+						;1493;1493;{+492};
+						;1494;1494;{+493};
+						;1495;1495;{+494};
+						;1496;1496;{+495};
+						;1497;1497;{+496};
+						;1498;1498;{+497};
+						;1499;1499;{+498};
+						;1500;1500;{+499};
+						;1501;1501;{+500};
+						;1502;1502;{+501};
+						;1503;1503;{+502};
+						;1504;1504;{+503};
+						;1505;1505;{+504};
+						;1506;1506;{+505};
+						;1507;1507;{+506};
+						;1508;1508;{+507};
+						;1509;1509;{+508};
+						;1510;1510;{+509};
+						;1511;1511;{+510};
+						;1512;1512;{+511};
+						;1513;1513;{+512};
+						;1514;1514;{+513};
+						;1515;1515;{+514};
+						;1516;1516;{+515};
+						;1517;1517;{+516};
+						;1518;1518;{+517};
+						;1519;1519;{+518};
+						;1520;1520;{+519};
+						;1521;1521;{+520};
+						;1522;1522;{+521};
+						;1523;1523;{+522};
+						;1524;1524;{+523};
+						;1525;1525;{+524};
+						;1526;1526;{+525};
+						;1527;1527;{+526};
+						;1528;1528;{+527};
+						;1529;1529;{+528};
+						;1530;1530;{+529};
+						;1531;1531;{+530};
+						;1532;1532;{+531};
+						;1533;1533;{+532};
+						;1534;1534;{+533};
+						;1535;1535;{+534};
+						;1536;1536;{+535};
+						;1537;1537;{+536};
+						;1538;1538;{+537};
+						;1539;1539;{+538};
+						;1540;1540;{+539};
+						;1541;1541;{+540};
+						;1542;1542;{+541};
+						;1543;1543;{+542};
+						;1544;1544;{+543};
+						;1545;1545;{+544};
+						;1546;1546;{+545};
+						;1547;1547;{+546};
+						;1548;1548;{+547};
+						;1549;1549;{+548};
+						;1550;1550;{+549};
+						;1551;1551;{+550};
+						;1552;1552;{+551};
+						;1553;1553;{+552};
+						;1554;1554;{+553};
+						;1555;1555;{+554};
+						;1556;1556;{+555};
+						;1557;1557;{+556};
+						;1558;1558;{+557};
+						;1559;1559;{+558};
+						;1560;1560;{+559};
+						;1561;1561;{+560};
+						;1562;1562;{+561};
+						;1563;1563;{+562};
+						;1564;1564;{+563};
+						;1565;1565;{+564};
+						;1566;1566;{+565};
+						;1567;1567;{+566};
+						;1568;1568;{+567};
+						;1569;1569;{+568};
+						;1570;1570;{+569};
+						;1571;1571;{+570};
+						;1572;1572;{+571};
+						;1573;1573;{+572};
+						;1574;1574;{+573};
+						;1575;1575;{+574};
+						;1576;1576;{+575};
+						;1577;1577;{+576};
+						;1578;1578;{+577};
+						;1579;1579;{+578};
+						;1580;1580;{+579};
+						;1581;1581;{+580};
+						;1582;1582;{+581};
+						;1583;1583;{+582};
+						;1584;1584;{+583};
+						;1585;1585;{+584};
+						;1586;1586;{+585};
+						;1587;1587;{+586};
+						;1588;1588;{+587};
+						;1589;1589;{+588};
+						;1590;1590;{+589};
+						;1591;1591;{+590};
+						;1592;1592;{+591};
+						;1593;1593;{+592};
+						;1594;1594;{+593};
+						;1595;1595;{+594};
+						;1596;1596;{+595};
+						;1597;1597;{+596};
+						;1598;1598;{+597};
+						;1599;1599;{+598};
+						;1600;1600;{+599};
+						;1601;1601;{+600};
+						;1602;1602;{+601};
+						;1603;1603;{+602};
+						;1604;1604;{+603};
+						;1605;1605;{+604};
+						;1606;1606;{+605};
+						;1607;1607;{+606};
+						;1608;1608;{+607};
+						;1609;1609;{+608};
+						;1610;1610;{+609};
+						;1611;1611;{+610};
+						;1612;1612;{+611};
+						;1613;1613;{+612};
+						;1614;1614;{+613};
+						;1615;1615;{+614};
+						;1616;1616;{+615};
+						;1617;1617;{+616};
+						;1618;1618;{+617};
+						;1619;1619;{+618};
+						;1620;1620;{+619};
+						;1621;1621;{+620};
+						;1622;1622;{+621};
+						;1623;1623;{+622};
+						;1624;1624;{+623};
+						;1625;1625;{+624};
+						;1626;1626;{+625};
+						;1627;1627;{+626};
+						;1628;1628;{+627};
+						;1629;1629;{+628};
+						;1630;1630;{+629};
+						;1631;1631;{+630};
+						;1632;1632;{+631};
+						;1633;1633;{+632};
+						;1634;1634;{+633};
+						;1635;1635;{+634};
+						;1636;1636;{+635};
+						;1637;1637;{+636};
+						;1638;1638;{+637};
+						;1639;1639;{+638};
+						;1640;1640;{+639};
+						;1641;1641;{+640};
+						;1642;1642;{+641};
+						;1643;1643;{+642};
+						;1644;1644;{+643};
+						;1645;1645;{+644};
+						;1646;1646;{+645};
+						;1647;1647;{+646};
+						;1648;1648;{+647};
+						;1649;1649;{+648};
+						;1650;1650;{+649};
+						;1651;1651;{+650};
+						;1652;1652;{+651};
+						;1653;1653;{+652};
+						;1654;1654;{+653};
+						;1655;1655;{+654};
+						;1656;1656;{+655};
+						;1657;1657;{+656};
+						;1658;1658;{+657};
+						;1659;1659;{+658};
+						;1660;1660;{+659};
+						;1661;1661;{+660};
+						;1662;1662;{+661};
+						;1663;1663;{+662};
+						;1664;1664;{+663};
+						;1665;1665;{+664};
+						;1666;1666;{+665};
+						;1667;1667;{+666};
+						;1668;1668;{+667};
+						;1669;1669;{+668};
+						;1670;1670;{+669};
+						;1671;1671;{+670};
+						;1672;1672;{+671};
+						;1673;1673;{+672};
+						;1674;1674;{+673};
+						;1675;1675;{+674};
+						;1676;1676;{+675};
+						;1677;1677;{+676};
+						;1678;1678;{+677};
+						;1679;1679;{+678};
+						;1680;1680;{+679};
+						;1681;1681;{+680};
+						;1682;1682;{+681};
+						;1683;1683;{+682};
+						;1684;1684;{+683};
+						;1685;1685;{+684};
+						;1686;1686;{+685};
+						;1687;1687;{+686};
+						;1688;1688;{+687};
+						;1689;1689;{+688};
+						;1690;1690;{+689};
+						;1691;1691;{+690};
+						;1692;1692;{+691};
+						;1693;1693;{+692};
+						;1694;1694;{+693};
+						;1695;1695;{+694};
+						;1696;1696;{+695};
+						;1697;1697;{+696};
+						;1698;1698;{+697};
+						;1699;1699;{+698};
+						;1700;1700;{+699};
+						;1701;1701;{+700};
+						;1702;1702;{+701};
+						;1703;1703;{+702};
+						;1704;1704;{+703};
+						;1705;1705;{+704};
+						;1706;1706;{+705};
+						;1707;1707;{+706};
+						;1708;1708;{+707};
+						;1709;1709;{+708};
+						;1710;1710;{+709};
+						;1711;1711;{+710};
+						;1712;1712;{+711};
+						;1713;1713;{+712};
+						;1714;1714;{+713};
+						;1715;1715;{+714};
+						;1716;1716;{+715};
+						;1717;1717;{+716};
+						;1718;1718;{+717};
+						;1719;1719;{+718};
+						;1720;1720;{+719};
+						;1721;1721;{+720};
+						;1722;1722;{+721};
+						;1723;1723;{+722};
+						;1724;1724;{+723};
+						;1725;1725;{+724};
+						;1726;1726;{+725};
+						;1727;1727;{+726};
+						;1728;1728;{+727};
+						;1729;1729;{+728};
+						;1730;1730;{+729};
+						;1731;1731;{+730};
+						;1732;1732;{+731};
+						;1733;1733;{+732};
+						;1734;1734;{+733};
+						;1735;1735;{+734};
+						;1736;1736;{+735};
+						;1737;1737;{+736};
+						;1738;1738;{+737};
+						;1739;1739;{+738};
+						;1740;1740;{+739};
+						;1741;1741;{+740};
+						;1742;1742;{+741};
+						;1743;1743;{+742};
+						;1744;1744;{+743};
+						;1745;1745;{+744};
+						;1746;1746;{+745};
+						;1747;1747;{+746};
+						;1748;1748;{+747};
+						;1749;1749;{+748};
+						;1750;1750;{+749};
+						;1751;1751;{+750};
+						;1752;1752;{+751};
+						;1753;1753;{+752};
+						;1754;1754;{+753};
+						;1755;1755;{+754};
+						;1756;1756;{+755};
+						;1757;1757;{+756};
+						;1758;1758;{+757};
+						;1759;1759;{+758};
+			 </value>
+		 	</property>
+		<property name="type" value="ClassificationAttribute" />
+		 
+	</bean>
+
+	<!-- Insert or Update Greenlee ClassAttributeAssignment -->
+	<bean id="greenleeClassAttributeAssignmentConverterMapping"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+		p:mapping="gre_classification_assignment" p:converter-ref="greenleeClassAttributeAssignmentConverter" />
+
+	<bean id="greenleeClassAttributeAssignmentConverter"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+		<property name="header">
+			<value>
+				#{defaultImpexProductHeader}
+				# ClassAttributeAssignment
+				$classificationCatalog=greenleeClassification
+				$classCatalogVersion=catalogVersion(catalog(id[default='$classificationCatalog']),version[default='1.0'])[unique=true,default='$classificationCatalog:1.0']
+				$classSystemVersion=systemVersion(catalog(id[default='$classificationCatalog']),version[default='1.0'])[unique=true]
+				$classes=classificationClass(ClassificationClass.code,$classCatalogVersion)[unique=true]
+				$attribute=classificationAttribute(code,$classSystemVersion)[unique=true]
+				#% impex.setLocale(Locale.ENGLISH);
+				$lang=en
+				INSERT_UPDATE ClassAttributeAssignment; \
+				$classes; \
+				$attribute; \
+				position; \
+				attributeType(code[default=string]); \
+				multiValued[default=true]; \
+				range[default=false]; \
+				localized[default=true]
+
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>;{+0};{+1};{+2};</value>
+		</property>
+		<property name="type" value="ClassAttributeAssignment" />
+		 
+	</bean>
+
+	<!-- Insert or Update Greenlee ClassificationAttributeUnit -->
+	<bean id="greenleeClassificationAttributeUnitConverterMapping"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+		p:mapping="gre_classification_attribute_unit" p:converter-ref="greenleeClassificationAttributeUnitConverter" />
+
+	<bean id="greenleeClassificationAttributeUnitConverter"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+		<property name="header">
+			<value>
+				#{defaultImpexProductHeader}
+				#ClassAttributeAssignment
+				$classificationCatalog=greenleeClassification
+				$classCatalogVersion=catalogVersion(catalog(id[default='$classificationCatalog']),version[default='1.0'])[unique=true,default='$classificationCatalog:1.0']
+				$classSystemVersion=systemVersion(catalog(id[default='$classificationCatalog']),version[default='1.0'])[unique=true]
+				$lang=en
+				#% impex.setLocale(Locale.ENGLISH);
+
+				INSERT_UPDATE ClassificationAttributeUnit; \
+				code[unique=true]; \
+				symbol; \
+				unitType; \
+				name[lang=$lang]; \
+				$classSystemVersion[unique=true]
+
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>;{+0};{+1};{+2};{+3}</value>
+		</property>
+		<property name="type" value="ClassificationAttributeUnit" />
+	 
+	</bean>
+ 
+ <!-- # Insert Product Classification: -->
+	<bean id="newgreenleeProductClassificationConverterMapping"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+		p:mapping="newgre_product_classification" p:converter-ref="newgreenleeProductClassificationConverter" />
+
+	<bean id="newgreenleeProductClassificationConverter"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+		<property name="header">
+			<value>
+				#{defaultImpexProductHeader}
+				#{greenleeProductFeaturesHeaders}
+				
+				INSERT_UPDATE GreenleeProduct;$catalogVersion;code[unique=true]; \
+				;;$var30;$var01;$var02;	$var03;$var04;$var05;$var06;$var07;	$var08;	$var09;	$var10;	$var11;	$var12;	$var13;	$var14;	$var15;	$var16;	$var17;	$var18;	$var19;	$var20;	\
+$var21;	$var22;	$var23;	$var24;	$var25;	$var26;	$var27;	$var28;	$var29;	$var30;	$var31;	$var32;	$var33;	$var34;	$var35;	$var36;	$var37;	$var38;	$var39;	$var40;	\
+$var41;	$mul42;	$mul43;	$mul44;	$mul45;	$mul46;	$mul47;	$mul48;	$mul49;	$mul50;	$mul51;	$mul52;	$mul53;	$mul54;	$mul55;	$mul56;	$mul57;	$mul58;	$mul59;	$mul60;	\
+$mul61;	$mul62;	$mul63;	$mul64;	$mul65;	$mul66;	$mul67;	$mul68;	$mul69;	$mul70;	$mul71;	$mul72;	$mul73;	$mul74;	$mul75;	$mul76;	$mul77;	$mul78;	$mul79;	$mul80; \
+$mul81;	$mul82;	$mul83;	$mul84;	$mul85;	$mul86;	$mul87;	$mul88;	$mul89;	$mul90;	$mul91;	$mul92;	$mul93;	$mul94;	$mul95;	$mul96;	$mul97;	$mul98;	$mul99;	$mul100; \
+$mul101; $mul102; $mul103; $mul104; $mul105; $mul106; $mul107; $mul108; $mul109; $mul110; $mul111; $mul112; $mul113; \
+$mul114; $mul115; $var116; $var117; $var118; $var119; $var120; $var121; $var122; $mul123; $mul124; $mul125; $mul126; \
+$mul127; $mul128; $mul129; $mul130; $mul131; $mul132; $mul133; $mul134; $mul135; $mul136; $mul137; $mul138; $mul139; $mul140; \
+$mul141; $mul142; $mul143; $mul144; $mul145; $mul146; $mul147; $mul148; $mul149; $mul150; $mul151; $mul152; $mul153; $mul154; \
+$mul155; $mul156; $mul157; $mul158; $mul159; $mul160; $var161; $var162; $var163; $var164; $var165; $var166; $var167; $var168; \
+$var169; $var170; $var171; $var172; $var173; $var174; $var175; $var176; $var177; $var178; $var179; $var180; $var181; $var182; \
+$var183; $var184; $var185; $var186; $var187; $var188; $var189; $var190; $var191; $var192; $var193; $var194; $var195; $var196; \
+$var197; $var198; $var199; $var200; $var201; $var202; $var203; $var204; $var205; $var206; $var207; $var208; $var209; $var210; \
+$var211; $var212; $var213; $var214; $var215; $var216; $var217; $var218; $var219; $var220; $var221; $var222; $var223; $var224; \
+$var225; $var226; $var227; $var228; $var229; $var230; $var231; $var232; $var233; $var234; $var235; $var236; $var237; $var238; \
+$var239; $var240; $var241; $var242; $var243; $mul244; $mul245; $mul246; $var247; $var248; $var249; $var250; $var251; $var252; \
+$var253; $var254; $var255; $var256; $var257; $var258; $var259; $var260; $var261; $var262; $var263; $var264; $var265; $var266; \
+$var267; $var268; $var269; $var270; $var271; $var272; $var273; $var274; $var275; $var276; $var277; $var278; $var279; $var280; \
+$var281; $var282; $var283; $var284; $var285; $var286; $var287; $var288; $var289; $var290; $var291; $var292; $var293; $var294; \
+$var295; $var296; $var297; $var298; $var299; $var300; $var301; $var302; $var303; $var304; $var305; $var306; $var307; $var308; \
+$var309; $var310; $var311; $var312; $var313; $var314; $var315; $var316; $var317; $var318; $var319; $var320; $var321; $var322; \
+$var323; $var324; $var325; $var326; $var327; $var328; $var329; $var330; $var331; $var332; $var333; $var334; $var335; $var336; \
+$var337; $var338; $var339; $var340; $var341; $var342; $var343; $var344; $var345; $var346; $var347; $var348; $var349; $var350; \
+$var351; $var352; $var353; $var354; $var355; $var356; $var357; $var358; $var359; $var360; $var361; $var362; $var363; $var364; \
+$var365; $var366; $var367; $var368; $var369; $var370; $var371; $var372; $var373; $var374; $var375; $var376; $var377; $var378; \
+$var379; $var380; $var381; $var382; $var383; $var384; $var385; $var386; $var387; $var388; $var389; $var390; $var391; $var392; \
+$var393; $var394; $var395; $var396; $var397; $var398; $var399; $var400; $var401; $var402; $var403; $var404; $var405; $var406; \
+$var407; $var408; $var409; $var410; $var411; $var412; $var413; $var414; $var415; $var416; $var417; $var418; $var419; $var420; \
+$var421; $var422; $var423; $var424; $var425; $var426; $var427; $var428; $var429; $var430; $var431; $var432; $var433; $var434; \
+$var435; $var436; $var437; $var438; $var439; $var440; $var441; $var442; $var443; $var444; $var445; $var446; $var447; $var448; \
+$var449; $var450; $var451; $var452; $var453; $var454; $var455; $var456; $var457; $var458; $var459; $var460; $var461; $var462; \
+$var463; $var464; $var465; $var466; $var467; $var468; $var469; $var470; $var471; $var472; $var473; $var474; $var475; $var476; \
+$var477; $var478; $var479; $var480; $var481; $var482; $var483; $var484; $var485; $var486; $var487; $var488; $var489; $var490; \
+$var491; $var492; $var493; $var494; $var495; $var496; $var497; $var498; $var499; $var500; $var501; $var502; $var503; $var504; \
+$var505; $var506; $var507; $var508; $var509; $var510; $var511; $var512; $var513; $var514; $var515; $var516; $var517; $var518; \
+$var519; $var520; $var521; $var522; $var523; $var524; $var525; $var526; $var527; $var528; $var529; $var530; $var531; $var532; \
+$var533; $mul534; $mul535; $mul536; $var537; $var538; $var539; $var540; $var541; $var542; $var543; $var544; $var545; $var546; \
+$var547; $var548; $var549; $var550; $var551; $var552; $var553; $var554; $var555; $var556; $var557; $var558; $var559; $var560; \
+$var561; $var562; $var563; $var564; $var565; $var566; $var567; $var568; $var569; $var570; $var571; $var572; $var573; $var574; \
+$var575; $var576; $var577; $var578; $var579; $var580; $var581; $var582; $var583; $var584; $var585; $var586; $var587; $var588; \
+$var589; $var590; $var591; $var592; $var593; $var594; $var595; $var596; $var597; $var598; $var599; $var600; $var601; $var602; \
+$var603; $var604; $var605; $var606; $var607; $var608; $var609; $var610; $var611; $var612; $var613; $var614; $var615; $var616; \
+$var617; $var618; $var619; $var620; $var621; $var622; $var623; $var624; $var625; $var626; $var627; $var628; $var629; $var630; \
+$var631; $var632; $var633; $var634; $var635; $var636; $var637; $var638; $var639; $var640; $var641; $var642; $var643; $var644; \
+$var645; $var646; $var647; $var648; $var649; $var650; $var651; $var652; $var653; $mul654; $mul655; $mul656; $var657; $var658; \
+$var659; $var660; $var661; $var662; $var663; $var664; $var665; $var666; $var667; $var668; $var669; $var670; $var671; $var672; \
+$var673; $var674; $var675; $var676; $var677; $var678; $var679; $var680; $var681; $var682; $var683; $var684; $var685; $var686; \
+$var687; $var688; $var689; $var690; $var691; $var692; $var693; $var694; $var695; $var696; $var697; $var698; $var699; $var700; \
+$var701; $var702; $var703; $var704; $var705; $var706; $var707; $var708; $var709; $var710; $var711; $var712; $var713; $var714; \
+$var715; $var716; $var717; $var718; $var719; $var720; $var721; $var722; $var723; $var724; $var725; $var726; $var727; $var728; \
+$var729; $var730; $var731; $var732; $var733; $var734; $var735; $var736; $var737; $var738; $var739; $var740; $var741; $var742; \
+$var743; $mul744; $mul745; $var746; $var747; $var748; $var749; $var750; $var751; $var752; $var753; $var754; $var755; $var756; \
+$var757; $var758; $var759;
+					
+				</value>
+		</property>
+		<property name="impexRow">
+			<value>#{greenleeProductFeaturesImpexRows}</value>
+		</property>
+		<property name="type" value="GreenleeProduct" />
+	</bean>
+	
+
+<!-- variable import -->
+	<bean id="greenleeProductFeaturesHeaders" class="java.lang.String">
+		<constructor-arg>
+			<value>
+			
+				# ImpEx for Importing Product
+				#Classifications into Greenlee Store
+				#%impex.setLocale(Locale.ENGLISH);
+
+				$catalogVersion=catalogVersion(catalog(id[default='greenleeProductCatalog']),version[default='Staged'])[unique=true,default='greenleeProductCatalog':Staged]
+				$clAttrModifiers=system='greenleeClassification',version='1.0',translator=de.hybris.platform.catalog.jalo.classification.impex.ClassificationAttributeTranslator,lang=EN
+
+			 	#------------------------------------------------------------------------------------------------------
+				# Insert Product Attributes Values for all
+				#------------------------------------------------------------------------------------------------------
+								 
+				$var01=@1001[$clAttrModifiers]; #upc
+				$var02=@1002[$clAttrModifiers]; #Invoice Description
+				$var03=@1003[$clAttrModifiers]; #UNSPSC Name
+				$var04=@1004[$clAttrModifiers]; #UNSPSC Required Attributes Reviewed
+				$var05=@1005[$clAttrModifiers]; #Canadian Distributor Net
+				$var06=@1006[$clAttrModifiers]; #Canadian List Price
+				$var07=@1007[$clAttrModifiers]; #Catalog Number
+				$var08=@1008[$clAttrModifiers]; #Country of Origin
+				$var09=@1009[$clAttrModifiers]; #D Chain
+				$var10=@1010[$clAttrModifiers]; #Division
+				$var11=@1011[$clAttrModifiers]; #International Harmonize Code
+				$var12=@1012[$clAttrModifiers]; #IOS Only
+				$var13=@1013[$clAttrModifiers]; #Last 2 Digits of Product Hierarchy
+				$var14=@1014[$clAttrModifiers]; #List Price
+				$var15=@1015[$clAttrModifiers]; #Material Price Group
+				$var16=@1016[$clAttrModifiers]; #Meta Keywords
+				$var17=@1017[$clAttrModifiers]; #mpc
+				$var18=@1018[$clAttrModifiers]; #MPC First Level
+				$var19=@1019[$clAttrModifiers]; #MPC Second Level
+				$var20=@1020[$clAttrModifiers]; #MPC Third Level
+				$var21=@1021[$clAttrModifiers]; #Order Minimum
+				$var22=@1022[$clAttrModifiers]; #Packaged  Volume
+				$var23=@1023[$clAttrModifiers]; #Packaged Height
+				$var24=@1024[$clAttrModifiers]; #Packaged Length
+				$var25=@1025[$clAttrModifiers]; #Packaged NetWt(lbs)
+				$var26=@1026[$clAttrModifiers]; #Packaged Width
+				$var27=@1027[$clAttrModifiers]; #Primary Product Category
+				$var28=@1028[$clAttrModifiers]; #Product Hierarchy
+				$var29=@1029[$clAttrModifiers]; #RoHS Indicator
+				$var30=@1030[$clAttrModifiers]; #SAP Material Description
+				$var31=@1031[$clAttrModifiers]; #SAP Material Number
+				$var32=@1032[$clAttrModifiers]; #Secondary Product Category
+				$var33=@1033[$clAttrModifiers]; #Standard Pack
+				$var34=@1034[$clAttrModifiers]; #Tertiary Product Category
+				$var35=@1035[$clAttrModifiers]; #Unit of Measure
+				$var36=@1036[$clAttrModifiers]; #UPC/EAN NUMBER (GTIN)
+				$var37=@1037[$clAttrModifiers]; #US Distributor Net
+				$var38=@1038[$clAttrModifiers]; #Catalog Main Image
+				$var39=@1039[$clAttrModifiers]; #Long Description (HTML)
+				$var40=@1040[$clAttrModifiers]; #Product Approved for Syndication
+				$var41=@1041[$clAttrModifiers]; #Reviewed by Marketing
+				$mul42=@1042[$clAttrModifiers]; #Application Note
+				$mul43=@1043[$clAttrModifiers]; #Application Note
+				$mul44=@1044[$clAttrModifiers]; #Application Note
+				$mul45=@1045[$clAttrModifiers]; #Application Note
+				$mul46=@1046[$clAttrModifiers]; #Application Note
+				$mul47=@1047[$clAttrModifiers]; #Application Note PDF Filename
+				$mul48=@1048[$clAttrModifiers]; #Application Note PDF Filename
+				$mul49=@1049[$clAttrModifiers]; #Application Note PDF Filename
+				$mul50=@1050[$clAttrModifiers]; #Application Note PDF Filename
+				$mul51=@1051[$clAttrModifiers]; #Application Note PDF Filename
+				$mul52=@1052[$clAttrModifiers]; #Brochure
+				$mul53=@1053[$clAttrModifiers]; #Brochure
+				$mul54=@1054[$clAttrModifiers]; #Brochure
+				$mul55=@1055[$clAttrModifiers]; #Brochure
+				$mul56=@1056[$clAttrModifiers]; #Brochure
+				$mul57=@1057[$clAttrModifiers]; #Brochure
+				$mul58=@1058[$clAttrModifiers]; #Brochure
+				$mul59=@1059[$clAttrModifiers]; #Brochure (French)
+				$mul60=@1060[$clAttrModifiers]; #Brochure (Portuguese)
+				$mul61=@1061[$clAttrModifiers]; #Brochure (Portuguese)
+				$mul62=@1062[$clAttrModifiers]; #Brochure PDF Filename
+				$mul63=@1063[$clAttrModifiers]; #Brochure PDF Filename
+				$mul64=@1064[$clAttrModifiers]; #Brochure PDF Filename
+				$mul65=@1065[$clAttrModifiers]; #Brochure PDF Filename
+				$mul66=@1066[$clAttrModifiers]; #Brochure PDF Filename
+				$mul67=@1067[$clAttrModifiers]; #Brochure PDF Filename
+				$mul68=@1068[$clAttrModifiers]; #Brochure PDF Filename
+				$mul69=@1069[$clAttrModifiers]; #Brochure PDF Filename
+				$mul70=@1070[$clAttrModifiers]; #Brochure PDF Filename
+				$mul71=@1071[$clAttrModifiers]; #Brochure PDF Filename
+				$mul72=@1072[$clAttrModifiers]; #Brochure PDF Filename
+				$mul73=@1073[$clAttrModifiers]; #Instruction Manual
+				$mul74=@1074[$clAttrModifiers]; #Instruction Manual
+				$mul75=@1075[$clAttrModifiers]; #Instruction Manual
+				$mul76=@1076[$clAttrModifiers]; #Instruction Manual
+				$mul77=@1077[$clAttrModifiers]; #Instruction Manual
+				$mul78=@1078[$clAttrModifiers]; #Instruction Manual
+				$mul79=@1079[$clAttrModifiers]; #Instruction Manual
+				$mul80=@1080[$clAttrModifiers]; #Instruction Manual
+				$mul81=@1081[$clAttrModifiers]; #Instruction Manual
+				$mul82=@1082[$clAttrModifiers]; #Instruction Manual (Portuguese)
+				$mul83=@1083[$clAttrModifiers]; #Instruction Manual (Russian)
+				$mul84=@1084[$clAttrModifiers]; #Instruction Manual (Spanish)
+				$mul85=@1085[$clAttrModifiers]; #Instruction Manual PDF Filename
+				$mul86=@1086[$clAttrModifiers]; #Instruction Manual PDF Filename
+				$mul87=@1087[$clAttrModifiers]; #Instruction Manual PDF Filename
+				$mul88=@1088[$clAttrModifiers]; #Instruction Manual PDF Filename
+				$mul89=@1089[$clAttrModifiers]; #Instruction Manual PDF Filename
+				$mul90=@1090[$clAttrModifiers]; #Instruction Manual PDF Filename
+				$mul91=@1091[$clAttrModifiers]; #Instruction Manual PDF Filename
+				$mul92=@1092[$clAttrModifiers]; #Instruction Manual PDF Filename
+				$mul93=@1093[$clAttrModifiers]; #Instruction Manual PDF Filename
+				$mul94=@1094[$clAttrModifiers]; #Service Manual
+				$mul95=@1095[$clAttrModifiers]; #Service Manual
+				$mul96=@1096[$clAttrModifiers]; #Service Manual
+				$mul97=@1097[$clAttrModifiers]; #Service Manual PDF Filename
+				$mul98=@1098[$clAttrModifiers]; #Service Manual PDF Filename
+				$mul99=@1099[$clAttrModifiers]; #Service Manual PDF Filename
+				$mul100=@1100[$clAttrModifiers]; #Additional Images
+				$mul101=@1101[$clAttrModifiers]; #Additional Images
+				$mul102=@1102[$clAttrModifiers]; #Additional Images
+				$mul103=@1103[$clAttrModifiers]; #Additional Images
+				$mul104=@1104[$clAttrModifiers]; #Additional Images
+				$mul105=@1105[$clAttrModifiers]; #Additional Images
+				$mul106=@1106[$clAttrModifiers]; #Additional Images
+				$mul107=@1107[$clAttrModifiers]; #Additional Images
+				$mul108=@1108[$clAttrModifiers]; #Application Image
+				$mul109=@1109[$clAttrModifiers]; #Application Image
+				$mul110=@1110[$clAttrModifiers]; #Application Image
+				$mul111=@1111[$clAttrModifiers]; #In Package Image
+				$mul112=@1112[$clAttrModifiers]; #In Package Image
+				$mul113=@1113[$clAttrModifiers]; #Main Image
+				$mul114=@1114[$clAttrModifiers]; #Main Image
+				$mul115=@1115[$clAttrModifiers]; #Main Image
+				$var116=@1116[$clAttrModifiers]; #Brand
+				$var117=@1117[$clAttrModifiers]; #Document Label
+				$var118=@1118[$clAttrModifiers]; #Inner Tote Dimensions Cl
+				$var119=@1119[$clAttrModifiers]; #Material
+				$var120=@1120[$clAttrModifiers]; #Meta Description
+				$var121=@1121[$clAttrModifiers]; #Meta Title
+				$var122=@1122[$clAttrModifiers]; #Number Of Pockets
+				$mul123=@1123[$clAttrModifiers]; #Product Keywords
+				$mul124=@1124[$clAttrModifiers]; #Product Keywords
+				$mul125=@1125[$clAttrModifiers]; #Product Keywords
+				$mul126=@1126[$clAttrModifiers]; #Product Keywords
+				$mul127=@1127[$clAttrModifiers]; #Product Keywords
+				$mul128=@1128[$clAttrModifiers]; #Product Keywords
+				$mul129=@1129[$clAttrModifiers]; #Product Keywords
+				$mul130=@1130[$clAttrModifiers]; #Product Long Description
+				$mul131=@1131[$clAttrModifiers]; #Product Long Description
+				$mul132=@1132[$clAttrModifiers]; #Product Long Description
+				$mul133=@1133[$clAttrModifiers]; #Product Long Description
+				$mul134=@1134[$clAttrModifiers]; #Product Long Description
+				$mul135=@1135[$clAttrModifiers]; #Product Long Description
+				$mul136=@1136[$clAttrModifiers]; #Product Long Description
+				$mul137=@1137[$clAttrModifiers]; #Product Long Description
+				$mul138=@1138[$clAttrModifiers]; #Product Long Description
+				$mul139=@1139[$clAttrModifiers]; #Product Long Description
+				$mul140=@1140[$clAttrModifiers]; #Product Long Description
+				$mul141=@1141[$clAttrModifiers]; #Product Long Description
+				$mul142=@1142[$clAttrModifiers]; #Product Long Description
+				$mul143=@1143[$clAttrModifiers]; #Product Long Description
+				$mul144=@1144[$clAttrModifiers]; #Product Long Description
+				$mul145=@1145[$clAttrModifiers]; #Product Long Description
+				$mul146=@1146[$clAttrModifiers]; #Product Long Description
+				$mul147=@1147[$clAttrModifiers]; #Product Long Description
+				$mul148=@1148[$clAttrModifiers]; #Product Long Description
+				$mul149=@1149[$clAttrModifiers]; #Product Long Description
+				$mul150=@1150[$clAttrModifiers]; #Product Long Description
+				$mul151=@1151[$clAttrModifiers]; #Product Long Description
+				$mul152=@1152[$clAttrModifiers]; #Product Long Description
+				$mul153=@1153[$clAttrModifiers]; #Product Long Description
+				$mul154=@1154[$clAttrModifiers]; #Product Long Description
+				$mul155=@1155[$clAttrModifiers]; #Product Long Description
+				$mul156=@1156[$clAttrModifiers]; #Product Long Description
+				$mul157=@1157[$clAttrModifiers]; #Product Long Description
+				$mul158=@1158[$clAttrModifiers]; #Product Long Description
+				$mul159=@1159[$clAttrModifiers]; #Product Long Description
+				$mul160=@1160[$clAttrModifiers]; #Product Long Description
+				$var161=@1161[$clAttrModifiers]; #Short Description
+				$var162=@1162[$clAttrModifiers]; #Sub Brand
+				$var163=@1163[$clAttrModifiers]; #Web Description
+				$var164=@1164[$clAttrModifiers]; #Website Product Name
+				$var165=@1165[$clAttrModifiers]; #AC adapter input
+				$var166=@1166[$clAttrModifiers]; #AC Operation
+				$var167=@1167[$clAttrModifiers]; #AC Voltage
+				$var168=@1168[$clAttrModifiers]; #Accessories
+				$var169=@1169[$clAttrModifiers]; #Accessories included
+				$var170=@1170[$clAttrModifiers]; #Accessory
+				$var171=@1171[$clAttrModifiers]; #Accuracy
+				$var172=@1172[$clAttrModifiers]; #Accuracy Incandescent Light Source
+				$var173=@1173[$clAttrModifiers]; #Accuracy Other Light Sources
+				$var174=@1174[$clAttrModifiers]; #Accuracy to Open Short
+				$var175=@1175[$clAttrModifiers]; #Accuracy to OpenShort
+				$var176=@1176[$clAttrModifiers]; #Adapter Size
+				$var177=@1177[$clAttrModifiers]; #Adjustment Grooves
+				$var178=@1178[$clAttrModifiers]; #Air Flow
+				$var179=@1179[$clAttrModifiers]; #Air Pressure
+				$var180=@1180[$clAttrModifiers]; #Alarms
+				$var181=@1181[$clAttrModifiers]; #Alignment
+				$var182=@1182[$clAttrModifiers]; #Alignment Method
+				$var183=@1183[$clAttrModifiers]; #Amperage Measurement
+				$var184=@1184[$clAttrModifiers]; #Amperage Rating
+				$var185=@1185[$clAttrModifiers]; #Antenna Length
+				$var186=@1186[$clAttrModifiers]; #Applicable Fibers
+				$var187=@1187[$clAttrModifiers]; #Application
+				$var188=@1188[$clAttrModifiers]; #Arbor Size
+				$var189=@1189[$clAttrModifiers]; #Attenuation Deadzone
+				$var190=@1190[$clAttrModifiers]; #Attenuation Detect Accuracy
+				$var191=@1191[$clAttrModifiers]; #Automatic Shut Off
+				$var192=@1192[$clAttrModifiers]; #Automatic Shut-Off
+				$var193=@1193[$clAttrModifiers]; #Average Breaking Strength
+				$var194=@1194[$clAttrModifiers]; #Average COF
+				$var195=@1195[$clAttrModifiers]; #Average Life
+				$var196=@1196[$clAttrModifiers]; #Average Temperature Functions
+				$var197=@1197[$clAttrModifiers]; #Average Weight
+				$var198=@1198[$clAttrModifiers]; #Backlight
+				$var199=@1199[$clAttrModifiers]; #Bag Type
+				$var200=@1200[$clAttrModifiers]; #Bandwidth
+				$var201=@1201[$clAttrModifiers]; #Bar Gauge
+				$var202=@1202[$clAttrModifiers]; #Base Material
+				$var203=@1203[$clAttrModifiers]; #Battery
+				$var204=@1204[$clAttrModifiers]; #Battery Charge Time
+				$var205=@1205[$clAttrModifiers]; #Battery Charger
+				$var206=@1206[$clAttrModifiers]; #Battery Included
+				$var207=@1207[$clAttrModifiers]; #Battery Life
+				$var208=@1208[$clAttrModifiers]; #Battery Operation
+				$var209=@1209[$clAttrModifiers]; #Battery Required
+				$var210=@1210[$clAttrModifiers]; #Battery Type
+				$var211=@1211[$clAttrModifiers]; #Battery Voltage
+				$var212=@1212[$clAttrModifiers]; #Beam Distance
+				$var213=@1213[$clAttrModifiers]; #Beam Exit Angle
+				$var214=@1214[$clAttrModifiers]; #Beam Pattern
+				$var215=@1215[$clAttrModifiers]; #Bend Radius
+				$var216=@1216[$clAttrModifiers]; #Bit Diameter
+				$var217=@1217[$clAttrModifiers]; #Bit Extension
+				$var218=@1218[$clAttrModifiers]; #Bit Size
+				$var219=@1219[$clAttrModifiers]; #Blade Diameter
+				$var220=@1220[$clAttrModifiers]; #Blade Edge
+				$var221=@1221[$clAttrModifiers]; #Blade Finish
+				$var222=@1222[$clAttrModifiers]; #Blade Length
+				$var223=@1223[$clAttrModifiers]; #Blade Life
+				$var224=@1224[$clAttrModifiers]; #Blade Material
+				$var225=@1225[$clAttrModifiers]; #Blade Opening
+				$var226=@1226[$clAttrModifiers]; #Blade Rotation Positions
+				$var227=@1227[$clAttrModifiers]; #Blade Size
+				$var228=@1228[$clAttrModifiers]; #Blade Type
+				$var229=@1229[$clAttrModifiers]; #Blow Energy
+				$var230=@1230[$clAttrModifiers]; #Blow Frequency
+				$var231=@1231[$clAttrModifiers]; #Blows Per Minute
+				$var232=@1232[$clAttrModifiers]; #Braid Crimp
+				$var233=@1233[$clAttrModifiers]; #Breaking Point Weight
+				$var234=@1234[$clAttrModifiers]; #Breaking Strength
+				$var235=@1235[$clAttrModifiers]; #Buckle Material
+				$var236=@1236[$clAttrModifiers]; #Buttons
+				$var237=@1237[$clAttrModifiers]; #Cable Capacity
+				$var238=@1238[$clAttrModifiers]; #CABLE DIAMETER RANGE
+				$var239=@1239[$clAttrModifiers]; #Cable Size
+				$var240=@1240[$clAttrModifiers]; #Cable Type
+				$var241=@1241[$clAttrModifiers]; #Calibrated Wavelengths
+				$var242=@1242[$clAttrModifiers]; #Calibration Wavelengths
+				$var243=@1243[$clAttrModifiers]; #Capacitance
+				$mul244=@1244[$clAttrModifiers]; #Capacity
+				$mul245=@1245[$clAttrModifiers]; #Capacity
+				$mul246=@1246[$clAttrModifiers]; #Capacity
+				$var247=@1247[$clAttrModifiers]; #Capacity Mild Steel
+				$var248=@1248[$clAttrModifiers]; #Capacity Stainless Steel
+				$var249=@1249[$clAttrModifiers]; #Case Material
+				$var250=@1250[$clAttrModifiers]; #Caster Bolt Pattern
+				$var251=@1251[$clAttrModifiers]; #Caster Size
+				$var252=@1252[$clAttrModifiers]; #CDRH Laser Class
+				$var253=@1253[$clAttrModifiers]; #CE
+				$var254=@1254[$clAttrModifiers]; #Center Contact
+				$var255=@1255[$clAttrModifiers]; #Centerline Bend Radius
+				$var256=@1256[$clAttrModifiers]; #Certifications
+				$var257=@1257[$clAttrModifiers]; #Chain Size
+				$var258=@1258[$clAttrModifiers]; #Chains
+				$var259=@1259[$clAttrModifiers]; #Charge Voltage
+				$var260=@1260[$clAttrModifiers]; #Charger Voltage
+				$var261=@1261[$clAttrModifiers]; #Charging Time
+				$var262=@1262[$clAttrModifiers]; #Chuck
+				$var263=@1263[$clAttrModifiers]; #Chuck Size
+				$var264=@1264[$clAttrModifiers]; #Circuit Loss
+				$var265=@1265[$clAttrModifiers]; #Circuit Noise
+				$var266=@1266[$clAttrModifiers]; #Cladding Diameter
+				$var267=@1267[$clAttrModifiers]; #Cleaved Length
+				$var268=@1268[$clAttrModifiers]; #Cleaving Angle
+				$var269=@1269[$clAttrModifiers]; #Closure Type
+				$var270=@1270[$clAttrModifiers]; #Coated
+				$var271=@1271[$clAttrModifiers]; #Coating
+				$var272=@1272[$clAttrModifiers]; #Coating Diameter
+				$var273=@1273[$clAttrModifiers]; #Collapsed Length
+				$var274=@1274[$clAttrModifiers]; #Color
+				$var275=@1275[$clAttrModifiers]; #Color Code
+				$var276=@1276[$clAttrModifiers]; #Conductance
+				$var277=@1277[$clAttrModifiers]; #Conduit And Pipe Size
+				$var278=@1278[$clAttrModifiers]; #Conduit Size
+				$var279=@1279[$clAttrModifiers]; #Conduit Type
+				$var280=@1280[$clAttrModifiers]; #Connecting End Diameter
+				$var281=@1281[$clAttrModifiers]; #Connection
+				$var282=@1282[$clAttrModifiers]; #Connectivity
+				$var283=@1283[$clAttrModifiers]; #Connector
+				$var284=@1284[$clAttrModifiers]; #Connector interface
+				$var285=@1285[$clAttrModifiers]; #Connector Polish
+				$var286=@1286[$clAttrModifiers]; #Connector Style
+				$var287=@1287[$clAttrModifiers]; #Connector Type
+				$var288=@1288[$clAttrModifiers]; #Consists Of
+				$var289=@1289[$clAttrModifiers]; #Construction
+				$var290=@1290[$clAttrModifiers]; #Container Capacity
+				$var291=@1291[$clAttrModifiers]; #Container Size
+				$var292=@1292[$clAttrModifiers]; #Contains
+				$var293=@1293[$clAttrModifiers]; #Continuity Verification
+				$var294=@1294[$clAttrModifiers]; #Continuous Pulling Force
+				$var295=@1295[$clAttrModifiers]; #Cooling System
+				$var296=@1296[$clAttrModifiers]; #Cord Length
+				$var297=@1297[$clAttrModifiers]; #Counts
+				$var298=@1298[$clAttrModifiers]; #Coupler Size
+				$var299=@1299[$clAttrModifiers]; #Couplers
+				$var300=@1300[$clAttrModifiers]; #Crimp Cycle Time
+				$var301=@1301[$clAttrModifiers]; #Crimp Profile And Dimensions
+				$var302=@1302[$clAttrModifiers]; #Crimp Size
+				$var303=@1303[$clAttrModifiers]; #Crimping Capacity
+				$var304=@1304[$clAttrModifiers]; #Crimping Force
+				$var305=@1305[$clAttrModifiers]; #Crimping Range
+				$var306=@1306[$clAttrModifiers]; #Cuff Material
+				$var307=@1307[$clAttrModifiers]; #Cuff Size
+				$var308=@1308[$clAttrModifiers]; #Current
+				$var309=@1309[$clAttrModifiers]; #Current Rating
+				$var310=@1310[$clAttrModifiers]; #Cutter Size Range
+				$var311=@1311[$clAttrModifiers]; #Cutting Capacity
+				$var312=@1312[$clAttrModifiers]; #Cutting Capacity Of Aluminum
+				$var313=@1313[$clAttrModifiers]; #Cutting Capacity Of Communication Cables
+				$var314=@1314[$clAttrModifiers]; #Cutting Capacity Of Copper
+				$var315=@1315[$clAttrModifiers]; #Cutting Edge
+				$var316=@1316[$clAttrModifiers]; #Cutting Head Rotation
+				$var317=@1317[$clAttrModifiers]; #Cutting Range
+				$var318=@1318[$clAttrModifiers]; #Cutting Size
+				$var319=@1319[$clAttrModifiers]; #D:S Ratio
+				$var320=@1320[$clAttrModifiers]; #Data Transfer Rate
+				$var321=@1321[$clAttrModifiers]; #Data transmission
+				$var322=@1322[$clAttrModifiers]; #DC Voltage
+				$var323=@1323[$clAttrModifiers]; #Degree Of Bend
+				$var324=@1324[$clAttrModifiers]; #Depth
+				$var325=@1325[$clAttrModifiers]; #Depth Range
+				$var326=@1326[$clAttrModifiers]; #Depth Resolution
+				$var327=@1327[$clAttrModifiers]; #Detector Type
+				$var328=@1328[$clAttrModifiers]; #Diameter
+				$var329=@1329[$clAttrModifiers]; #Difference Temperature Functions
+				$var330=@1330[$clAttrModifiers]; #Dimension D
+				$var331=@1331[$clAttrModifiers]; #Dimension E
+				$var332=@1332[$clAttrModifiers]; #Dimension F
+				$var333=@1333[$clAttrModifiers]; #Dimension G
+				$var334=@1334[$clAttrModifiers]; #Dimension H
+				$var335=@1335[$clAttrModifiers]; #Dimension I
+				$var336=@1336[$clAttrModifiers]; #Dimension J
+				$var337=@1337[$clAttrModifiers]; #Dimension K
+				$var338=@1338[$clAttrModifiers]; #Dimension L
+				$var339=@1339[$clAttrModifiers]; #Dimension M
+				$var340=@1340[$clAttrModifiers]; #Dimension N
+				$var341=@1341[$clAttrModifiers]; #Dimension O
+				$var342=@1342[$clAttrModifiers]; #Dimension P
+				$var343=@1343[$clAttrModifiers]; #Dimension R
+				$var344=@1344[$clAttrModifiers]; #Dimension T
+				$var345=@1345[$clAttrModifiers]; #Dimension U
+				$var346=@1346[$clAttrModifiers]; #Dimension V
+				$var347=@1347[$clAttrModifiers]; #Dimension W
+				$var348=@1348[$clAttrModifiers]; #Dimension X
+				$var349=@1349[$clAttrModifiers]; #Dimension Y
+				$var350=@1350[$clAttrModifiers]; #Dimension Z
+				$var351=@1351[$clAttrModifiers]; #Dimensions
+				$var352=@1352[$clAttrModifiers]; #Diode Test
+				$var353=@1353[$clAttrModifiers]; #Discharge Size
+				$var354=@1354[$clAttrModifiers]; #Display
+				$var355=@1355[$clAttrModifiers]; #Display LCD
+				$var356=@1356[$clAttrModifiers]; #Display Magnification
+				$var357=@1357[$clAttrModifiers]; #Distance
+				$var358=@1358[$clAttrModifiers]; #Distance measurement accuracy
+				$var359=@1359[$clAttrModifiers]; #Distance Measurements
+				$var360=@1360[$clAttrModifiers]; #Draw Stud
+				$var361=@1361[$clAttrModifiers]; #Draw Studs
+				$var362=@1362[$clAttrModifiers]; #Drive Motor
+				$var363=@1363[$clAttrModifiers]; #Drive Size
+				$var364=@1364[$clAttrModifiers]; #Driver
+				$var365=@1365[$clAttrModifiers]; #Dry Weight
+				$var366=@1366[$clAttrModifiers]; #Duct Size
+				$var367=@1367[$clAttrModifiers]; #Durability
+				$var368=@1368[$clAttrModifiers]; #Duty Cycle
+				$var369=@1369[$clAttrModifiers]; #Dynamic Range
+				$var370=@1370[$clAttrModifiers]; #Earth / Ground Resistance Test
+				$var371=@1371[$clAttrModifiers]; #Electric Drill Required
+				$var372=@1372[$clAttrModifiers]; #Electrical Plug
+				$var373=@1373[$clAttrModifiers]; #Electrolyte
+				$var374=@1374[$clAttrModifiers]; #Emissivity
+				$var375=@1375[$clAttrModifiers]; #Environment
+				$var376=@1376[$clAttrModifiers]; #Environmental Conditions
+				$var377=@1377[$clAttrModifiers]; #Est Cycles per Charge
+				$var378=@1378[$clAttrModifiers]; #Estimated Cycles per Charge
+				$var379=@1379[$clAttrModifiers]; #Exclude from IDW Feed
+				$var380=@1380[$clAttrModifiers]; #Expansive Belt Size
+				$var381=@1381[$clAttrModifiers]; #Extended Length
+				$var382=@1382[$clAttrModifiers]; #Extension Type
+				$var383=@1383[$clAttrModifiers]; #Extra Monitor Connection
+				$var384=@1384[$clAttrModifiers]; #Eye Length
+				$var385=@1385[$clAttrModifiers]; #Fiber Count
+				$var386=@1386[$clAttrModifiers]; #Fiber Size
+				$var387=@1387[$clAttrModifiers]; #Fiber to Ferrule Eccentricity
+				$var388=@1388[$clAttrModifiers]; #Fiber Type
+				$var389=@1389[$clAttrModifiers]; #Field Replaceable Fuses
+				$var390=@1390[$clAttrModifiers]; #Field Usage
+				$var391=@1391[$clAttrModifiers]; #Finish
+				$var392=@1392[$clAttrModifiers]; #Flow Range
+				$var393=@1393[$clAttrModifiers]; #Flow Rate
+				$var394=@1394[$clAttrModifiers]; #Foot Candles
+				$var395=@1395[$clAttrModifiers]; #Foot Switch
+				$var396=@1396[$clAttrModifiers]; #Force Gauge
+				$var397=@1397[$clAttrModifiers]; #Form Factor
+				$var398=@1398[$clAttrModifiers]; #Freezing Temperature
+				$var399=@1399[$clAttrModifiers]; #Frequency
+				$var400=@1400[$clAttrModifiers]; #Frequency Measurement
+				$var401=@1401[$clAttrModifiers]; #Frequency Rating
+				$var402=@1402[$clAttrModifiers]; #Fuel
+				$var403=@1403[$clAttrModifiers]; #Gain
+				$var404=@1404[$clAttrModifiers]; #GFCI
+				$var405=@1405[$clAttrModifiers]; #Grip Length
+				$var406=@1406[$clAttrModifiers]; #Grip Type
+				$var407=@1407[$clAttrModifiers]; #Handle
+				$var408=@1408[$clAttrModifiers]; #Handle Color
+				$var409=@1409[$clAttrModifiers]; #Handle Length
+				$var410=@1410[$clAttrModifiers]; #Handle Material
+				$var411=@1411[$clAttrModifiers]; #Handle Type
+				$var412=@1412[$clAttrModifiers]; #Hardware Diameter
+				$var413=@1413[$clAttrModifiers]; #Hardware Requirements
+				$var414=@1414[$clAttrModifiers]; #Head Diameter
+				$var415=@1415[$clAttrModifiers]; #Height
+				$var416=@1416[$clAttrModifiers]; #Height (Handle Folded)
+				$var417=@1417[$clAttrModifiers]; #Hex Set Screw Size
+				$var418=@1418[$clAttrModifiers]; #High Pulling Speed
+				$var419=@1419[$clAttrModifiers]; #Hole Diameter
+				$var420=@1420[$clAttrModifiers]; #Hole Size
+				$var421=@1421[$clAttrModifiers]; #Horsepower
+				$var422=@1422[$clAttrModifiers]; #Hose Diameter
+				$var423=@1423[$clAttrModifiers]; #Hose Length
+				$var424=@1424[$clAttrModifiers]; #Humidity
+				$var425=@1425[$clAttrModifiers]; #Hydraulic Flow Range
+				$var426=@1426[$clAttrModifiers]; #Hydraulic Oil Capacity
+				$var427=@1427[$clAttrModifiers]; #Hydraulic Ports
+				$var428=@1428[$clAttrModifiers]; #Hydraulic System
+				$var429=@1429[$clAttrModifiers]; #Identified Signal Type
+				$var430=@1430[$clAttrModifiers]; #Identified Wave LengthRange
+				$var431=@1431[$clAttrModifiers]; #Impact Force
+				$var432=@1432[$clAttrModifiers]; #Impedance
+				$var433=@1433[$clAttrModifiers]; #Included
+				$var434=@1434[$clAttrModifiers]; #Includes
+				$var435=@1435[$clAttrModifiers]; #Inner Pockets
+				$var436=@1436[$clAttrModifiers]; #Inner Pockets
+				$var437=@1437[$clAttrModifiers]; #Inner Pockets
+				$var438=@1438[$clAttrModifiers]; #Inner Tote Dimensions Closed
+				$var439=@1439[$clAttrModifiers]; #Input Flow Range
+				$var440=@1440[$clAttrModifiers]; #Input Protection
+				$var441=@1441[$clAttrModifiers]; #Input Voltage
+				$var442=@1442[$clAttrModifiers]; #Insertion Loss
+				$var443=@1443[$clAttrModifiers]; #Insertion Loss Maximum
+				$var444=@1444[$clAttrModifiers]; #Insertion Loss Typical
+				$var445=@1445[$clAttrModifiers]; #Inside Diameter
+				$var446=@1446[$clAttrModifiers]; #Inside Radius
+				$var447=@1447[$clAttrModifiers]; #Interface Connections
+				$var448=@1448[$clAttrModifiers]; #Interface Connector
+				$var449=@1449[$clAttrModifiers]; #Interrupt Rating
+				$var450=@1450[$clAttrModifiers]; #ISO
+				$var451=@1451[$clAttrModifiers]; #Jaw
+				$var452=@1452[$clAttrModifiers]; #Jaw Capacity
+				$var453=@1453[$clAttrModifiers]; #Jaw Material
+				$var454=@1454[$clAttrModifiers]; #Jaw Opening
+				$var455=@1455[$clAttrModifiers]; #Jaw Size
+				$var456=@1456[$clAttrModifiers]; #Jaw Type
+				$var457=@1457[$clAttrModifiers]; #K-Type Contact
+				$var458=@1458[$clAttrModifiers]; #Lamp Tester Voltage
+				$var459=@1459[$clAttrModifiers]; #Lamp Type
+				$var460=@1460[$clAttrModifiers]; #Laser Classification
+				$var461=@1461[$clAttrModifiers]; #Lead Sheathed Communications Cable
+				$var462=@1462[$clAttrModifiers]; #Leakage
+				$var463=@1463[$clAttrModifiers]; #Leakage / Insulation
+				$var464=@1464[$clAttrModifiers]; #Length
+				$var465=@1465[$clAttrModifiers]; #Length Set Up
+				$var466=@1466[$clAttrModifiers]; #Length W/O Adapter
+				$var467=@1467[$clAttrModifiers]; #Length With Adapter
+				$var468=@1468[$clAttrModifiers]; #Length With Jaws
+				$var469=@1469[$clAttrModifiers]; #Lens Type
+				$var470=@1470[$clAttrModifiers]; #Linearity
+				$var471=@1471[$clAttrModifiers]; #Live Conductor Indication
+				$var472=@1472[$clAttrModifiers]; #Live Phase Indicators
+				$var473=@1473[$clAttrModifiers]; #Load Coil
+				$var474=@1474[$clAttrModifiers]; #Longitudinal Balance
+				$var475=@1475[$clAttrModifiers]; #Loop Current
+				$var476=@1476[$clAttrModifiers]; #Loss Measurements
+				$var477=@1477[$clAttrModifiers]; #Low Pulling Speed
+				$var478=@1478[$clAttrModifiers]; #Lumens
+				$var479=@1479[$clAttrModifiers]; #LUX
+				$var480=@1480[$clAttrModifiers]; #Magnification
+				$var481=@1481[$clAttrModifiers]; #Main Bag Dimensions Closed
+				$var482=@1482[$clAttrModifiers]; #Marking
+				$var483=@1483[$clAttrModifiers]; #Marking Type
+				$var484=@1484[$clAttrModifiers]; #Material thickness
+				$var485=@1485[$clAttrModifiers]; #Material type
+				$var486=@1486[$clAttrModifiers]; #Max Blade Tension
+				$var487=@1487[$clAttrModifiers]; #Max Spectral Width
+				$var488=@1488[$clAttrModifiers]; #Max Torque
+				$var489=@1489[$clAttrModifiers]; #Maximum Capacity
+				$var490=@1490[$clAttrModifiers]; #Maximum Capacity Mild Steel
+				$var491=@1491[$clAttrModifiers]; #Maximum Cutting De
+				$var492=@1492[$clAttrModifiers]; #Maximum Distance Range To Activate One Solenoid
+				$var493=@1493[$clAttrModifiers]; #Maximum Input Pressure
+				$var494=@1494[$clAttrModifiers]; #Maximum Material Thickness
+				$var495=@1495[$clAttrModifiers]; #Maximum Offset
+				$var496=@1496[$clAttrModifiers]; #Maximum Pressure
+				$var497=@1497[$clAttrModifiers]; #Maximum Pulling Force
+				$var498=@1498[$clAttrModifiers]; #Maximum Punch Force
+				$var499=@1499[$clAttrModifiers]; #Maximum Ram Travel
+				$var500=@1500[$clAttrModifiers]; #Maximum Rated Capacity
+				$var501=@1501[$clAttrModifiers]; #Maximum Rectangular Punch Size
+				$var502=@1502[$clAttrModifiers]; #Maximum Reel Diameter
+				$var503=@1503[$clAttrModifiers]; #Maximum Reel Width
+				$var504=@1504[$clAttrModifiers]; #Maximum Round Punch Size
+				$var505=@1505[$clAttrModifiers]; #Maximum Spectral Width
+				$var506=@1506[$clAttrModifiers]; #Maximum Square Punch Size
+				$var507=@1507[$clAttrModifiers]; #Maximum Temperature Functions
+				$var508=@1508[$clAttrModifiers]; #Maximum Tractive Force
+				$var509=@1509[$clAttrModifiers]; #Measurement Category
+				$var510=@1510[$clAttrModifiers]; #Measurement Range
+				$var511=@1511[$clAttrModifiers]; #Measuring Range
+				$var512=@1512[$clAttrModifiers]; #Media
+				$var513=@1513[$clAttrModifiers]; #Mesh Length
+				$var514=@1514[$clAttrModifiers]; #Minimum Battery While Testing
+				$var515=@1515[$clAttrModifiers]; #Minimum Bend Radius
+				$var516=@1516[$clAttrModifiers]; #Minimum Cable Length
+				$var517=@1517[$clAttrModifiers]; #Minimum Chuck Size
+				$var518=@1518[$clAttrModifiers]; #Minimum Diameter
+				$var519=@1519[$clAttrModifiers]; #Minimum Embedment Depth
+				$var520=@1520[$clAttrModifiers]; #Minimum Pilot Hole
+				$var521=@1521[$clAttrModifiers]; #Minimum Temperature Functions
+				$var522=@1522[$clAttrModifiers]; #Minimum Voltage For Clock LED
+				$var523=@1523[$clAttrModifiers]; #Model
+				$var524=@1524[$clAttrModifiers]; #Modulation Frequency
+				$var525=@1525[$clAttrModifiers]; #Motor
+				$var526=@1526[$clAttrModifiers]; #Motor Rotation
+				$var527=@1527[$clAttrModifiers]; #No. Of Pins
+				$var528=@1528[$clAttrModifiers]; #NoLoad Speed
+				$var529=@1529[$clAttrModifiers]; #Nominal Diameter
+				$var530=@1530[$clAttrModifiers]; #Non-Operating Temperature
+				$var531=@1531[$clAttrModifiers]; #Number Of Batteries
+				$var532=@1532[$clAttrModifiers]; #Number Of Blades
+				$var533=@1533[$clAttrModifiers]; #Number Of Pieces
+				$mul534=@1534[$clAttrModifiers]; #Number of Pockets
+				$mul535=@1535[$clAttrModifiers]; #Number of Pockets
+				$mul536=@1536[$clAttrModifiers]; #Number of Pockets
+				$var537=@1537[$clAttrModifiers]; #Number Of Stages
+				$var538=@1538[$clAttrModifiers]; #Number of Threads
+				$var539=@1539[$clAttrModifiers]; #Number Of Vials
+				$var540=@1540[$clAttrModifiers]; #Number Of Ways
+				$var541=@1541[$clAttrModifiers]; #Nut Sizes
+				$var542=@1542[$clAttrModifiers]; #Oil Flow
+				$var543=@1543[$clAttrModifiers]; #Oil Volume Required
+				$var544=@1544[$clAttrModifiers]; #Oil Volume Utilization
+				$var545=@1545[$clAttrModifiers]; #Onboard Memory
+				$var546=@1546[$clAttrModifiers]; #Open
+				$var547=@1547[$clAttrModifiers]; #Opening Size
+				$var548=@1548[$clAttrModifiers]; #Operating Pressure
+				$var549=@1549[$clAttrModifiers]; #Operating Temperature
+				$var550=@1550[$clAttrModifiers]; #Operating Voltage
+				$var551=@1551[$clAttrModifiers]; #Operation
+				$var552=@1552[$clAttrModifiers]; #Operation Type
+				$var553=@1553[$clAttrModifiers]; #Optimum Flow Range
+				$var554=@1554[$clAttrModifiers]; #Optional Adapter For Hydraulic Driver
+				$var555=@1555[$clAttrModifiers]; #Optional Long Boom Extension
+				$var556=@1556[$clAttrModifiers]; #Output
+				$var557=@1557[$clAttrModifiers]; #Output Flow Range
+				$var558=@1558[$clAttrModifiers]; #Output Port
+				$var559=@1559[$clAttrModifiers]; #Output Signal Level
+				$var560=@1560[$clAttrModifiers]; #Output Voltage
+				$var561=@1561[$clAttrModifiers]; #Outside Diameter
+				$var562=@1562[$clAttrModifiers]; #Overall Height
+				$var563=@1563[$clAttrModifiers]; #Overall Length
+				$var564=@1564[$clAttrModifiers]; #Overall Length Ram Retracted
+				$var565=@1565[$clAttrModifiers]; #Package
+				$var566=@1566[$clAttrModifiers]; #Package Type
+				$var567=@1567[$clAttrModifiers]; #Packaging
+				$var568=@1568[$clAttrModifiers]; #Packaging Type
+				$var569=@1569[$clAttrModifiers]; #Pair Tracing Tones
+				$var570=@1570[$clAttrModifiers]; #Passive Trace Frequency
+				$var571=@1571[$clAttrModifiers]; #Pedal Type
+				$var572=@1572[$clAttrModifiers]; #PG
+				$var573=@1573[$clAttrModifiers]; #PH Range
+				$var574=@1574[$clAttrModifiers]; #Pilot Drill
+				$var575=@1575[$clAttrModifiers]; #Pilot Drill Size
+				$var576=@1576[$clAttrModifiers]; #Pipe Tap Size
+				$var577=@1577[$clAttrModifiers]; #Point Type
+				$var578=@1578[$clAttrModifiers]; #Polarization Dependence
+				$var579=@1579[$clAttrModifiers]; #Port Size Inlet
+				$var580=@1580[$clAttrModifiers]; #Pouch Material
+				$var581=@1581[$clAttrModifiers]; #Power
+				$var582=@1582[$clAttrModifiers]; #Power Influence
+				$var583=@1583[$clAttrModifiers]; #Power Range
+				$var584=@1584[$clAttrModifiers]; #Power Rating
+				$var585=@1585[$clAttrModifiers]; #Power Requirement
+				$var586=@1586[$clAttrModifiers]; #Power Requirements
+				$var587=@1587[$clAttrModifiers]; #Power Source
+				$var588=@1588[$clAttrModifiers]; #Power Supply
+				$var589=@1589[$clAttrModifiers]; #Preset Strip Length
+				$var590=@1590[$clAttrModifiers]; #Pressure And Return Ports
+				$var591=@1591[$clAttrModifiers]; #Pressure Port
+				$var592=@1592[$clAttrModifiers]; #Pressure Port Through
+				$var593=@1593[$clAttrModifiers]; #Pressure Rating
+				$var594=@1594[$clAttrModifiers]; #Probe Length
+				$var595=@1595[$clAttrModifiers]; #Protection Sleeve Length
+				$var596=@1596[$clAttrModifiers]; #Pulling Capability
+				$var597=@1597[$clAttrModifiers]; #Pulling Force
+				$var598=@1598[$clAttrModifiers]; #Pulling Rope
+				$var599=@1599[$clAttrModifiers]; #Pulling Speeds
+				$var600=@1600[$clAttrModifiers]; #Pulling Speeds
+				$var601=@1601[$clAttrModifiers]; #Quantity
+				$var602=@1602[$clAttrModifiers]; #Range
+				$var603=@1603[$clAttrModifiers]; #Range - C
+				$var604=@1604[$clAttrModifiers]; #Range - F
+				$var605=@1605[$clAttrModifiers]; #Rated Flow
+				$var606=@1606[$clAttrModifiers]; #Rated Life Cycle
+				$var607=@1607[$clAttrModifiers]; #Rated Pressure
+				$var608=@1608[$clAttrModifiers]; #Reactive Power
+				$var609=@1609[$clAttrModifiers]; #Receiver Range
+				$var610=@1610[$clAttrModifiers]; #Receiver To Transmitter Distance
+				$var611=@1611[$clAttrModifiers]; #Reel Type
+				$var612=@1612[$clAttrModifiers]; #Reflection Detect Accuracy
+				$var613=@1613[$clAttrModifiers]; #Relative Humidity
+				$var614=@1614[$clAttrModifiers]; #Remote Identifier
+				$var615=@1615[$clAttrModifiers]; #Replacement
+				$var616=@1616[$clAttrModifiers]; #Replacement Part
+				$var617=@1617[$clAttrModifiers]; #Required Hole Size
+				$var618=@1618[$clAttrModifiers]; #Resistance
+				$var619=@1619[$clAttrModifiers]; #Resistance Measurement
+				$var620=@1620[$clAttrModifiers]; #Resistance Range
+				$var621=@1621[$clAttrModifiers]; #Resolution
+				$var622=@1622[$clAttrModifiers]; #Return Loss
+				$var623=@1623[$clAttrModifiers]; #Return Port
+				$var624=@1624[$clAttrModifiers]; #Return Port Through
+				$var625=@1625[$clAttrModifiers]; #Return Pressure
+				$var626=@1626[$clAttrModifiers]; #RFL
+				$var627=@1627[$clAttrModifiers]; #Roller Opening Size
+				$var628=@1628[$clAttrModifiers]; #Rope Diameter
+				$var629=@1629[$clAttrModifiers]; #Rope Length
+				$var630=@1630[$clAttrModifiers]; #Rope Stand
+				$var631=@1631[$clAttrModifiers]; #Rotating Eye Diameter
+				$var632=@1632[$clAttrModifiers]; #Rotation
+				$var633=@1633[$clAttrModifiers]; #Rpm
+				$var634=@1634[$clAttrModifiers]; #Sampling Rate
+				$var635=@1635[$clAttrModifiers]; #Screw Size
+				$var636=@1636[$clAttrModifiers]; #Screw Type
+				$var637=@1637[$clAttrModifiers]; #Seal
+				$var638=@1638[$clAttrModifiers]; #Section Length
+				$var639=@1639[$clAttrModifiers]; #Sections
+				$var640=@1640[$clAttrModifiers]; #Shaft Diameter
+				$var641=@1641[$clAttrModifiers]; #Shaft Length
+				$var642=@1642[$clAttrModifiers]; #Shank
+				$var643=@1643[$clAttrModifiers]; #Shank Diameter
+				$var644=@1644[$clAttrModifiers]; #Shank Length
+				$var645=@1645[$clAttrModifiers]; #Shank Shape
+				$var646=@1646[$clAttrModifiers]; #Shank Size
+				$var647=@1647[$clAttrModifiers]; #Shank Type
+				$var648=@1648[$clAttrModifiers]; #Sheath
+				$var649=@1649[$clAttrModifiers]; #Ship Weight
+				$var650=@1650[$clAttrModifiers]; #Side Panel Material
+				$var651=@1651[$clAttrModifiers]; #Signal Direction
+				$var652=@1652[$clAttrModifiers]; #Signal Direction Test Range
+				$var653=@1653[$clAttrModifiers]; #Signal Power Test Range
+				$mul654=@1654[$clAttrModifiers]; #Size
+				$mul655=@1655[$clAttrModifiers]; #Size
+				$mul656=@1656[$clAttrModifiers]; #Size
+				$var657=@1657[$clAttrModifiers]; #Software Requirements
+				$var658=@1658[$clAttrModifiers]; #Solenoid Circuit Recharge
+				$var659=@1659[$clAttrModifiers]; #Sound Power Level
+				$var660=@1660[$clAttrModifiers]; #Special Features
+				$var661=@1661[$clAttrModifiers]; #Speed
+				$var662=@1662[$clAttrModifiers]; #Spindle Diameter
+				$var663=@1663[$clAttrModifiers]; #Splice Connector
+				$var664=@1664[$clAttrModifiers]; #Splice Loss
+				$var665=@1665[$clAttrModifiers]; #Splice Time
+				$var666=@1666[$clAttrModifiers]; #Stability
+				$var667=@1667[$clAttrModifiers]; #Standard
+				$var668=@1668[$clAttrModifiers]; #Standard Boom Extension
+				$var669=@1669[$clAttrModifiers]; #Standard Foot Size
+				$var670=@1670[$clAttrModifiers]; #Standout
+				$var671=@1671[$clAttrModifiers]; #Storage of Splice Results
+				$var672=@1672[$clAttrModifiers]; #Storage Temperature
+				$var673=@1673[$clAttrModifiers]; #StorageOperatingTemperature
+				$var674=@1674[$clAttrModifiers]; #Strainer
+				$var675=@1675[$clAttrModifiers]; #Stress Balance
+				$var676=@1676[$clAttrModifiers]; #Stress Test
+				$var677=@1677[$clAttrModifiers]; #Stripping Length
+				$var678=@1678[$clAttrModifiers]; #Stripping Range
+				$var679=@1679[$clAttrModifiers]; #Strips Braid Length 1
+				$var680=@1680[$clAttrModifiers]; #Strips Braid Length 2
+				$var681=@1681[$clAttrModifiers]; #Stroke
+				$var682=@1682[$clAttrModifiers]; #Style
+				$var683=@1683[$clAttrModifiers]; #Suction Size
+				$var684=@1684[$clAttrModifiers]; #Switch Type
+				$var685=@1685[$clAttrModifiers]; #System
+				$var686=@1686[$clAttrModifiers]; #Tape End
+				$var687=@1687[$clAttrModifiers]; #TDR Calibration
+				$var688=@1688[$clAttrModifiers]; #TDR Range
+				$var689=@1689[$clAttrModifiers]; #Teeth Per Inch
+				$var690=@1690[$clAttrModifiers]; #Teeth Type
+				$var691=@1691[$clAttrModifiers]; #Temperature Range
+				$var692=@1692[$clAttrModifiers]; #Temperature Rating
+				$var693=@1693[$clAttrModifiers]; #Tensile Strength
+				$var694=@1694[$clAttrModifiers]; #Tension Strength
+				$var695=@1695[$clAttrModifiers]; #Tension Test
+				$var696=@1696[$clAttrModifiers]; #Test Voltage
+				$var697=@1697[$clAttrModifiers]; #Testing Range
+				$var698=@1698[$clAttrModifiers]; #Thickness
+				$var699=@1699[$clAttrModifiers]; #Thread Per Inch
+				$var700=@1700[$clAttrModifiers]; #Thread Size
+				$var701=@1701[$clAttrModifiers]; #Thread Type
+				$var702=@1702[$clAttrModifiers]; #Threading Size
+				$var703=@1703[$clAttrModifiers]; #Thumb Material
+				$var704=@1704[$clAttrModifiers]; #Time
+				$var705=@1705[$clAttrModifiers]; #Tip
+				$var706=@1706[$clAttrModifiers]; #Tip Size
+				$var707=@1707[$clAttrModifiers]; #Tip Type
+				$var708=@1708[$clAttrModifiers]; #Tire Type
+				$var709=@1709[$clAttrModifiers]; #Tool Coupler
+				$var710=@1710[$clAttrModifiers]; #Torque Rating
+				$var711=@1711[$clAttrModifiers]; #Transmitter Frequency
+				$var712=@1712[$clAttrModifiers]; #Transmitter Power
+				$var713=@1713[$clAttrModifiers]; #Trash Diameter
+				$var714=@1714[$clAttrModifiers]; #True Power
+				$var715=@1715[$clAttrModifiers]; #Tube Heating Time
+				$var716=@1716[$clAttrModifiers]; #Twist Length
+				$var717=@1717[$clAttrModifiers]; #Type
+				$var718=@1718[$clAttrModifiers]; #Type Of Vials
+				$var719=@1719[$clAttrModifiers]; #Typical Power Output
+				$var720=@1720[$clAttrModifiers]; #Typical Power Output 9125
+				$var721=@1721[$clAttrModifiers]; #UNSPSC
+				$var722=@1722[$clAttrModifiers]; #Use With Anchor Number
+				$var723=@1723[$clAttrModifiers]; #Use With Quick Change Arbor
+				$var724=@1724[$clAttrModifiers]; #Use With Quick Change Arbor No.
+				$var725=@1725[$clAttrModifiers]; #Use With Standard Arbor No
+				$var726=@1726[$clAttrModifiers]; #Use With Standard Arbor No.
+				$var727=@1727[$clAttrModifiers]; #Useable Oil Capacity
+				$var728=@1728[$clAttrModifiers]; #Vacuum Lift
+				$var729=@1729[$clAttrModifiers]; #Valve Location
+				$var730=@1730[$clAttrModifiers]; #Vibration Level
+				$var731=@1731[$clAttrModifiers]; #Viscosity
+				$var732=@1732[$clAttrModifiers]; #Voltage
+				$var733=@1733[$clAttrModifiers]; #Voltage Measurement
+				$var734=@1734[$clAttrModifiers]; #Voltage Protection
+				$var735=@1735[$clAttrModifiers]; #Voltage Rating
+				$var736=@1736[$clAttrModifiers]; #Waist Size
+				$var737=@1737[$clAttrModifiers]; #Warranty
+				$var738=@1738[$clAttrModifiers]; #Waterproof
+				$var739=@1739[$clAttrModifiers]; #Wattage
+				$var740=@1740[$clAttrModifiers]; #Wavelength
+				$var741=@1741[$clAttrModifiers]; #Wavelength Dependence
+				$var742=@1742[$clAttrModifiers]; #Wavelength Range
+				$var743=@1743[$clAttrModifiers]; #Wavelength Visual Fault Locator
+				$mul744=@1744[$clAttrModifiers]; #Weight
+				$mul745=@1745[$clAttrModifiers]; #Weight
+				$var746=@1746[$clAttrModifiers]; #Weight Driver With Battery
+				$var747=@1747[$clAttrModifiers]; #Weight With Adapter
+				$var748=@1748[$clAttrModifiers]; #Weight With Jaws
+				$var749=@1749[$clAttrModifiers]; #Wheel Diameter
+				$var750=@1750[$clAttrModifiers]; #Wheel Tread
+				$var751=@1751[$clAttrModifiers]; #Whip Hoses
+				$var752=@1752[$clAttrModifiers]; #Width
+				$var753=@1753[$clAttrModifiers]; #Width Head Open
+				$var754=@1754[$clAttrModifiers]; #Width Set Up
+				$var755=@1755[$clAttrModifiers]; #Wire Size
+				$var756=@1756[$clAttrModifiers]; #Wire Type
+				$var757=@1757[$clAttrModifiers]; #Wiremap
+				$var758=@1758[$clAttrModifiers]; #Working Pressure
+				$var759=@1759[$clAttrModifiers]; #All Assets Linked to Products
+								 
+			</value>
+		</constructor-arg>
+	</bean>
+	<bean id="greenleeProductFeaturesImpexRows" class="java.lang.String">
+		<constructor-arg>
+			<value>
+			;;{+31};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14};{15};{16};{17};{18};{19};{20};{21};{22};{23};{24};{25};{26};{27};{28};{29};{30};{31}; \
+{32};{33};{34};{35};{36};{37};{38};{39};{40};{41};{42},{43},{44},{45},{46};{47},{48},{49},{50},{51};{52},{53},{54},{55},{56},{57},{58};{59};{60};{61}; \
+{62},{63},{64},{65},{66},{67},{68},{69},{70},{71},{72};{73},{74},{75},{76},{77},{78},{79},{80},{81},{82},{83},{84};{85},{86},{87},{88},{89}, \
+{90},{91},{92},{93};{94},{95},{96};{97},{98},{99};{100},{101},{102},{103},{104},{105},{106},{107},{108},{109},{110};{111},{112};{113},{114},{115};{116}; \
+{117};{118};{119};{120};{121};{122};{123},{124},{125},{126},{127},{128},{129};{130},{131},{132},{133},{134},{135},{136},{137},{138},{139}, \
+{140},{141},{142},{143},{144},{145},{146},{147},{148},{149},{150},{151},{152},{153},{154},{155},{156},{157},{158},{159},{160};{161};{162};{163};{164};  \
+{165};{166};{167};{168};{169};{170};{171};{172};{173};{174};{175};{176};{177};{178};{179};{180};{181};{182};{183};{184};{185};{186};{187};{188};{189};{190}; \
+{191};{192};{193};{194};{195};{196};{197};{198};{199};{200};{201};{202};{203};{204};{205};{206};{207};{208};{209};{210};{211};{212};{213};{214};{215};{216}; \
+{217};{218};{219};{220};{221};{222};{223};{224};{225};{226};{227};{228};{229};{230};{231};{232};{233};{234};{235};{236};{237};{238};{239};{240};{241};{242}; \
+{243};{244},{245},{246};{247};{248};{249};{250};{251};{252};{253};{254};{255};{256};{257};{258};{259};{260};{261};{262};{263};{264};{265};{266};{267};{268}; \
+{269};{270};{271};{272};{273};{274};{275};{276};{277};{278};{279};{280};{281};{282};{283};{284};{285};{286};{287};{288};{289};{290};{291};{292};{293};{294}; \
+{295};{296};{297};{298};{299};{300};{301};{302};{303};{304};{305};{306};{307};{308};{309};{310};{311};{312};{313};{314};{315};{316};{317};{318};{319};{320}; \
+{321};{322};{323};{324};{325};{326};{327};{328};{329};{330};{331};{332};{333};{334};{335};{336};{337};{338};{339};{340};{341};{342};{343};{344};{345};{346}; \
+{347};{348};{349};{350};{351};{352};{353};{354};{355};{356};{357};{358};{359};{360};{361};{362};{363};{364};{365};{366};{367};{368};{369};{370};{371};{372}; \
+{373};{374};{375};{376};{377};{378};{379};{380};{381};{382};{383};{384};{385};{386};{387};{388};{389};{390};{391};{392};{393};{394};{395};{396};{397};{398}; \
+{399};{400};{401};{402};{403};{404};{405};{406};{407};{408};{409};{410};{411};{412};{413};{414};{415};{416};{417};{418};{419};{420};{421};{422};{423};{424}; \
+{425};{426};{427};{428};{429};{430};{431};{432};{433};{434};{435};{436};{437};{438};{439};{440};{441};{442};{443};{444};{445};{446};{447};{448};{449};{450}; \
+{451};{452};{453};{454};{455};{456};{457};{458};{459};{460};{461};{462};{463};{464};{465};{466};{467};{468};{469};{470};{471};{472};{473};{474};{475};{476}; \
+{477};{478};{479};{480};{481};{482};{483};{484};{485};{486};{487};{488};{489};{490};{491};{492};{493};{494};{495};{496};{497};{498};{499};{500};{501};{502}; \
+{503};{504};{505};{506};{507};{508};{509};{510};{511};{512};{513};{514};{515};{516};{517};{518};{519};{520};{521};{522};{523};{524};{525};{526};{527};{528}; \
+{529};{530};{531};{532};{533};{534},{535},{536};{537};{538};{539};{540};{541};{542};{543};{544};{545};{546};{547};{548};{549};{550};{551};{552};{553};{554}; \
+{555};{556};{557};{558};{559};{560};{561};{562};{563};{564};{565};{566};{567};{568};{569};{570};{571};{572};{573};{574};{575};{576};{577};{578};{579};{580}; \
+{581};{582};{583};{584};{585};{586};{587};{588};{589};{590};{591};{592};{593};{594};{595};{596};{597};{598};{599};{600};{601};{602};{603};{604};{605};{606}; \
+{607};{608};{609};{610};{611};{612};{613};{614};{615};{616};{617};{618};{619};{620};{621};{622};{623};{624};{625};{626};{627};{628};{629};{630};{631};{632}; \
+{633};{634};{635};{636};{637};{638};{639};{640};{641};{642};{643};{644};{645};{646};{647};{648};{649};{650};{651};{652};{653};{654},{655},{656};{657};{658}; \
+{659};{660};{661};{662};{663};{664};{665};{666};{667};{668};{669};{670};{671};{672};{673};{674};{675};{676};{677};{678};{679};{680};{681};{682};{683};{684}; \
+{685};{686};{687};{688};{689};{690};{691};{692};{693};{694};{695};{696};{697};{698};{699};{700};{701};{702};{703};{704};{705};{706};{707};{708};{709};{710}; \
+{711};{712};{713};{714};{715};{716};{717};{718};{719};{720};{721};{722};{723};{724};{725};{726};{727};{728};{729};{730};{731};{732};{733};{734};{735};{736}; \
+{737};{738};{739};{740};{741};{742};{743};{744},{745};{746};{747};{748};{749};{750};{751};{752};{753};{754};{755};{756};{757};{758};{759};
+								 
+			</value>
+		</constructor-arg>
+	</bean>
+	<!-- 4) File Order Processing -->
+	<alias name="greenleeFileOrderComparator" alias="fileOrderComparator" />
+	<bean id="greenleeFileOrderComparator"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.FileOrderComparator">
+		<property name="prefixPriority">
+			<map>
+				<!-- default priority is 0 -->
+				<entry key="gre_classification_class" value="1" />
+				<entry key="gre_classification_attribute" value="2" />
+				<entry key="gre_classification_assignment" value="3" />
+				<entry key="gre_product_classification" value="4" />
+			</map>
+		</property>
+	</bean>
+
+</beans>

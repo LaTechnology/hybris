@@ -1,0 +1,30 @@
+$defaultConversionStrategy=imageMagickMediaConversionStrategy
+$defaultMime=image/jpeg
+
+INSERT_UPDATE ConversionMediaFormat;qualifier[unique=true];name[lang=en];conversionStrategy[default=$defaultConversionStrategy];conversion;inputFormat(qualifier);mediaAddOns(code,catalogVersion(catalog(id),version));mimeType[default=$defaultMime];
+;mediaConversionPlugin;   ;;;
+;mediaConversion_1200Wx1200H;1200W x 1200H;;-resize 1200x1200 ;mediaConversionPlugin
+;mediaConversion_515Wx515H ;515W x 515H;;-resize 515x515 ;mediaConversionPlugin
+;mediaConversion_300Wx300H ;300Wx300H;;-resize 300x300 ;mediaConversionPlugin
+;mediaConversion_96Wx96H ;96Wx96H;;-resize 96x96  ;mediaConversionPlugin
+;mediaConversion_65Wx65H ;65Wx65H;;-resize 65x65  ;mediaConversionPlugin
+;mediaConversion_30Wx30H ;30Wx30H;;-resize 30x30  ;mediaConversionPlugin
+;mediaConversion_le_320 ;Viewport < 320px;;-resize 320x320  ;mediaConversionPlugin
+;mediaConversion_le_480 ;Viewport < 480px;;-resize 480x480  ;mediaConversionPlugin
+;mediaConversion_le_768 ;Viewport < 768px;;-resize 768x768  ;mediaConversionPlugin
+;mediaConversion_le_960 ;Viewport < 960px;;-resize 960x960  ;mediaConversionPlugin
+;mediaConversion_ge_960 ;Viewport >= 960px ;;;mediaConversionPlugin
+;mediaConversion_span_6;Span 6 media format (230x230);;-resize 230x230 ;mediaConversionPlugin
+;mediaConversion_span_8;Span 8 media format (310x310);;-resize 310x310 ;mediaConversionPlugin
+;mediaConversion_span_12;Span 12 media format (470x470);;-resize 470x470 ;mediaConversionPlugin
+;mediaConversion_span_14;Span 14 media format (550x550);;-resize 550x550 ;mediaConversionPlugin
+;mediaConversion_span_16;Span 16 media format (630x630);;-resize 630x630 ;mediaConversionPlugin
+;mediaConversion_span_18;Span 18 media format (710x710);;-resize 710x710 ;mediaConversionPlugin
+;mediaConversion_span_24;Span 24 media format (950x950);;-resize 950x950 ;mediaConversionPlugin
+
+
+
+INSERT_UPDATE ConversionGroup;code[unique=true];name[lang=en];supportedFormats(qualifier);
+;MediaConversionPluginConversionGroup;Accelerator Product Images;mediaConversion_1200Wx1200H,mediaConversion_515Wx515H,mediaConversion_300Wx300H,mediaConversion_96Wx96H,mediaConversion_65Wx65H,mediaConversion_30Wx30H
+#;luxuryConversionGroup;Responsive Store Images;mediaConversion_1200Wx1200H,mediaConversion_515Wx515H,mediaConversion_300Wx300H,mediaConversion_96Wx96H,mediaConversion_65Wx65H,mediaConversion_30Wx30H,mediaConversion_le_320,mediaConversion_le_480,mediaConversion_le_768,mediaConversion_le_960,mediaConversion_ge_960
+;acceleratorBannerConversionGroup;Accelerator Banners;mediaConversion_span_6,mediaConversion_span_8,mediaConversion_span_12,mediaConversion_span_14,mediaConversion_span_16,mediaConversion_span_18,mediaConversion_span_24

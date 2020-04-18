@@ -1,0 +1,136 @@
+# ImpEx for Importing Products into greenlee Store
+
+# Macros / Replacement Parameter definitions
+$productCatalog=greenleeProductCatalog
+$productCatalogName=greenlee Product Catalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$supercategories=supercategories(code, $catalogVersion)
+$baseProduct=baseProduct(code,$catalogVersion)
+$approved=approvalstatus(code)[default='approved']
+
+# Language
+$lang=en
+
+# Insert Products
+INSERT_UPDATE GreenleeProduct;code[unique=true];$supercategories;manufacturerName;manufacturerAID;ean;variantType(code);unit(code)[default=pieces];$catalogVersion;$approved
+ ;637227;;Belkin;F8E096;0722868137406
+ ;693923;;StarTech.com;CTK500;065030781343
+ ;1101690;;Black & Decker;DC6PAKRA;028877574813
+ ;1101695;;Black & Decker;DC330K;028877448688
+ ;1128762;;StarTech.com;CTK400LAN;065030792622
+ 
+UPDATE GreenleeProduct;code[unique=true];name[lang=$lang];description[lang=$lang];summary[lang=$lang];b2bProduct[default=false];b2cProduct[default=true];b2eProduct[default=false];requestToDemo[default=false];$catalogVersion
+ ;637227;Plier Set (3 Pack);Having the proper tool for the job is as important to the do-it-yourself electronic enthusiast as it is to the professional. Belkin's wide selection of multi-purpose computer tools handles upgrades, repairs, cleaning, routine maintenance and adjustments with ease.;Plier Set (3 Pack);;;
+ ;693923;P.C. Service Kit / C.S.A. Soldering Iron ;This 19-piece PC toolkit provides you with everything you'll need to repair and maintain today's computers. Designed to be used in offices or by computer services people, the carrying case is made from vinyl and is zippered to keep everything in one place.  ;P.C. Service Kit / C.S.A. Soldering Iron;;;
+ ;1101690;FireStorm 18 Volt 6 Tool Combo Kit;;;;;
+ ;1101695;Cordless Jig Saw;-All-metal lever-action keyless blade change allows for quick and easy blade changes.<br/>-All-metal keyless shoe bevel with detents at 0°, 15°, 30° and 45° provides versatility for easy bevel cutting.<br/>-4-position orbital action provides control of cu;Heavy-Duty XRP 18V Cordless Jig Saw Kit with Keyless Blade Change;;;
+ ;1128762;Professional Network Installer Tool Kit ;The StarTech.com Professional LAN Installation Tool kit provides all the necessary tools to install and test RJ45 networks in a compact, handy, carrying case. Tools included are: a RJ45/11 Crimp tool, a 110/66 Impact Punch Tool, a wire stripper, several RJ45 connectors, and a RJ45 network cable tester with remote loop back plug (same as the StarTech.com REMOTETEST tester).;Professional Network Installer Tool Kit - Installation Kit;;;
+ ;000000000001111;Test Product;"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";"All-metal lever-action keyless blade change allows for quick and easy blade changes.<br/>-All-metal keyless shoe bevel with detents at 0°, 15°, 30° and 45° provides versatility for easy bevel cutting.<br/>-4-position orbital action provides control of cu;Heavy-Duty XRP 18V Cordless Jig Saw Kit with Keyless Blade Change";;;;
+
+ 
+INSERT_UPDATE GreenleeProduct;code[unique=true];$supercategories;manufacturerName;manufacturerAID;ean;variantType(code);unit(code)[default=pieces];$catalogVersion;$approved
+ ;20001;;GreenLee;GREEN;111333
+ 
+ UPDATE GreenleeProduct;code[unique=true];name[lang=$lang];description[lang=$lang];summary[lang=$lang];b2bProduct[default=false];b2cProduct[default=true];b2eProduct[default=false];requestToDemo[default=false];$catalogVersion;catalogNumber;longUPC;productFeatures
+ ;20001;AirScout 306 Wifi Testing Kit;<p>Service providers have found that simply looking at Signal Strength measurements and using a single instrument is not a true measure of the Wi-Fi user experience in the home. Current workflows results in un-characterized Wi-Fi environment causing high amount of customer service calls and truck rolls.</p><p>AirScout provides an automated solution that surveys the residence from Layer 1 all the way through to the application layer. Providing technicians with a tool that distills complex measurements into easy to understand metrics&#59enabling technicians to convey to consumers whether their applications are supported where they need it.</p><ul><li>1 - Carry Case</li><li>1 - AC/DC Universal Power Supply</li><li>1 - 12V Vehicle Charging Lead</li><li>1 - Quick Start Guide</li><li>1 - Airscout Master Controller (ASM300)</li><li>6 - AirScout Client Devices (ASC300)</li></ul>;Service providers have found that simply looking at Signal Strength measurements and using a single instrument is not a true measure of the Wi-Fi user experience in the home. Current workflows results in un-characterized Wi-Fi environment causing high amount of customer service calls and truck rolls.;;;;true;;20001;ASK306-ENT;<h3>Master Controller</h3><p>The AirScout master controller (ASM300) is a dual-band MIMO wireless access point which when combined with three2  or more remote client units will evaluate the likely performance of the entire installation. The ASM300 should be placed approximately where the client gateway device will eventually be installed. However, note that one aspect of the AirScout system is that recommendations may later be made to re-locate this for optimum coverage throughout the premises.</p><h3>Clients</h3><p>The remote AirScout client (ASC300) devices are also dual band MIMO and are also placed in approximately the same places real end-user devices would be used around the home.</p><h3>Software</h3><p>AirScout is operated by an App running on a commonly available tablet computer3 . Once the App is started and communication is established to the AirScout master controller. An outline floor plan of the site is developed in the “App”.  Most commonly by dragging a standard shape “house plan” onto the working screen and the "access point" placed on this in its relative position. Absolute scale is not important. Each of the ASC300 clients is then placed onto the floor-plan in roughly the proportional positions they are in the real-world; at this point the technician can re-assign names to the client devices if necessary making test reports easier to understand for the client.</p><p>The technician then simply presses the “start test” button in the app and is free to get on with more conventional installation tasks while AirScout continues testing autonomously. Typically with six client devices the whole test sequence takes approximately five minutes; compare that to having to stand still with a single hand-held device in each location for several minutes to carry out a manual survey.</p>
+
+INSERT_UPDATE GreenleeProduct;$catalogVersion;code[unique=true];weight;weightUnits;
+;;637227;50;lbs;
+;;693923;50;lbs;
+;;1101690;50;lbs;
+;;1101695;50;lbs;
+;;1128762;50;lbs;
+;;20001;50;lbs;
+
+ 
+ ######################sample products ################################################################
+ 
+INSERT_UPDATE GreenleeProduct;code[unique=true];$supercategories;unit(code)[default=pieces];$catalogVersion;$approved
+;000000000001111;residential;;;
+;000000000001113;residential;;;
+;000000000001112;residential;;;
+;000000000001114;residential;;;
+;000000000001115;residential;;;
+;000000000001116;residential;;;
+;000000000001117;residential;;;
+;000000000001118;residential;;;
+;000000000001119;business;;;
+;000000000001120;business;;;
+;000000000001121;business;;;
+;000000000001122;business;;;
+;000000000001123;business;;;
+;000000000001124;business;;;
+;000000000001125;business;;;
+;000000000001126;business;;;
+;000000000001127;business;;;
+;000000000001128;enterprise;;;
+;000000000001129;enterprise;;;
+;000000000001130;enterprise;;;
+;000000000001131;warranty;;;
+;000000000001132;warranty;;;
+;000000000001133;warranty;;;
+;000000000001134;enterprise;;;
+;000000000001135;enterprise;;;
+;000000000001136;enterprise;;;
+;000000000001137;enterprise;;;
+
+UPDATE GreenleeProduct;code[unique=true];longUPC;catalogNumber;$catalogVersion
+;000000000001111;43214321;43214321;
+;000000000001113;43214321;43214321;
+;000000000001112;43214321;43214321;
+;000000000001114;43214321;43214321;
+;000000000001115;43214321;43214321;
+;000000000001116;43214321;43214321;
+;000000000001117;43214321;43214321;
+;000000000001118;43214321;43214321;
+;000000000001119;43214321;43214321;
+;000000000001120;43214321;43214321;
+;000000000001121;43214321;43214321;
+;000000000001122;43214321;43214321;
+;000000000001123;43214321;43214321;
+;000000000001124;43214321;43214321;
+;000000000001125;43214321;43214321;
+;000000000001126;43214321;43214321;
+;000000000001127;43214321;43214321;
+;000000000001128;43214321;43214321;
+;000000000001129;43214321;43214321;
+;000000000001130;43214321;43214321;
+;000000000001131;43214321;43214321;
+;000000000001132;43214321;43214321;
+;000000000001133;43214321;43214321;
+;000000000001134;43214321;43214321;
+;000000000001135;43214321;43214321;
+;000000000001136;43214321;43214321;
+;000000000001137;43214321;43214321;
+ 
+ 
+UPDATE GreenleeProduct;code[unique=true];b2cProduct;weight;weightUnits;videolink;requestToDemo;$catalogVersion
+;000000000001111;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001113;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001112;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001114;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001115;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001116;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001117;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001118;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001119;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001120;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001121;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001122;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001123;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001124;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001125;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001126;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001127;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001128;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001129;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001130;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001131;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001132;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001133;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001134;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001135;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001136;true;50;lbs;KkQKvTUS2WA;true;
+;000000000001137;true;50;lbs;KkQKvTUS2WA;true;
+
+

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://www.zeroturnaround.com">
+  <classpath>
+    <dir name="/Users/prasadavhad/Airscout_upgrade_6_5/greenlee/greenleecore/hmc/classes" />
+  </classpath>
+</application>

@@ -1,0 +1,112 @@
+
+#------------------
+# Business Category Staged
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         SmallBusiness Category Landing page              #################
+							 
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name;media(qualifier, $contentCV)   ; &componentRef                       
+                                              ;                         ; SmallBusinessCategoryBannerComponent ; SmallBusiness CategoryBannerComponent;category-smallbusiness-container ; SmallBusinessCategoryBannerComponent
+
+REMOVE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]
+                               ;                         ; SmallBusinessCategoryOverviewLink     
+                               ;                         ; SmallBusinessCategoryApplicationsLink  
+                               ;                         ; SmallBusinessCategoryBenefitsLink  
+                               ;                         ; SmallBusinessCategoryTestimonialsLink
+                               ;                         ; SmallBusinessCategorySelectModelsLink  
+                               ;                         ; SmallBusinessCategoryViewAllModelsLink 
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; SmallBusinessCategoryOverviewLink      ; SmallBusiness CategoryOverview Link      ; "#overview"                     ; Overview                     ; SmallBusinessCategoryOverviewLink      ; SmallBusinessCategoryOverviewLink      ;                                    ;                                                 
+                               ;                         ; SmallBusinessCategoryApplicationsLink  ; SmallBusiness CategoryApplications Link  ; "#applications"                 ; Applications                  ; SmallBusinessCategoryApplicationsLink  ; SmallBusinessCategoryApplicationsLink  ;                                    ;                                                 
+                               ;                         ; SmallBusinessCategoryBenefitsLink      ; SmallBusiness CategoryBenefits Link      ; "#benefits"                     ; Benefits                      ; SmallBusinessCategoryBenefitsLink      ; SmallBusinessCategoryBenefitsLink      ;                                    ;                                                 
+                               ;                         ; SmallBusinessCategoryTestimonialsLink  ; SmallBusiness CategoryTestimonials Link  ; "#testimonials"                 ; Testimonials                  ; SmallBusinessCategoryTestimonialsLink  ; SmallBusinessCategoryTestimonialsLink  ;                                    ;                                                 
+                               ;                         ; SmallBusinessCategorySelectModelsLink  ; SmallBusiness CategorySelectModels Link  ; "#models"                       ; Select a Model                ; SmallBusinessCategorySelectModelsLink  ; SmallBusinessCategorySelectModelsLink  ;                                    ; class="scrollTrigger btn"                       
+                               ;                         ; SmallBusinessCategoryViewAllModelsLink ; SmallBusiness CategoryViewAllModels Link ; "/search?q=%3Arelevance%3AallCategories%3Abusiness&text=&viewAs=#" ; View all models & accessories ; SmallBusinessCategoryViewAllModelsLink ; SmallBusinessCategoryViewAllModelsLink ;                                    ; class=""                                        
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;          active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2ContentSlot-SMCatPage  ;   true   ; SmallBusinessCategoryOverviewLink,SmallBusinessCategoryApplicationsLink,SmallBusinessCategoryBenefitsLink,SmallBusinessCategoryTestimonialsLink                       
+          											  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2ContentSlot-SMCatPage  ; SmallBusiness Section2 Slot for CategoryLandingPage   ; true   ; SmallBusinessCategoryOverviewLink,SmallBusinessCategoryApplicationsLink,SmallBusinessCategoryBenefitsLink,SmallBusinessCategoryTestimonialsLink                       
+ 
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2-smallbusinesscategory      ; Section2              ;                                                                 ; Section2ContentSlot-SMCatPage            
+  
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2-smallbusinesscategory      ; Section2              ;                                                                 ; Section2ContentSlot-SMCatPage            
+
+#------------------
+# Business Category Online
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Online'])[default=$contentCatalog:Online]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         SmallBusiness Category Landing page              #################
+							 
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name;media(qualifier, $contentCV)   ; &componentRef                       
+                                              ;                         ; SmallBusinessCategoryBannerComponent ; SmallBusiness CategoryBannerComponent;category-smallbusiness-container ; SmallBusinessCategoryBannerComponent
+
+REMOVE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]
+                               ;                         ; SmallBusinessCategoryOverviewLink     
+                               ;                         ; SmallBusinessCategoryApplicationsLink  
+                               ;                         ; SmallBusinessCategoryBenefitsLink  
+                               ;                         ; SmallBusinessCategoryTestimonialsLink
+                               ;                         ; SmallBusinessCategorySelectModelsLink  
+                               ;                         ; SmallBusinessCategoryViewAllModelsLink 
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; SmallBusinessCategoryOverviewLink      ; SmallBusiness CategoryOverview Link      ; "#overview"                     ; Overview                      ; SmallBusinessCategoryOverviewLink      ; SmallBusinessCategoryOverviewLink      ;                                    ;                                                 
+                               ;                         ; SmallBusinessCategoryApplicationsLink  ; SmallBusiness CategoryApplications Link  ; "#applications"                 ; Applications                  ; SmallBusinessCategoryApplicationsLink  ; SmallBusinessCategoryApplicationsLink  ;                                    ;                                                 
+                               ;                         ; SmallBusinessCategoryBenefitsLink      ; SmallBusiness CategoryBenefits Link      ; "#benefits"                     ; Benefits                      ; SmallBusinessCategoryBenefitsLink      ; SmallBusinessCategoryBenefitsLink      ;                                    ;                                                 
+                               ;                         ; SmallBusinessCategoryTestimonialsLink  ; SmallBusiness CategoryTestimonials Link  ; "#testimonials"                 ; Testimonials                  ; SmallBusinessCategoryTestimonialsLink  ; SmallBusinessCategoryTestimonialsLink  ;                                    ;                                                 
+                               ;                         ; SmallBusinessCategorySelectModelsLink  ; SmallBusiness CategorySelectModels Link  ; "#models"                       ; Select a Model                ; SmallBusinessCategorySelectModelsLink  ; SmallBusinessCategorySelectModelsLink  ;                                    ; class="scrollTrigger btn"                       
+                               ;                         ; SmallBusinessCategoryViewAllModelsLink ; SmallBusiness CategoryViewAllModels Link ; "/search?q=%3Arelevance%3AallCategories%3Abusiness&text=&viewAs=#" ; View all models & accessories ; SmallBusinessCategoryViewAllModelsLink ; SmallBusinessCategoryViewAllModelsLink ;                                    ; class=""                                        
+
+         											  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2ContentSlot-SMCatPage  ; SmallBusiness Section2 Slot for CategoryLandingPage   ; true   ; SmallBusinessCategoryOverviewLink,SmallBusinessCategoryApplicationsLink,SmallBusinessCategoryBenefitsLink,SmallBusinessCategoryTestimonialsLink                       
+ 
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2-smallbusinesscategory      ; Section2              ;                                                                 ; Section2ContentSlot-SMCatPage            
+  
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2-smallbusinesscategory      ; Section2              ;                                                                 ; Section2ContentSlot-SMCatPage            

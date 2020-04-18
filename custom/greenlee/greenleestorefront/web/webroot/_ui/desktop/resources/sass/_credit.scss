@@ -1,0 +1,52 @@
+.saved-cards {
+    ul.address-items > li {
+        width: 100%;
+        @media (min-width: $screen-md-min) {
+            width: 33.33%;
+        }
+    }
+    .address-item {
+        .pay-title {
+            font-family: 'robotomedium';
+        }
+        .address-links {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    }
+}
+.address-checkout:hover {
+    border: none;
+}
+.personal-info {
+    padding-bottom: 25px;
+    .btn-edit {
+        @media (min-width: $screen-md-min) {
+            width: 141px;
+        }
+    }
+    .user-info {
+    	  @media (min-width: $screen-md-min) {
+    	  	margin-top:45px;
+    	  }
+    	td{
+    		 @media (max-width: $screen-sm-min) {
+	    		width: 30.357142857142855%;
+	    		padding:0 20px 32px 0;
+	    		@include font-size(12px);
+	    		&.end{
+	    			width: 62.5%;
+	    			padding:0 0 32px 0;
+	    			
+	    		}
+    		}
+    	}
+        label {
+            text-transform: capitalize;
+            font-family: 'robotomedium';
+        }
+        .pwd-reset {
+            margin-right: 5px;
+        }
+    }
+}

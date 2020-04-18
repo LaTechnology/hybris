@@ -1,0 +1,101 @@
+<div class="pdp-popup js-demo-Model">
+	<div class="demo-title">
+	<div class="content">
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.</p>
+	</div>
+	</div>
+	<form="post" action="${productReviewActionUrl}" commandName="demoForm">
+		<div class="row">
+			<div class="form-group col-md-6">
+				<label class="control-label " for="demoForm.firstName">
+				first name </label>
+				<input id="demoForm.firstName" name="firstName" class=" form-control" type="text" value=""/>
+			</div>
+			<div class="form-group col-md-6">
+				<label class="control-label " for="demoForm.lastName">
+				last name </label>
+				<input id="demoForm.lastName" name="lastName" class=" form-control" type="text" value=""/>
+			</div>
+			<div class="col-md-12">
+				<div class="row">
+					<div class="form-group col-md-6">
+						<label class="control-label " for="j_username">Your Email Address *</label>
+						<input id="j_username" name="j_username" class=" form-control" type="text" value="">
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-md-6">
+				<label class="control-label " for="register.confirmpassword">country</label>
+				<div class="controls isBorder">
+					<span class="select-wrapper"><select id="register.usertype" name="usertype" class="custom-select">
+						<option value="" disabled="disabled">Please select</option>
+						<option value="Online Shopper">Online Shopper</option>
+						<option value="Distributor">Distributor</option>
+						<option value="Enterprise shopper">Enterprise shopper</option>
+						</select><span class="holder">Online Shopper</span></span>
+					</div>
+				</div>
+				<div class="form-group col-md-6">
+					<label class="control-label " for="register.orderNumber">city</label>
+					<input id="register.orderNumber" name="orderNumber" class=" form-control" type="text" value="">
+				</div>
+				<div class="form-group col-md-6">
+					<label class="control-label " for="register.orderNumber">State</label>
+					<input id="register.orderNumber" name="orderNumber" class=" form-control" type="text" value="">
+				</div>
+				<div class="form-group col-md-6">
+					<label class="control-label " for="register.orderNumber">Zip</label>
+					<input id="register.orderNumber" name="orderNumber" class=" form-control" type="text" value="">
+				</div>
+				<div class="col-md-12">
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label class="control-label" for="contact.companyName">Company Name</label>
+							<input id="contact.companyName" name="companyName" class=" form-control" type="text" value="">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label class="control-label " for="register.password">INDUSTRY</label>
+							<div class="controls isBorder">
+								<span class="select-wrapper"><select id="register.usertype" name="usertype" class="custom-select">
+									<option value="" disabled="disabled">Please select</option>
+									<option value="Online Shopper">Online Shopper</option>
+									<option value="Distributor">Distributor</option>
+									<option value="Enterprise shopper">Enterprise shopper</option>
+									</select><span class="holder">Online Shopper</span></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				<div class="col-md-12">
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label class="control-label" for="contact.companyName">Request Type</label>
+							<div class="checkbox checkbox-group">
+								<input id="checkbox1" class="remember" type="checkbox">
+								<label class="text-none" for="checkbox1">Product Demo</label>
+							</div>
+							<div class="checkbox checkbox-group">
+								<input id="checkbox2" class="remember" type="checkbox">
+								<label class="text-none" for="checkbox2">Additional Product Information</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+			<label class="control-label " for="review.text">
+			MESSAGE</label>
+			<textarea id="review.text"></textarea>
+		</div>
+		<div class="form-group">
+			<button class="btn btn-white btn-popup" type="submit">
+					Submit</button>
+			<button class="btn btn-white btn-popup btn-border last" type="submit">
+					close</button>
+			</div>
+				</div>
+			</form>
+		</div>

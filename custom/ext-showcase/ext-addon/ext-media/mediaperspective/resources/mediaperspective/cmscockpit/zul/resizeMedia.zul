@@ -1,0 +1,52 @@
+<zk>
+	<window xmlns="http://www.zkoss.org/2005/zul"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:h="http://www.w3.org/1999/xhtml"
+		xmlns:zk="http://www.zkoss.org/2005/zk"
+		xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+		id="bulkUploadMediaWindow"
+		sclass="bulkUploadMediaWindow"
+		width="794px"
+		height="640px"
+		closable="true" 
+		mode="popup"
+		
+		apply="com.hybris.platform.mediaperspective.wizards.bulkmediaupload.BulkMediaUploadWindowComposer">
+		<style src="/cmscockpit/css/bulkmediauploadwizard.css" />
+	    <borderlayout id="windowContainer">
+	        <center style="overflow:auto;">
+                <div id="mainArea">
+                    <div apply="com.hybris.platform.mediaperspective.wizards.bulkmediaupload.ResizeMediaComposer">
+	                	<image id="mediaImage" sclass="mediaPreview" visible="false"/>
+                    	<div id="selectedMediaContainer"/>
+	                    <label class="bulkUploadLabel" value="Select Conversion Media Formats"></label>
+	                    <listbox id="conversionGroupListBox" class="conversionGroupListBox" multiple="true" checkmark="true"  mold="paging" pageSize="8">
+	                    	<custom-attributes org.zkoss.zul.listbox.groupSelect="true" />
+					    </listbox>
+                    	<div id="containerCodeEditor" class="containerCodeEditor">
+		                    <label class="bulkUploadLabel" value="Media Container Code for resized media"></label>
+		                    <textbox id="containerCodeInput" class="containerCodeInput"/>
+                    	</div>
+                    </div>
+                	<div apply="com.hybris.platform.mediaperspective.wizards.bulkmediaupload.TagMediaComposer">
+	                    <label class="bulkUploadLabel" value="Tag your media"></label>
+	                    <div id="mediaTagContainer" class="mediaTagContainer" style="width: 711px;" >
+	                    	<grid id="addMediaTagsGrid" mold="paging" pageSize="13">
+			            		<foot>
+			            			<footer id="newTagFooterMedia"></footer>
+			            			<footer><button id="newTagButton" label="${c:l('general.add')}"></button></footer>
+			            		</foot>
+			            	</grid>
+	                    </div>
+                    </div>
+                </div>
+            </center>
+			<south height="8%" >
+					<div>
+			           	<button class="buttonDone" id="btnDone" visible="false" label="${c:l('general.save')}"  tooltiptext="${c:l('general.save')}" />
+			           	<button class="buttonDone" id="btnCancel" label="${c:l('general.cancel')}"  tooltiptext="${c:l('general.cancel')}" />
+			        </div>
+			</south>
+		</borderlayout>
+</window>
+</zk>

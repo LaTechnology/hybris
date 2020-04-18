@@ -1,0 +1,1043 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2015 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+
+     <context:annotation-config/> 
+
+	<!-- Spring Integration -->
+	<import resource="classpath:/greenleecore/integration/hot-folder-store-electronics-spring.xml"/>
+	<import resource="classpath:/greenleecore/integration/hot-folder-store-apparel-spring.xml"/>
+	<import resource="classpath:/greenleecore/integration/hot-folder-common-spring.xml"/>
+
+
+	<!-- <import resource="classpath:/greenleecore/integration/hot-folder-store-electronics-spring.xml"/>
+	<import resource="classpath:/greenleecore/integration/hot-folder-store-apparel-spring.xml"/>
+	<import resource="classpath:/greenleecore/integration/hot-folder-common-spring.xml"/>
+ -->
+ 
+ 
+	<!-- Spring Integration -->
+<!--  	<import resource="classpath:/greenleecore/integration/hot-folder-greenlee-images-spring.xml"/>
+		<import resource="classpath:/greenleecore/integration/hot-folder-greenlee-classification-newfeature-spring.xml"/>
+	   ** <import resource="classpath:/greenleecore/integration/hot-folder-greenlee-store-classification-spring.xml"/>
+		 -->
+	 
+	
+	<!-- SystemSetup for the GreenleeCore -->
+	<bean id="acceleratorCoreSystemSetup" class="com.greenlee.core.setup.CoreSystemSetup"
+	       parent="abstractCoreSystemSetup"/>
+
+	<!-- Solr field value providers -->
+	
+	<bean id="volumeAwareProductPriceValueProvider" class="com.greenlee.core.search.solrfacetsearch.provider.impl.VolumeAwareProductPriceValueProvider"  parent="abstractPropertyFieldValueProvider">
+        <property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+        <property name="priceService" ref="priceService"/>
+        <property name="commonI18NService" ref="commonI18NService"/>
+        <property name="sessionService" ref="sessionService"/>
+        <property name="userService" ref="userService"/>
+        <property name="priceComparator" ref="volumePriceComparator"/>
+        <property name="catalogVersionService" ref="catalogVersionService"/>
+    </bean>
+
+    <bean id="volumePriceComparator" class="com.greenlee.core.comparators.VolumeAwarePriceInformationComparator" scope="singleton"/>
+
+    <bean id="productVolumePricesProvider" class="com.greenlee.core.search.solrfacetsearch.provider.impl.ProductVolumePricesProvider"  parent="abstractPropertyFieldValueProvider">
+        <property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+        <property name="priceService" ref="priceService"/>
+    </bean>
+	
+
+<bean id="greenleeCategorySource" parent="abstractCategorySource">
+    <property name="rootCategory" value="1"/>
+</bean>
+ 
+<bean id="greenleeBrandCategorySource" parent="abstractCategorySource">
+    <property name="rootCategory" value="brands"/>
+</bean>
+ 
+<bean id="greenleeCategoryCodeValueProvider" parent="abstractCategoryCodeValueProvider">
+    <property name="categorySource" ref="greenleeCategorySource"/>
+</bean>
+<bean id="greenleeBrandCategoryCodeValueProvider" parent="abstractCategoryCodeValueProvider">
+    <property name="categorySource" ref="greenleeBrandCategorySource"/>
+</bean>
+<bean id="greenleeCategoryNameValueProvider" parent="abstractCategoryNameValueProvider">
+    <property name="categorySource" ref="greenleeCategorySource"/>
+</bean>
+<bean id="greenleeBrandCategoryNameValueProvider" parent="abstractCategoryNameValueProvider">
+    <property name="categorySource" ref="greenleeBrandCategorySource"/>
+</bean>
+
+	<bean id="abstractCategoryCodeValueProvider" abstract="true"
+	      class="de.hybris.platform.commerceservices.search.solrfacetsearch.provider.impl.CategoryCodeValueProvider"
+	      parent="abstractPropertyFieldValueProvider" >
+		<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+		<property name="commonI18NService" ref="commonI18NService"/>
+	</bean>
+	<bean id="abstractCategoryNameValueProvider" abstract="true"
+	      class="de.hybris.platform.commerceservices.search.solrfacetsearch.provider.impl.CategoryNameValueProvider"
+	      parent="abstractPropertyFieldValueProvider" >
+		<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+		<property name="commonI18NService" ref="commonI18NService"/>
+	</bean>
+
+	<bean id="image515ValueProvider" parent="abstractImageValueProvider" >
+		<property name="mediaFormat" value="515Wx515H"/>
+	</bean>
+	<bean id="image300ValueProvider" parent="abstractImageValueProvider" >
+		<property name="mediaFormat" value="Airscout-PLPImage"/>
+	</bean>
+	<bean id="image96ValueProvider" parent="abstractImageValueProvider" >
+		<property name="mediaFormat" value="96Wx96H"/>
+	</bean>
+	<bean id="image65ValueProvider" parent="abstractImageValueProvider" >
+		<property name="mediaFormat" value="65Wx65H"/>
+	</bean>
+	<bean id="image30ValueProvider" parent="abstractImageValueProvider" >
+		<property name="mediaFormat" value="30Wx30H"/>
+	</bean>
+
+	<bean id="productUrlValueProvider"
+	      class="de.hybris.platform.commerceservices.search.solrfacetsearch.provider.impl.ProductUrlValueProvider"
+	      parent="abstractPropertyFieldValueProvider" >
+		<property name="urlResolver" ref="productModelUrlResolver"/>
+		<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+		<property name="i18nService" ref="i18nService"/>
+		<property name="commonI18NService" ref="commonI18NService"/>
+	</bean>
+
+	<bean id="promotionCodeValueProvider"
+	      class="de.hybris.platform.commerceservices.search.solrfacetsearch.provider.impl.PromotionCodeValueProvider"
+	      parent="abstractPropertyFieldValueProvider" >
+		<property name="promotionsService" ref="promotionsService"/>
+		<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+	</bean>
+
+	<bean id="promotionImageValueProvider"
+	      class="de.hybris.platform.commerceservices.search.solrfacetsearch.provider.impl.PrimaryPromotionImageValueProvider"
+	      parent="abstractPropertyFieldValueProvider" >
+		<property name="promotionsService" ref="promotionsService"/>
+		<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+	</bean>
+
+	<bean id="apparelPointOfServiceFacetDisplayNameProvider"
+	      class="com.greenlee.core.search.solrfacetsearch.provider.impl.PointOfServiceFacetDisplayNameProvider"
+	      >
+		<property name="pointOfServiceService" ref="pointOfServiceService"/>
+	</bean>
+	
+	<bean id="electronicsPointOfServiceFacetDisplayNameProvider"
+	      class="com.greenlee.core.search.solrfacetsearch.provider.impl.PointOfServiceFacetDisplayNameProvider"
+	      >
+		<property name="pointOfServiceService" ref="pointOfServiceService"/>
+	</bean>
+
+	<bean id="genderFacetDisplayNameProvider"
+	      class="com.greenlee.core.search.solrfacetsearch.provider.impl.GenderFacetDisplayNameProvider"
+	      >
+		<property name="enumerationService" ref="enumerationService"/>
+		<property name="i18nService" ref="i18nService"/>
+		<property name="commonI18NService" ref="commonI18NService"/>
+	</bean>
+
+	<!--
+		Event listeners are singletons, therefore the dependency for a bean in tenant-scope
+		must be configured with a lookup method.
+	-->
+	<bean id="orderCancelledEventListener"
+	      class="com.greenlee.core.event.OrderCancelledEventListener" parent="abstractSiteEventListener">
+		<property name="modelService" ref="modelService"/>
+		<property name="businessProcessService" ref="businessProcessService"/>
+	</bean>
+	<bean id="orderRefundEventListener"
+	      class="com.greenlee.core.event.OrderRefundEventListener" parent="abstractSiteEventListener">
+		<property name="modelService" ref="modelService"/>
+		<property name="businessProcessService" ref="businessProcessService"/>
+	</bean>
+	<bean id="registrationEventListener"
+	      class="com.greenlee.core.event.RegistrationEventListener" parent="abstractSiteEventListener">
+		<property name="modelService" ref="modelService"/>
+		<property name="businessProcessService" ref="businessProcessService"/>
+	</bean>
+	<bean id="forgottenPasswordEventListener"
+	      class="com.greenlee.core.event.ForgottenPasswordEventListener" parent="abstractSiteEventListener">
+		<property name="modelService" ref="modelService"/>
+		<property name="businessProcessService" ref="businessProcessService"/>
+	</bean>
+	<bean id="submitOrderEventListener" class="com.greenlee.core.event.SubmitOrderEventListener" parent="abstractSiteEventListener">
+		<property name="businessProcessService" ref="businessProcessService"/>
+		<property name="modelService" ref="modelService"/>
+		<property name="baseStoreService" ref="baseStoreService"/>
+	</bean>
+	<bean id="orderConfirmationEventListener"
+	      class="com.greenlee.core.event.OrderConfirmationEventListener" parent="abstractSiteEventListener">
+		<property name="modelService" ref="modelService"/>
+		<property name="businessProcessService" ref="businessProcessService"/>
+	</bean>
+	<bean id="sendDeliveryMessageEventListener"
+	      class="com.greenlee.core.event.SendDeliveryMessageEventListener" parent="abstractEventListener">
+		<property name="modelService" ref="modelService"/>
+		<property name="businessProcessService" ref="businessProcessService"/>
+	</bean>
+	<bean id="sendReadyForPickupMessageEventListener"
+	      class="com.greenlee.core.event.SendReadyForPickupMessageEventListener" parent="abstractEventListener">
+		<property name="modelService" ref="modelService"/>
+		<property name="businessProcessService" ref="businessProcessService"/>
+	</bean>
+	<bean id="sendOrderPartiallyCanceledMessageEventListener"
+	      class="com.greenlee.core.event.SendOrderPartiallyCanceledMessageEventListener" parent="abstractEventListener">
+		<property name="modelService" ref="modelService"/>
+		<property name="businessProcessService" ref="businessProcessService"/>
+	</bean>
+	<bean id="sendOrderPartiallyRefundedMessageEventListener"
+	      class="com.greenlee.core.event.SendOrderPartiallyRefundedMessageEventListener" parent="abstractEventListener">
+		<property name="modelService" ref="modelService"/>
+		<property name="businessProcessService" ref="businessProcessService"/>
+	</bean>
+	<bean id="sendNotPickedUpConsignmentCanceledMessageEventListener"
+	      class="com.greenlee.core.event.SendNotPickedUpConsignmentCanceledMessageEventListener" parent="abstractEventListener">
+		<property name="modelService" ref="modelService"/>
+		<property name="businessProcessService" ref="businessProcessService"/>
+	</bean>
+	<bean id="orderCompletedEventListener" class="com.greenlee.core.event.OrderCompletedEventListener" parent="abstractSiteEventListener">
+		<property name="modelService" ref="modelService"/>
+		<property name="businessProcessService" ref="businessProcessService"/>
+	</bean>
+
+	<!-- Process resources definition -->
+
+	<bean id="customerRegistrationEmailProcessDefinitionResource"
+	      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
+		<property name="resource" value="classpath:/greenleecore/processes/customerRegistrationEmailProcess.xml"/>
+	</bean>
+	<bean id="forgottenPasswordEmailProcessDefinitionResource"
+	      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
+		<property name="resource" value="classpath:/greenleecore/processes/forgottenPasswordEmailProcess.xml"/>
+	</bean>
+	<bean id="orderConfirmationEmailProcessDefinitionResource"
+	      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
+		<property name="resource" value="classpath:/greenleecore/processes/orderConfirmationEmailProcess.xml"/>
+	</bean>
+	<bean id="sendDeliveryEmailProcessDefinitionResource"
+	      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
+		<property name="resource" value="classpath:/greenleecore/processes/sendDeliveryEmailProcess.xml"/>
+	</bean>
+	<bean id="sendReadyForPickupEmailProcessDefinitionResource"
+	      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
+		<property name="resource" value="classpath:/greenleecore/processes/sendReadyForPickupEmailProcess.xml"/>
+	</bean>
+	<bean id="sendOrderCancelledEmailProcessDefinitionResource"
+	      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
+		<property name="resource" value="classpath:/greenleecore/processes/sendOrderCancelledEmailProcess.xml"/>
+	</bean>
+	<bean id="sendOrderRefundEmailProcessDefinitionResource"
+	      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
+		<property name="resource" value="classpath:/greenleecore/processes/sendOrderRefundEmailProcess.xml"/>
+	</bean>
+	<bean id="sendOrderPartiallyCanceledEmailProcessDefinitionResource"
+	      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
+		<property name="resource" value="classpath:/greenleecore/processes/sendOrderPartiallyCanceledEmailProcess.xml"/>
+	</bean>
+	<bean id="sendOrderPartiallyRefundedEmailProcessDefinitionResource"
+	      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
+		<property name="resource" value="classpath:/greenleecore/processes/sendOrderPartiallyRefundedEmailProcess.xml"/>
+	</bean>
+	<bean id="sendNotPickedUpConsignmentCanceledEmailProcessDefinitionResource"
+	      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
+		<property name="resource" value="classpath:/greenleecore/processes/sendNotPickedUpConsignmentCanceledEmailProcess.xml"/>
+	</bean>
+
+	<!-- Actions -->
+	<bean id="abstractAction" class="de.hybris.platform.processengine.action.AbstractAction"
+	      abstract="true">
+		<property name="modelService" ref="modelService"/>
+		<property name="processParameterHelper" ref="processParameterHelper"/>
+	</bean>
+
+	<bean id="sendEmail" class="de.hybris.platform.acceleratorservices.process.email.actions.SendEmailAction"
+	       parent="abstractAction">
+		<property name="emailService" ref="emailService"/>
+	</bean>
+
+	<bean id="abstractGenerateEmailAction" class="de.hybris.platform.acceleratorservices.process.email.actions.GenerateEmailAction"
+	      parent="abstractAction" abstract="true">
+		<property name="modelService" ref="modelService"/>
+		<property name="cmsEmailPageService" ref="cmsEmailPageService"/>
+		<property name="contextResolutionStrategy" ref="processContextResolutionStrategy"/>
+		<property name="emailGenerationService" ref="emailGenerationService"/>
+	</bean>
+
+	<bean id="generateCustomerRegistrationEmail" parent="abstractGenerateEmailAction">
+		<property name="frontendTemplateName" value="CustomerRegistrationEmailTemplate"/>
+	</bean>
+
+	<bean id="generateForgottenPasswordEmail" parent="abstractGenerateEmailAction">
+		<property name="frontendTemplateName" value="ForgottenPasswordEmailTemplate"/>
+	</bean>
+
+	<bean id="generateOrderConfirmationEmail" parent="abstractGenerateEmailAction">
+		<property name="frontendTemplateName" value="OrderConfirmationEmailTemplate"/>
+	</bean>
+	
+	<bean id="generateDeliverySentEmail" parent="abstractGenerateEmailAction">
+		<property name="frontendTemplateName" value="DeliverySentEmailTemplate"/>
+	</bean>
+
+	<bean id="generateReadyForPickupEmail" parent="abstractGenerateEmailAction">
+		<property name="frontendTemplateName" value="ReadyForPickupEmailTemplate"/>
+	</bean>
+	
+	<bean id="generateOrderCancelledEmail" parent="abstractGenerateEmailAction">
+		<property name="frontendTemplateName" value="OrderCancelledEmailTemplate"/>
+	</bean>
+	
+	<bean id="generateOrderRefundEmail" parent="abstractGenerateEmailAction">
+		<property name="frontendTemplateName" value="OrderRefundEmailTemplate"/>
+	</bean>
+
+	<bean id="generateOrderPartiallyCanceledEmail" parent="abstractGenerateEmailAction">
+		<property name="frontendTemplateName" value="OrderPartiallyCanceledEmailTemplate"/>
+	</bean>
+	<bean id="generateOrderPartiallyRefundedEmail" parent="abstractGenerateEmailAction">
+		<property name="frontendTemplateName" value="OrderPartiallyRefundedEmailTemplate"/>
+	</bean>
+	<bean id="generateNotPickedUpConsignmentCanceledEmail" parent="abstractGenerateEmailAction">
+		<property name="frontendTemplateName" value="NotPickedUpConsignmentCanceledEmailTemplate"/>
+	</bean>
+
+	<bean id="removeSentEmail"
+	      class="de.hybris.platform.acceleratorservices.process.email.actions.RemoveSentEmailAction"
+	      parent="abstractAction">
+		<property name="modelService" ref="modelService"/>
+	</bean>
+
+	<!-- Simple Suggestion Service -->
+	<alias alias="simpleSuggestionService" name="defaultSimpleSuggestionService"/>
+	<bean id="defaultSimpleSuggestionService"
+	      class="com.greenlee.core.suggestion.impl.DefaultSimpleSuggestionService" >
+		<property name="simpleSuggestionDao" ref="simpleSuggestionDao"/>
+	</bean>
+	<alias alias="simpleSuggestionDao" name="defaultSimpleSuggestionDao"/>
+	<bean id="defaultSimpleSuggestionDao"
+	      class="com.greenlee.core.suggestion.dao.impl.DefaultSimpleSuggestionDao"
+	      parent="abstractItemDao" >
+		<property name="flexibleSearchService" ref="flexibleSearchService"/>
+	</bean>
+
+	<bean id="mccSiteUrlHelper" class="com.greenlee.core.util.MccSiteUrlHelper" >
+		<property name="siteBaseUrlResolutionService" ref="siteBaseUrlResolutionService"/>
+		<property name="cmsSiteService" ref="cmsSiteService"/>
+	</bean>
+
+
+	<!-- checkout flow configuration -->
+	
+	<bean id="pickUpInStoreCheckoutFlowStrategy" class="com.greenlee.core.checkout.flow.impl.PickUpInStoreCheckoutFlowStrategy" >
+		<property name="pickupStrategy" ref="pickupStrategy" />
+		<property name="defaultStrategy" ref="siteCheckoutFlowStrategy"/>
+		<property name="multiStepCheckoutFlowStrategy" ref="multiStepCheckoutFlowStrategy" />
+	</bean>	
+
+	<bean id="siteCheckoutFlowStrategy"
+	      class="com.greenlee.core.checkout.flow.impl.SiteCheckoutFlowStrategy" >
+		<!-- This strategy looks up a strategy based on the current site UID -->
+		<property name="cmsSiteService" ref="cmsSiteService"/>
+		<property name="siteMappings">
+			<map>
+				<entry key="electronics" value-ref="newCustomerCheckoutFlowStrategy"/>
+				<entry key="apparel-de" value-ref="multiStepCheckoutFlowStrategy"/>
+				<entry key="apparel-uk" value-ref="multiStepCheckoutFlowStrategy"/>
+				<entry key="powertoolsstore" value-ref="multiStepCheckoutFlowStrategy"/>
+			</map>
+		</property>
+		<!-- Default to SINGLE step checkout -->
+		<property name="defaultStrategy" ref="multiStepCheckoutFlowStrategy"/>
+	</bean>
+
+	<bean id="newCustomerCheckoutFlowStrategy"
+	      class="com.greenlee.core.checkout.flow.impl.NewCustomerCheckoutFlowStrategy" >
+		<!-- This strategy works out if the user has created any data -->
+		<property name="userService" ref="userService"/>
+		<property name="customerAccountService" ref="customerAccountService"/>
+		<property name="defaultStrategy" ref="multiStepCheckoutFlowStrategy"/>
+		<property name="newCustomerStrategy" ref="multiStepCheckoutFlowStrategy"/>
+	</bean>
+	
+	<bean id="sessionB2BUnitHandlerBean" class="com.greenlee.core.account.handler.SessionB2BUnitAttributeHandler">
+		<property name="sessionService" ref="sessionService"/>
+		<property name="b2bUnitService" ref="b2bCommerceUnitService"/>
+		<property name="configService" ref="configurationService"/>
+		<property name="unitService" ref="greenleeUnitService"/>
+	</bean>
+	
+	<bean id="greenleeUnitService" class="com.greenlee.core.unit.services.impl.DefaultGreenleeUnitService">
+		<property name="unitDao" ref="greenleeUnitDao"/>
+		<property name="userService" ref="userService"/>
+		<property name="sessionService" ref="sessionService"/>
+	</bean>
+	
+	<bean id="greenleeUnitDao" class="com.greenlee.core.unit.dao.impl.DefaultGreenleeUnitDao" >
+		<property name="flexibleSearchService" ref="flexibleSearchService"/>
+	</bean>
+	<bean id="b2bDataProviderInterceptor" class="com.greenlee.core.interceptor.B2BDataProviderInterceptor">
+		<property name="modelService" ref="modelService" />
+		<property name="greenleeDummyDataProvider" ref="greenleeDummyDataProvider" />
+	</bean>
+
+	<bean id="b2bDataProviderInterceptorMapping" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="b2bDataProviderInterceptor"/>
+		<property name="typeCode" value="B2BUnit"/>
+	</bean>
+
+	<bean id="greenleeDummyDataProvider" class="com.greenlee.core.util.GreenleeDummyDataProvider">
+		<property name="i18NService" ref="i18NService" />
+	</bean>
+	
+	<bean id="updateSynonymsInterceptor" class="com.greenlee.core.interceptor.UpdateSynonymsInterceptor">
+		<property name="baseSiteService" ref="baseSiteService" />
+		<property name="modelService" ref="modelService" />
+	</bean>
+
+	<bean id="updateSynonymsInterceptorMapping" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="updateSynonymsInterceptor"/>
+		<property name="typeCode" value="Product"/>
+	</bean>
+	
+	<!-- prod doc search -->
+	
+		
+	<!-- prod document search -->
+	
+	
+	
+	<bean id="productDocumentSearchService"
+	      class="com.greenlee.core.search.services.impl.ProductDocumentSearchServiceImpl" >
+	</bean>
+	
+	
+	<alias name="defaultCommerceProductDocumentSearchQueryPageableConverter" alias="commerceProductDocumentSearchQueryPageableConverter" />
+	<bean id="defaultCommerceProductSearchQueryPageableConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="de.hybris.platform.commerceservices.search.solrfacetsearch.data.SolrSearchRequest" />
+		<property name="populators">
+			<list>
+				<ref bean="productDocumentSearchSolrQueryPopulator" />
+				<ref bean="commerceSearchPagePopulator" />
+				<ref bean="commerceSearchSortPopulator" />
+				<ref bean="productDocumentSearchTextPopulator" />
+				<ref bean="commerceSearchFiltersPopulator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="productDocumentSearchSolrQueryPopulator" class="com.greenlee.core.solrfacetsearch.populators.ProductDocumentSearchSolrQueryPopulator">
+		<property name="catalogVersionService" ref="catalogVersionService" />
+		<property name="baseSiteService" ref="baseSiteService" />
+		<property name="commonI18NService" ref="commonI18NService" />
+		<property name="baseStoreService" ref="baseStoreService" />
+		<property name="facetSearchService" ref="facetSearchService" />
+		<property name="facetSearchConfigService" ref="facetSearchConfigService" />
+		<property name="solrFacetSearchProductDocumentConfigSelectionStrategy" ref="solrFacetSearchProductDocumentConfigSelectionStrategy" />
+		<property name="cmsSiteService" ref="cmsSiteService" />
+		
+	</bean>
+	
+	<alias name="solrFacetSearchProductDocumentConfigSelectionStrategy" alias="solrFacetSearchProductDocumentConfigSelectionStrategy" />
+	<bean id="solrFacetSearchProductDocumentConfigSelectionStrategy"
+		class="com.greenlee.core.search.strategies.impl.strategy.SolrFacetSearchProductDocumentConfigSelectionStrategy">
+		<property name="baseSiteService" ref="baseSiteService" />
+		<property name="baseStoreService" ref="baseStoreService" />
+	</bean>
+	
+	<bean id="productDocumentSearchTextPopulator" class="de.hybris.platform.commerceservices.search.solrfacetsearch.populators.SearchTextPopulator">
+		<property name="freeTextQueryBuilders">
+			<list>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="documentType" />
+					<property name="boost" value="100" />
+				</bean>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="documentName" />
+					<property name="boost" value="100" />
+				</bean>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="documentMime" />
+					<property name="boost" value="100" />
+				</bean>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="documentProductReference" />
+					<property name="boost" value="100" />
+				</bean>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="keyword" />
+					<property name="boost" value="100" />
+				</bean>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="description" />
+					<property name="boost" value="100" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<alias name="productDocumentSolrSearchResponseConverter" alias="productDocumentSolrSearchResponseConverter" />
+	<bean id="productDocumentSolrSearchResponseConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="com.hybris.greenlee.search.facetdata.ProductDocumentSearchPageData" />
+		<property name="populators">
+			<list>
+				<ref bean="commerceSearchResponseQueryPopulator" />
+				<ref bean="commerceSearchResponsePaginationPopulator" />
+				<ref bean="commerceSearchResponseResultsPopulator" />
+				<ref bean="commerceSearchResponseFacetsPopulator" />
+				<ref bean="commerceSearchResponseFacetFilterPopulator" />
+				<ref bean="commerceSearchResponseFacetSortPopulator" />
+				<ref bean="commerceSearchResponseBreadcrumbsPopulator" />
+				<ref bean="commerceSearchResponseSortsPopulator" />
+				<ref bean="commerceSearchResponseFreeTextSearchPopulator" />
+				<ref bean="commerceSearchResponseSpellingSuggestionPopulator" />
+				<ref bean="commerceSearchResponseKeywordRedirectPopulator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="documentUrlValueProvider" class="com.greenlee.core.search.solrfacetsearch.provider.impl.DocumentUrlValueProvider" parent="abstractPropertyFieldValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+	</bean>
+	<bean id="documentNameValueProvider" class="com.greenlee.core.search.solrfacetsearch.provider.impl.DocumentNameValueProvider" parent="abstractPropertyFieldValueProvider">
+	<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+	</bean>
+	<bean id="documentTypeValueProvider" class="com.greenlee.core.search.solrfacetsearch.provider.impl.DocumentTypeValueProvider" parent="abstractPropertyFieldValueProvider">
+	<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+	</bean>
+	<bean id="documentSizeValueProvider" class="com.greenlee.core.search.solrfacetsearch.provider.impl.DocumentSizeValueProvider" parent="abstractPropertyFieldValueProvider">
+	<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+	</bean>
+	<bean id="documentMimeValueProvider" class="com.greenlee.core.search.solrfacetsearch.provider.impl.DocumentMimeValueProvider" parent="abstractPropertyFieldValueProvider">
+	<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+	</bean>
+	<bean id="documentProductReferenceValueProvider" class="com.greenlee.core.search.solrfacetsearch.provider.impl.DocumentProductReferenceValueProvider" parent="abstractPropertyFieldValueProvider">
+	<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+	</bean>
+	<bean id="keywordValueProvider" class="com.greenlee.core.search.solrfacetsearch.provider.impl.KeywordValueProvider" parent="abstractPropertyFieldValueProvider">
+	<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+	</bean>
+	<bean id="documentDescriptionValueProvider" class="com.greenlee.core.search.solrfacetsearch.provider.impl.DocumentDescriptionValueProvider" parent="abstractPropertyFieldValueProvider">
+	<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+	</bean>
+	
+	
+
+	<bean id="productDocumentSearchAutocompleteService"
+		class="com.greenlee.core.search.services.impl.ProductDocumentSearchAutocompleteServiceImpl">
+		<property name="facetSearchConfigService" ref="facetSearchConfigService" />
+		<property name="commonI18NService" ref="commonI18NService" />
+		<property name="solrAutoSuggestService" ref="solrAutoSuggestService" />
+		<property name="solrIndexedTypeCodeResolver" ref="solrIndexedTypeCodeResolver" />
+		<property name="solrFacetSearchProductDocumentConfigSelectionStrategy" ref="solrFacetSearchProductDocumentConfigSelectionStrategy" />
+	</bean>
+
+	<!-- Product detail page - Share Product via email -->	
+	<bean id="shareProductEventListener" class="com.greenlee.core.event.ShareProductEventListener" parent="abstractSiteEventListener">
+		<property name="modelService" ref="modelService" />
+		<property name="businessProcessService" ref="businessProcessService" />
+	</bean>
+	<bean id="shareProductEmailProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+		<property name="resource" value="classpath:/greenleecore/processes/shareProductEmailProcess.xml" />
+	</bean>
+	<bean id="generateShareProductEmail" parent="abstractGenerateShareProductEmailAction">
+		<property name="frontendTemplateName" value="ShareProductEmailTemplate" />
+	</bean>
+
+	<alias alias="maxmindService" name="defaultMaxmindService"/>
+	<bean id="defaultMaxmindService"
+	      class="com.greenlee.core.maxmind.services.impl.DefaultMaxmindService" >
+		<property name="userId" value="${greenleeservices.geoip2.userID}"/>
+        <property name="userKey" value="${greenleeservices.geoip2.userkey}"/>
+        <property name="host" value="${greenleeservices.geoip2.host}"/>
+        <property name="connectTimeout" value="${greenleeservices.geoip2.timeout.connect}"/>
+        <property name="readTimeout" value="${greenleeservices.geoip2.timeout.read}"/>
+	</bean>
+	
+	<alias alias="greenleeB2BCustomerService" name="defaultGreenleeB2BCustomerService"/>
+	<bean id="defaultGreenleeB2BCustomerService" class="com.greenlee.core.greenleeb2bcustomer.services.impl.DefaultGreenleeB2BCustomerService"
+		parent="abstractBusinessService">
+		<property name="greenleeB2BCustomerDao" ref="greenleeB2BCustomerDao"/>
+	</bean>
+	
+	<alias alias="greenleeB2BCustomerDao" name="defaultGreenleeB2BCustomerDao"/>
+	<bean id="defaultGreenleeB2BCustomerDao" class="com.greenlee.core.greenleeb2bcustomer.dao.impl.DefaultGreenleeB2BCustomerDao" 
+		parent="abstractItemDao"/>
+		
+	<alias name="greenleeDeliveryModeLookupStrategy" alias="deliveryModeLookupStrategy"/>
+	<bean id="greenleeDeliveryModeLookupStrategy"
+			class="com.greenlee.core.commerceservices.strategies.GreenleeDeliveryModeLookupStrategy">
+		<property name="znDeliveryModeDao" ref="greenleeCountryZoneDeliveryModeDao"/>
+	</bean>	
+	
+	<!-- <alias alias="commerceDeliveryModeStrategy" name="greenleeCommerceDeliveryModeStrategy"/>
+	<bean id="greenleeCommerceDeliveryModeStrategy"
+			class="com.greenlee.core.commerceservices.strategies.GreenleeCommerceDeliveryModeStrategy">
+		<property name="commerceCartCalculationStrategy" ref="checkoutCartCalculationStrategy"/>
+		<property name="modelService" ref="modelService"/>
+		<property name="deliveryService" ref="deliveryService"/>
+	</bean> -->
+		
+		<!-- user registration -->
+	<bean id="greenleeCustomerAccountService" class="com.greenlee.core.customer.impl.GreenleeCustomerAccountServiceImpl">
+		<property name="userService" ref="userService"/>
+		<property name="modelService" ref="modelService"/>
+		<property name="tokenValiditySeconds" value="1800"/>
+		<property name="secureTokenService" ref="secureTokenService"/>
+		<property name="salesforceService" ref="salesforceService"/>
+		<property name="currencyDao" ref="currencyDao"/>
+	</bean>
+	
+	<alias alias="customerAccountService" name="greenLeeCustomerAccountService"/>
+	<bean id="greenLeeCustomerAccountService" class="com.greenlee.core.customer.impl.GreenleeDefaultCustomerAccountService" parent="defaultB2CSapCustomerAccountService">
+		<property name="userService" ref="userService"/>
+		<property name="paymentService" ref="paymentService"/>
+		<property name="modelService" ref="modelService"/>
+		<property name="flexibleSearchService" ref="flexibleSearchService"/>
+		<property name="i18nService" ref="i18nService"/>
+		<property name="passwordEncoderService" ref="passwordEncoderService"/>
+		<property name="secureTokenService" ref="secureTokenService"/>
+		<property name="tokenValiditySeconds" value="1800"/>
+		<property name="customerAccountDao" ref="customerAccountDao"/>
+		<property name="baseSiteService" ref="baseSiteService"/>
+		<property name="baseStoreService" ref="baseStoreService"/>
+		<property name="eventService" ref="eventService"/>
+		<property name="commonI18NService" ref="commonI18NService"/>
+		<property name="customerEmailResolutionService" ref="customerEmailResolutionService"/>
+		<property name="passwordEncoding" value="md5"/>
+		<property name="typeService" ref="typeService"/>
+		<property name="customerNameStrategy" ref="defaultCustomerNameStrategy"/>
+		<property name="timeService" ref="timeService"/>
+		<property name="monthsForOrderExpiry"
+					 value="#{configurationService.configuration.getProperty('guest.orderstatuspage.access.expiry.month')}"/>
+		<property name="sapCustomerIdGenerator" ref="sapCustomerIdGenerator"></property>
+		<property name="sapContactIdGenerator" ref="sapContactIdGenerator"></property>
+	</bean>
+	
+	<alias name="greenleeB2BUserGroupsLookUpStrategy" alias="b2bUserGroupsLookUpStrategy"/>
+	<bean name="greenleeB2BUserGroupsLookUpStrategy"
+		class="de.hybris.platform.b2bacceleratorservices.strategies.impl.DefaultB2BUserGroupsLookUpStrategy"
+		>
+		<property name="groups">
+			<list>
+				<value>b2badmingroup</value>
+				<value>b2bcustomergroup</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="greenleeCountryZoneDeliveryModeDao" class="com.greenlee.core.order.daos.impl.DefaultCountryOrderWeightZoneDeliveryModeDao" 
+		parent="defaultCountryZoneDeliveryModeDao"/>
+	        
+    <bean id="creativeConfirmationActionJob"
+        class="com.greenlee.core.workflow.jobs.CreativeConfirmationActionJob">
+    </bean>
+    
+    <bean id="attributionConfirmationActionJob"
+        class="com.greenlee.core.workflow.jobs.AttributionConfirmationActionJob">
+    </bean>
+    
+    <bean id="b2bPermissionsCreationInterceptor" class="com.greenlee.core.interceptor.B2BPermissionsCreationInterceptor">
+		<property name="modelService" ref="modelService" />
+		<property name="greenleeB2BPermissionService" ref="greenleeB2BPermissionService"/>
+	</bean>
+	
+	<bean id="greenleeB2BPermissionService" class="com.greenlee.core.permission.services.impl.DefaultGreenleeB2BPermissionService">
+		<property name="modelService" ref="modelService" />
+		<property name="configurationService" ref="configurationService"/>
+	</bean>
+
+	<bean id="b2bPermissionsCreationInterceptorMapping" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="b2bPermissionsCreationInterceptor"/>
+		<property name="typeCode" value="GreenleeB2BCustomer"/>
+	</bean>	
+		
+
+	
+	<!-- Content Search & Auto Search -->
+	
+	
+	
+	<bean id="pageTitleValueProvider"
+	      class="com.greenlee.core.search.solrfacetsearch.provider.impl.PageTitleValueProvider"
+	       parent="abstractPropertyFieldValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+	</bean>
+	
+	
+	<bean id="contentPageUrlValueProvider"
+	      class="com.greenlee.core.search.solrfacetsearch.provider.impl.ContentPageUrlValueProvider"
+	       parent="abstractPropertyFieldValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+		<property name="contentPageUrlResolver" ref="defaultContentPageUrlResolver"/>
+	</bean>
+	
+	<bean id="textValueProvider"
+	      class="com.greenlee.core.search.solrfacetsearch.provider.impl.TextValueProvider"
+	       parent="abstractPropertyFieldValueProvider">
+		<property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+	</bean>
+	
+	<bean id="contentSearchService"
+	      class="com.greenlee.core.search.services.impl.ContentSearchServiceImpl" >
+	</bean>
+	
+	
+	<alias name="defaultCommerceContentSearchQueryPageableConverter" alias="commerceContentSearchQueryPageableConverter" />
+	<bean id="defaultCommerceContentSearchQueryPageableConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="de.hybris.platform.commerceservices.search.solrfacetsearch.data.SolrSearchRequest" />
+		<property name="populators">
+			<list>
+				<ref bean="contentSearchSolrQueryPopulator" />
+				<ref bean="commerceSearchPagePopulator" />
+				<ref bean="commerceSearchSortPopulator" />
+				<ref bean="contentSearchTextPopulator" />
+				<ref bean="commerceSearchFiltersPopulator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="contentSearchSolrQueryPopulator" class="com.greenlee.core.search.solrfacetsearch.provider.impl.ContentSearchSolrQueryPopulator">
+		<property name="catalogVersionService" ref="catalogVersionService" />
+		<property name="baseSiteService" ref="baseSiteService" />
+		<property name="commonI18NService" ref="commonI18NService" />
+		<property name="baseStoreService" ref="baseStoreService" />
+		<property name="facetSearchService" ref="facetSearchService" />
+		<property name="facetSearchConfigService" ref="facetSearchConfigService" />
+		<property name="solrFacetSearchConfigSelectionStrategy" ref="solrFacetContentSearchConfigSelectionStrategy" />
+		<property name="cmsSiteService" ref="cmsSiteService" />
+		
+	</bean>
+	
+	<bean id="contentSearchTextPopulator" class="de.hybris.platform.commerceservices.search.solrfacetsearch.populators.SearchTextPopulator">
+		<property name="freeTextQueryBuilders">
+			<list>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="contentText" />
+					<property name="boost" value="100" />
+				</bean>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="title" />
+					<property name="boost" value="100" />
+				</bean>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="url" />
+					<property name="boost" value="100" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	
+    <alias name="defaultSolrFacetContentSearchConfigSelectionStrategy" alias="solrFacetContentSearchConfigSelectionStrategy"/>
+	<bean id="defaultSolrFacetContentSearchConfigSelectionStrategy"
+		class="com.greenlee.core.search.strategies.impl.DefaultSolrFacetContentSearchConfigSelectionStrategy">
+	</bean>
+	
+	<bean id="contentSearchAutoCompleteService" class="com.greenlee.core.search.services.impl.ContentSearchAutoCompleteServiceImpl">
+		<property name="facetSearchConfigService" ref="facetSearchConfigService" />
+		<property name="commonI18NService" ref="commonI18NService" />
+		<property name="solrAutoSuggestService" ref="solrAutoSuggestService" />
+		<property name="solrIndexedTypeCodeResolver" ref="solrIndexedTypeCodeResolver" />
+		<property name="solrFacetSearchConfigSelectionStrategy" ref="solrFacetContentSearchConfigSelectionStrategy" />
+	</bean>
+	
+	
+	<bean id="defaultHelpMeChooseService"
+		class="com.greenlee.core.helpmechoose.services.impl.DefaultHelpMeChooseService" >
+		<property name="helpMeChooseFormMappingDao" ref="defaultHelpMeChooseFormMappingDao"/>
+		<!-- <property name="helpMeChooseResponseActionMappingConverter" ref="defaultHelpMeChooseResponseActionMappingConverter"/> -->
+		<property name="questionConverter" ref="defaultHelpMeChooseQuestionConverter"/>
+		<property name="answerConverter" ref="defaultHelpMeChooseAnswerConverter"/>
+	</bean>
+	
+	<bean id="defaultHelpMeChooseFormMappingDao" class="com.greenlee.core.helpmechoose.dao.impl.DefaultHelpMeChooseFormMappingDao" parent="abstractItemDao"/>
+	
+	<bean id="helpMeChooseAnswerValidateInterceptor" class="com.greenlee.core.interceptor.HelpMeChooseAnswerValidateInterceptor"
+      autowire="byName"/>
+      
+    <bean id="answerValidateInterceptorMapping" 
+      class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+	    <property name="interceptor" ref="helpMeChooseAnswerValidateInterceptor"/>
+	    <property name="typeCode" value="HelpMeChooseAnswer"/>
+	</bean>
+	
+	<bean id="defaultHelpMeChooseAnswerConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="com.greenlee.helpmechoose.data.HelpMeChooseAnswerData" />
+		<property name="populators">
+			<list>
+				<ref bean="HelpMeChooseAnswerPopulator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="HelpMeChooseAnswerPopulator"
+		class="com.greenlee.core.helpmechoose.populator.HelpMeChooseAnswerPopulator" >
+		<property name="questionConverter" ref="defaultHelpMeChooseQuestionConverter"/>
+	</bean>
+	
+	<bean id="defaultHelpMeChooseQuestionConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="com.greenlee.helpmechoose.data.HelpMeChooseQuestionData" />
+		<property name="populators">
+			<list>
+				<ref bean="HelpMeChooseQuestionPopulator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="HelpMeChooseQuestionPopulator"
+		class="com.greenlee.core.helpmechoose.populator.HelpMeChooseQuestionPopulator" >
+		<property name="answerConverter" ref="defaultHelpMeChooseAnswerConverter"/>
+	</bean>
+	
+	<alias name="greenleeDeliveryAddressesLookupStrategy" alias="b2bDeliveryAddressesLookupStrategy"/>
+	<alias name="greenleeDeliveryAddressesLookupStrategy" alias="deliveryAddressesLookupStrategy"/>
+	<bean id="greenleeDeliveryAddressesLookupStrategy"
+		class="com.greenlee.core.b2baccelerator.strategies.impl.GreenleeDeliveryAddressesLookupStrategy" parent="defaultB2BDeliveryAddressesLookupStrategy">
+		<property name="fallbackDeliveryAddressesLookupStrategy" ref="defaultDeliveryAddressesLookupStrategy"/>
+	</bean>
+	
+<!--TODO: The below bean needs to be removed. This is a dirty hack to complete checkout and place order -->
+	<alias name="abstractOrderEntryPreparer2" alias="abstractOrderEntryPreparer"/>
+	<bean id="abstractOrderEntryPreparer2" parent="defaultAbstractOrderEntryPreparer">
+		<property name="attributesForOrderRecalculation">
+			<list merge="true">
+				<value>basePrice</value>
+			</list>
+		</property>
+	</bean>
+
+	<alias name="abstractOrderPrepareInterceptor2" alias="abstractOrderPrepareInterceptor"/>
+	<bean id="abstractOrderPrepareInterceptor2" parent="defaultAbstractOrderPrepareInterceptor">
+		<property name="attributesForOrderEntriesRecalculation">
+			<list merge="true">
+				<value>net</value>
+			</list>
+		</property>
+		<property name="attributesForOrderRecalculation">
+			<list merge="true">
+				<value>deliveryMode</value>
+			</list>
+		</property>
+	</bean>
+	
+	<alias alias="salesforceService" name="defaultSalesforceService"/>
+	<bean id="defaultSalesforceService"
+	      class="com.greenlee.core.salesforce.services.impl.DefaultSalesforceService" >
+		<property name="grantType" value="#{configurationService.configuration.getProperty('greenleeservices.salesforce.grantType')}"/>
+        <property name="clientId" value="#{configurationService.configuration.getProperty('greenleeservices.salesforce.clientId')}"/>
+        <property name="clientSecret" value="#{configurationService.configuration.getProperty('greenleeservices.salesforce.clientSecret')}"/>
+        <property name="username" value="#{configurationService.configuration.getProperty('greenleeservices.salesforce.username')}"/>
+        <property name="password" value="#{configurationService.configuration.getProperty('greenleeservices.salesforce.password')}"/>
+        <property name="authenticationUrl" value="#{configurationService.configuration.getProperty('greenleeservices.salesforce.authenticationUrl')}"/>
+        <property name="newLeadUrl" value="#{configurationService.configuration.getProperty('greenleeservices.salesforce.newLeadUrl')}"/>
+        <property name="updateSapIdUrl" value="#{configurationService.configuration.getProperty('greenleeservices.salesforce.updateSapIdUrl')}"/>
+        <property name="recordType" value="#{configurationService.configuration.getProperty('greenleeservices.salesforce.recordType')}"/>
+        <property name="modelService" ref="modelService" />
+        <property name="customerNameStrategy" ref="customerNameStrategy" />
+	</bean>
+	
+	<alias alias="livingstonService" name="defaultLivingstonService"/>
+	<bean id="defaultLivingstonService"
+	      class="com.greenlee.core.livingston.services.impl.DefaultLivingstonService" >
+		<property name="username" value="${greenleeservices.livingston.username}"/>
+        <property name="password" value="${greenleeservices.livingston.password}"/>
+        <property name="serviceUrl" value="${greenleeservices.livingston.serviceUrl}"/>
+        <property name="userService" ref="userService"/>
+	</bean>
+
+	<bean id="greenleeWarrantyProductValidateInterceptor" class="com.greenlee.core.interceptor.GreenleeWarrantyProductValidateInterceptor">
+		<property name="modelService" ref="modelService"/>
+		<property name="categoryService" ref="categoryService"/>
+		<property name="catalogVersionService" ref="catalogVersionService"/>
+	</bean>
+
+	<bean id="greenleeWarrantyProductValidateInterceptorMapping"
+			class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="greenleeWarrantyProductValidateInterceptor"/>
+		<property name="typeCode" value="ProductReference"/>
+	</bean>
+	
+	<bean id="greenleeCommerceUpdateCartEntryStrategy" class="com.greenlee.core.cart.strategies.impl.GreenleeCommerceUpdateCartEntryStrategyImpl"
+	parent="defaultCommerceUpdateCartEntryStrategy"/>
+		
+	<alias name="greenleeCommerceCartService" alias="greenleeCommerceCartService" />	 
+	<bean id="greenleeCommerceCartService" class="com.greenlee.core.cart.services.GreenleeCommerceCartServiceImpl"
+	parent="defaultCommerceCartService">
+		<property name="greenleeCommerceUpdateCartEntryStrategy" ref="greenleeCommerceUpdateCartEntryStrategy" />
+	</bean>	
+	
+	<alias name="greenleeCalculationService" alias="calculationService"/>
+	<bean id="greenleeCalculationService" class="com.greenlee.core.order.impl.GreenleeCalculationService" parent="abstractBusinessService">
+		<property name="findPriceStrategy" ref="greenleeFindPriceTaxStrategyWithFallback"/>
+		<property name="commonI18NService" ref="commonI18NService"/>
+		<!-- <property name="orderRequiresCalculationStrategy" ref="orderRequiresCalculationStrategy"/> -->
+		<property name="findTaxesStrategies">
+			<list>
+				<ref bean="greenleeFindPriceTaxStrategyWithFallback"/>
+			</list>
+		</property>
+		<property name="findDeliveryCostStrategy" ref="greenleeFindDeliveryCostStrategyWithFallback"/>
+		
+		<property name="findDiscountsStrategies">
+			<list>
+				<ref bean="currentFactoryFindPricingStrategy"/>
+				<ref bean="findOrderDiscountValuesStrategy"/>
+			</list>
+		</property>
+		<property name="findPaymentCostStrategy" ref="findPaymentCostStrategy"/>
+		<property name="orderRequiresCalculationStrategy" ref="orderRequiresCalculationStrategy"/>
+		<property name="taxFreeEntrySupport" value="${abstractorder.taxFreeEntrySupport}"/>
+	</bean>
+
+	<bean id="greenleeFindPriceTaxStrategyWithFallback" class="com.greenlee.core.order.strategies.calculation.impl.GreenleeFindPriceTaxStrategyWithFallback">
+		<property name="fallbackFindPriceStrategy" ref="currentFactoryFindPricingStrategy"/>
+		<property name="fallbackFindTaxStrategy" ref="currentFactoryFindPricingStrategy"/>
+	</bean>
+
+	<bean id="greenleeFindDeliveryCostStrategyWithFallback" class="com.greenlee.core.order.strategies.calculation.impl.GreenleeFindDeliveryCostStrategyWithFallback">
+		<property name="fallbackFindDeliveryCostStrategy" ref="defaultFindDeliveryCostStrategy"/>
+	</bean>
+	
+	<bean id="greenleeUtils" class="com.greenlee.core.util.GreenleeUtils"/>
+	
+	<bean id="greenleeB2BCustomerPriceInterceptor" class="com.greenlee.core.servicelayer.interceptor.GreenleeB2BCustomerPriceInterceptor">
+        <property name="userGroupDao" ref="userGroupDao"/>
+	</bean>
+	
+	<bean id="greenleeB2BCustomerPriceInterceptorMapping" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+        <property name="interceptor" ref="greenleeB2BCustomerPriceInterceptor"/>
+        <property name="typeCode" value="GreenleeB2BCustomer"/>
+    </bean>
+	<alias name="defaultCommerceSearchTextPopulator" alias="commerceSearchTextPopulator" />
+	<bean id="defaultCommerceSearchTextPopulator" class="de.hybris.platform.commerceservices.search.solrfacetsearch.populators.SearchTextPopulator">
+		<property name="freeTextQueryBuilders">
+			<list>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="catalogNumber" />
+					<property name="boost" value="100" />
+				</bean>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="sapcode" />
+					<property name="boost" value="90" />
+				</bean>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="longUPC" />
+					<property name="boost" value="85" />
+				</bean>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="smallUPC" />
+					<property name="boost" value="80" />
+				</bean>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="unspscNumber" />
+					<property name="boost" value="75" />
+				</bean>												
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="name" />
+					<property name="boost" value="50" />
+				</bean>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="description" />
+					<property name="boost" value="40" />
+				</bean>
+				<bean
+					class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.ClassificationFreeTextQueryBuilder">
+					<property name="boost" value="30" />
+				</bean>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="keywords" />
+					<property name="boost" value="20" />
+				</bean>
+				<bean class="de.hybris.platform.commerceservices.search.solrfacetsearch.querybuilder.impl.DefaultFreeTextQueryBuilder">
+					<property name="propertyName" value="categoryName" />
+					<property name="boost" value="10" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<alias name="greenleeCustomerNameStrategy" alias="customerNameStrategy"/>
+	<bean id="greenleeCustomerNameStrategy"
+			class="com.greenlee.core.greenleeb2bcustomer.services.GreenleeCustomerNameStrategy" parent="defaultCustomerNameStrategy"/>
+			
+	<bean id="greenleeAddToCartHook" class="com.greenlee.core.order.hook.impl.GreenleeAddToCartHook">
+		<property name="modelService" ref="modelService"/>
+	</bean>
+	
+	<bean id="greenleeAddToCartHookMergeDirective" depends-on="commerceAddToCartMethodHooks" parent="listMergeDirective">
+    	<property name="add" ref="greenleeAddToCartHook"/>
+   	</bean>
+
+	<bean id="greenleeUpdateCartEntryHook" class="com.greenlee.core.order.hook.impl.GreenleeUpdateCartEntryHook">
+		<property name="modelService" ref="modelService"/>
+	</bean>
+	
+	<bean id="greenleeUpdateCartEntryHookMergeDirective" depends-on="commerceUpdateCartEntryMethodHooks" parent="listMergeDirective">
+    	<property name="add" ref="greenleeUpdateCartEntryHook"/>
+   	</bean>
+	
+	<alias alias="stockLevelStatusStrategy" name="greenleeCommerceStockLevelStatusStrategy"/>
+	<bean id="greenleeCommerceStockLevelStatusStrategy"
+			class="com.greenlee.core.stock.strategies.impl.GreenleeCommerceStockLevelStatusStrategy"
+			parent="abstractBusinessService">
+		<property name="defaultLowStockThreshold" value="5"/>
+		<property name="commerceStockLevelCalculationStrategy" ref="commerceStockLevelCalculationStrategy"/>
+	</bean>
+
+	<bean id="greenleeRegionCountryDao"
+			class="com.greenlee.core.order.daos.impl.GreenleeRegionCountryDao">
+		<property name="flexibleSearchService" ref="flexibleSearchService"/>
+		<property name="baseStoreService" ref="baseStoreService"/>
+	</bean>
+
+	<bean id="greenleeRegionCountryService"
+			class="com.greenlee.core.checkout.services.impl.GreenleeRegionCountryService">
+		<property name="regionCountryDao" ref="greenleeRegionCountryDao"/>
+	</bean>
+	
+	<alias name="greenleeCartValidationStrategy" alias="cartValidationStrategy"/>
+	<bean id="greenleeCartValidationStrategy" class="com.greenlee.core.cart.strategies.impl.GreenleeCartValidationStrategy" parent="defaultCartValidationStrategy">
+		<property name="findPriceStrategy" ref="greenleeFindPriceTaxStrategyWithFallback"/>
+	</bean>
+
+	<!--<alias name="greenleeCommerceAvailabilityCalculationStrategy" alias="commerceStockLevelCalculationStrategy"/>
+	<bean id="greenleeCommerceAvailabilityCalculationStrategy" class="com.greenlee.core.cart.strategies.impl.GreenleeCommerceAvailabilityCalculationStrategy" parent="defaultCommerceStockLevelCalculationStrategy"/>
+	-->
+	<bean id="pushToProductionActionJob"
+        class="com.greenlee.core.workflow.jobs.PushToProductionActionJob">
+    </bean>
+
+	<bean id="greenleeCommerceCartCalculationMethodHook"
+        class="com.greenlee.core.cart.services.GreenleeCommerceCartCalculationMethodHook">
+		<property name="validationStrategy" ref="cartValidationStrategy"/>
+		<property name="sessionService" ref="sessionService"/>
+    </bean>
+	
+	<bean id="greenleeCommerceCartCalculationMethodHookMergeDirective" depends-on="commerceCartCalculationMethodHooks" parent="listMergeDirective">
+    	<property name="add" ref="greenleeCommerceCartCalculationMethodHook"/>
+   	</bean>
+   	
+   	<alias name="greenleeTitleDao" alias="titleDao"/>
+	<bean id="greenleeTitleDao" class="com.greenlee.core.user.dao.GreenleeTitleDao"/>
+</beans>

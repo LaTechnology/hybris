@@ -1,0 +1,33 @@
+/*
+
+	Product Compare
+*****************/
+.product_compare .top th,
+.product_compare .bottom th {
+	color: #0458a8;
+}
+.product_compare td.title h2 {
+	color: #666666;
+}
+.product_compare h2 {
+	color: #0458a8;
+	border-color: #0458a8;
+}
+.product_compare .prod_add_to_cart form button {
+	margin-left: 0;
+}
+.product_compare h2 {
+	color: #0458a8;
+	border-color: #86acd3;
+}
+.product_compare .costs .price {
+	color: #0E337C;
+	font-size: 1.4em;
+	font-weight: bold;
+}
+.product_compare .middle table tbody tr:nth-child(even){
+	background-color: #dfeaf6;
+}
+#colorbox {
+	border-color: #0458a8;
+}

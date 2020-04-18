@@ -1,0 +1,117 @@
+.account-body {
+    .address-book {
+        @media (min-width: $screen-md-min) {
+            width: 61.16504854368932%;
+        }
+    }
+    ul.address-items {
+        margin: 0;
+        padding: 0;
+        min-height: 405px;
+        > li {
+            width: 100%;
+            display: inline-block;
+            margin-right: -2px;
+            vertical-align: top;
+            margin-bottom: 17px;
+            @media (min-width: $screen-md-min) {
+                padding-right: 20px;
+                width: 50%;
+            }
+        }
+    }
+}
+.address-item {
+    padding: 15px 20px;
+    border: 1px solid $light-grey;
+    min-height: 191px;
+    position: relative;
+    transition: all 0.3s ease-out;
+    word-break: break-word;
+    h5 {
+        @include font-size(14px);
+        @media (min-width: $screen-md-min) {
+             @include font-size(18px);
+        }
+        font-family: 'robotomedium';
+        text-transform: capitalize;
+        margin: 0;
+        padding: 0;
+    }
+    .change-address {
+        margin-top: 15px;
+        a {
+            @include font-size(12px);
+        }
+        .fa {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+    }
+    address {
+        margin: 0;
+        padding: 10px 0;
+        color: $gray-lighter;
+        font-style: normal;
+    }
+    a {
+        color: $gray-lighter;
+        text-transform: capitalize;
+    }
+    &:hover {
+        border: 1px solid $horgange;
+    }
+    &.shipping-address {
+        border: 1px solid $horgange;
+        .change-address {
+            a {
+                color: $horgange;
+            }
+        }
+    }
+    .address-links.clearfix {
+        margin: 0 -9px;
+        > ul {
+            padding: 0;
+            margin: 0;
+            > li {
+                float: left;
+                padding: 0;
+                &.first {
+                    border-right: 1px solid $light-grey;
+                }
+            }
+        }
+    }
+    .delivery-form h3 {
+		font-size: 1rem;
+		margin-top: 5px;
+	}
+}
+.new-address {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    margin: auto;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    text-align: center;
+    .plus {
+        @include font-size(48px);
+        color: $gray-lighter;
+        line-height: 34px;
+        margin: 0;
+    }
+    .new-address__links {
+        border-bottom: 1px solid $light-grey;
+    }
+}
+.default-card {
+    @include font-size(12px);
+}
+.pay-remove {
+    text-transform: capitalize;
+    border-bottom: 1px solid $light-grey;
+}

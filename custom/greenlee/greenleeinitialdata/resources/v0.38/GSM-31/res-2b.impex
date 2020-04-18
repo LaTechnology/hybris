@@ -1,0 +1,80 @@
+#------------------
+# Residential Category Staged
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Residential Category Landing page              #################
+							 
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; ResidentialCategorySelectModelsLink  ; Residential CategorySelectModels Link  ; "#models"                       ; Select a Model                ; ResidentialCategorySelectModelsLink  ; ResidentialCategorySelectModelsLink  ;                                    ; class="scrollTrigger btn"                       
+											  
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]                   ;  active  ; cmsComponents(&componentRef)                                                                                                                              
+                      ;                         ; Section2bContentSlot-RESCatPage ;   true   ; ResidentialCategorySelectModelsLink                                                                                                                        
+ 
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2bContentSlot-RESCatPage ; Residential Section2b Slot for CategoryLandingPage  ; true   ; ResidentialCategorySelectModelsLink                                                                                                                        
+ 
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                         ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2b-residentialcategory     ;                                                                  ; Section2bContentSlot-RESCatPage           
+  
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2b-residentialcategory     ; Section2b             ;                                                                 ; Section2bContentSlot-RESCatPage           
+
+#------------------
+# Residential Category Online
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Online'])[default=$contentCatalog:Online]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Residential Category Landing page              #################
+							 
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; ResidentialCategorySelectModelsLink  ; Residential CategorySelectModels Link  ; "#models"                       ; Select a Model                ; ResidentialCategorySelectModelsLink  ; ResidentialCategorySelectModelsLink  ;                                    ; class="scrollTrigger btn"                       
+											  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2bContentSlot-RESCatPage ; Residential Section2b Slot for CategoryLandingPage  ; true   ; ResidentialCategorySelectModelsLink                                                                                                                        
+ 
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2b-residentialcategory     ; Section2b             ;                                                                 ; Section2bContentSlot-RESCatPage           
+  
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2b-residentialcategory     ; Section2b             ;                                                                 ; Section2bContentSlot-RESCatPage           

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+
+  
+--><!--
+ All hybris buildcallbacks.xml macrodefinitions:
+ 
+ Build/Documentation
+ 
+	 before/after ant macro "clean"
+		 <macrodef name="greenleeprocessintegration_before_clean"/>
+		 <macrodef name="greenleeprocessintegration_after_clean"/>
+	 
+	 before/after ant macro "build"
+		 <macrodef name="greenleeprocessintegration_before_build"/>
+		 <macrodef name="greenleeprocessintegration_after_build"/>
+		 
+	 before/after ant macro "compile_core" - the core module of the extension
+		 <macrodef name="greenleeprocessintegration_before_compile_core">
+		 <macrodef name="greenleeprocessintegration_after_compile_core">
+	 
+	 before/after ant macro "compile_web" - the web module of the extension
+		 <macrodef name="greenleeprocessintegration_before_compile_web" />
+		 <macrodef name="greenleeprocessintegration_after_compile_web" />
+	 
+	 before/after ant macro "compile_hmc" - the hmc module of the extension
+		 <macrodef name="greenleeprocessintegration_before_compile_hmc" />
+		 <macrodef name="greenleeprocessintegration_after_compile_hmc" />
+ 
+ Preparing extension
+ 
+	 will be called in the beginning of the ant call and only once (also when using multiple 
+	 ant targets e.g. ant build yunittest)	
+		 <macrodef name="greenleeprocessintegration_only_once_prepare"/>
+ 
+ Creating ear module/production
+ 
+	 before/after ant macro "ear"
+		 <macrodef name="greenleeprocessintegration_before_ear"/>
+		 <macrodef name="greenleeprocessintegration_after_ear"/>
+
+	 before/after ant macro "production" - for hybris server only
+		 <macrodef name="greenleeprocessintegration_before_production" />
+		 <macrodef name="greenleeprocessintegration_after_production" />
+ 
+ JUnit Test
+ 
+	 before/after ant macro "yunitinit" 
+		 <macrodef name="greenleeprocessintegration_before_yunitinit" />
+		 <macrodef name="greenleeprocessintegration_after_yunitinit" />
+	 
+	 before/after ant macro "yunit"
+		 <macrodef name="greenleeprocessintegration_before_yunit" />
+		 <macrodef name="greenleeprocessintegration_after_yunit" /> 
+		 
+ Distribution package
+ 
+ 	 before/after ant macro "dist" - internal target; only for use when platform is available in source code
+		 <macrodef name="greenleeprocessintegration_after_dist"/>
+		 <macrodef name="greenleeprocessintegration_before_dist"/>
+	 
+	 before/after ant macro "dist_copy" - internal target; only for use when platform is available in source code
+		 <macrodef name="greenleeprocessintegration_before_dist_copy"/>
+		 <macrodef name="greenleeprocessintegration_after_dist_copy"/>
+		  
+ 	 With these filters you can override the default extension filters defined in platform/resources/ant/dist/filtersets.xml
+ 	  	 <patternset id="extension.greenleeprocessintegration.binary.filter">
+ 	  	  	 <patternset refid="extension.filter" />
+ 	  	  	 <exclude name="**/*-source.jar" />
+ 	  	 </patternset>
+ 	  	 <patternset id="extension.greenleeprocessintegration.source.filter">
+ 	  	  	 <exclude name="**/bin/**" />
+ 	  	 </patternset>
+ 
+--><project name="greenleeprocessintegration_buildcallbacks">
+
+	<!-- 
+	    Called whenever 'ant ear' is used. this callback can be used to modify the content of the ear file
+	
+	     ${ear.path}: 			path to ear
+	 -->
+	
+	<macrodef name="greenleeprocessintegration_before_build">
+		<sequential>
+			<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+				<classpath>
+					<fileset dir="${ext.core.path}/lib" includes="*.jar" />
+					<fileset dir="${platformhome}/resources/ant/lib" includes="*.jar" />
+
+				</classpath>
+			</taskdef>	
+			<echo>Generating JAXB files for content editor configuration</echo>
+		<mkdir dir="${ext.greenleeprocessintegration.path}/gensrc" />
+		<xjc destdir="${ext.greenleeprocessintegration.path}/gensrc"  removeOldOutput="yes">
+					            <arg value="-verbose" />
+					            <arg value="-wsdl" />
+					            <arg value="${ext.greenleeprocessintegration.path}/resources/pi/wsdl/BC_HYBRIS_SI_Hybris_Order_Header_OB.wsdl" />
+		</xjc>
+		<xjc destdir="${ext.greenleeprocessintegration.path}/gensrc">
+						            <arg value="-verbose" />
+						            <arg value="-wsdl" />
+						            <arg value="${ext.greenleeprocessintegration.path}/resources/pi/wsdl/BC_HYBRIS_SI_Hybris_Order_Item_OB.wsdl" />
+		</xjc>				
+		<xjc destdir="${ext.greenleeprocessintegration.path}/gensrc">
+						            <arg value="-verbose" />
+						            <arg value="-wsdl" />
+						            <arg value="${ext.greenleeprocessintegration.path}/resources/pi/wsdl/BC_HYBRIS_SI_Hybris_Pricing_Enquiry_OB.wsdl" />
+		</xjc>
+		<xjc destdir="${ext.greenleeprocessintegration.path}/gensrc">
+							            <arg value="-verbose" />
+							            <arg value="-wsdl" />
+							            <arg value="${ext.greenleeprocessintegration.path}/resources/pi/wsdl/BC_HYBRIS_SI_Hybris_Customer_Data_OB.wsdl" />
+		</xjc>
+		<xjc destdir="${ext.greenleeprocessintegration.path}/gensrc">
+									            <arg value="-verbose" />
+									            <arg value="-wsdl" />
+									            <arg value="${ext.greenleeprocessintegration.path}/resources/pi/wsdl/BC_HYBRIS_SI_Hybris_Delivery_Block_OB.wsdl" />
+				</xjc>
+		</sequential>
+	</macrodef>
+
+	<target name="generate.wsdl">
+			<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+				<classpath>
+					<fileset dir="${ext.core.path}/lib" includes="*.jar"/>
+					<fileset dir="${platformhome}/resources/ant/lib" includes="*.jar" />
+				</classpath>
+			</taskdef>	
+			<echo>Generating JAXB files for content editor configuration</echo>
+		<mkdir dir="${ext.greenleeprocessintegration.path}/gensrc" />
+		<xjc destdir="${ext.greenleeprocessintegration.path}/gensrc"  removeOldOutput="yes">
+					            <arg value="-verbose" />
+					            <arg value="-wsdl" />
+					            <arg value="${ext.greenleeprocessintegration.path}/resources/pi/wsdl/BC_HYBRIS_SI_Hybris_Order_Header_OB.wsdl" />
+		</xjc>
+		<xjc destdir="${ext.greenleeprocessintegration.path}/gensrc">
+					            <arg value="-verbose" />
+					            <arg value="-wsdl" />
+					            <arg value="${ext.greenleeprocessintegration.path}/resources/pi/wsdl/BC_HYBRIS_SI_Hybris_Order_Item_OB.wsdl" />
+		</xjc>
+		<xjc destdir="${ext.greenleeprocessintegration.path}/gensrc">
+						            <arg value="-verbose" />
+						            <arg value="-wsdl" />
+						            <arg value="${ext.greenleeprocessintegration.path}/resources/pi/wsdl/BC_HYBRIS_SI_Hybris_Pricing_Enquiry_OB.wsdl" />
+		</xjc>
+		<xjc destdir="${ext.greenleeprocessintegration.path}/gensrc">
+							            <arg value="-verbose" />
+							            <arg value="-wsdl" />
+							            <arg value="${ext.greenleeprocessintegration.path}/resources/pi/wsdl/BC_HYBRIS_SI_Hybris_Customer_Data_OB.wsdl" />
+		</xjc>
+		<xjc destdir="${ext.greenleeprocessintegration.path}/gensrc">
+											            <arg value="-verbose" />
+											            <arg value="-wsdl" />
+											            <arg value="${ext.greenleeprocessintegration.path}/resources/pi/wsdl/BC_HYBRIS_SI_Hybris_Delivery_Block_OB.wsdl" />
+		</xjc>
+	</target>	
+</project>

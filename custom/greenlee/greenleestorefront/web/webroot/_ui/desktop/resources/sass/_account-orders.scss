@@ -1,0 +1,40 @@
+.your-order {
+    h1 {
+        margin: 0;
+    }
+    .orders-filter {
+        padding: 14px 10px;
+        p {
+            margin: 0;
+            span {
+                font-family: 'robotomedium';
+            }
+        }
+    }
+    .orders {
+        > li {
+            border-top: 1px solid $light-grey;
+            margin-bottom: 9px;
+            background: $odd-li;
+            .order-header {
+                label {
+                    @include font-size(12px);
+                    text-transform: uppercase;
+                    color: $gray-lighter;
+                }
+                h3 {
+                    font-family: 'robotomedium';
+                    margin: 0 0 6px;
+                    @include font-size(14px);
+                    text-transform: uppercase;
+                    &.success {
+                        color: #84c54f;
+                    }
+                    a {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2012 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris. -->
+
+
+<!-- WARNING: This is the Spring WEB configuration file. If you want to replace 
+	items or managers you have to do this from the extensions core configuration 
+	file (cscockpit/resources/cscockpit-spring.xml) -->
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd"
+       default-autowire="byName">
+       
+
+
+	<!-- WEB context for cscockpit -->
+
+	<alias alias="csBasketBrowser" name="defaultAddOnCsBasketBrowser" />
+	<bean id="defaultAddOnCsBasketBrowser" parent="defaultCsBasketBrowser"
+		scope="prototype" class="com.hybris.addon.cscockpit.widget.models.impl.AddOnCsWidgetBrowserModel" >
+		<property name="viewTemplateURI" value="/cscockpit/templates/flexibleBasketLayout.zul"/>
+		<property name="viewClass" value="com.hybris.addon.cockpits.widgets.impl.AddOnWidgetContentBrowser"/>
+		<property name="additionalWidgetMapBeanIds" ref="csBasketBrowserAdditionalWidgetMapBeanIds" />
+	</bean>
+	
+	
+	<util:list id="csBasketBrowserAdditionalWidgetMapBeanIds" />
+	
+</beans>

@@ -1,0 +1,12 @@
+# 
+# Import the greenlee BaseStore
+#
+# Localization en
+#
+
+$lang=en
+
+$storeUid=greenlee
+
+UPDATE BaseStore;uid[unique=true];name[lang=$lang]
+;$storeUid;"Greenlee Store";

@@ -1,0 +1,27 @@
+/* SHOW-1698 Electronics Store Facets
+*************************/
+.facetValues.search_location {
+ 	overflow: auto;
+ }
+  
+ /* SHOW-1761 FollowMe Spotlight
+*************************/
+.spotlight .details .cart button.pickupInStoreButton {
+	width: auto;
+}
+
+#checkoutContentPanel .contentPanelRight {
+    width: auto;
+    float: right;
+}
+
+.change_location-link {
+    width: 100% !important;
+    float: right !important;
+}
+
+.user-location-search-term {
+    float: left;
+    margin-bottom: 3px;
+    font-size: 14px;
+}

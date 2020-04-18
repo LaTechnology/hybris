@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2013 hybris AG All rights reserved. This software is the confidential and proprietary information 
+	of hybris ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with 
+	the terms of the license agreement you entered into with hybris. -->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+	default-autowire="byName">
+
+	<!-- Generic Controllers -->
+	<alias name="defaultWizardDecisionPageController" alias="wizardDecisionPageController" />
+	<bean id="defaultWizardDecisionPageController" class="de.hybris.platform.cockpit.wizards.generic.DefaultDecisionPageController">
+	</bean>
+
+	<alias name="defaultWizardMandatoryPageController" alias="wizardMandatoryPageController" />
+	<bean id="defaultWizardMandatoryPageController" class="de.hybris.platform.cockpit.wizards.generic.DefaultGenericItemMandatoryPageController">
+	</bean>
+
+	<!-- Generic Pages -->
+	<alias name="defaultWizardItemDecisionPage" alias="wizardItemDecisionPage" />
+	<bean id="defaultWizardItemDecisionPage" class="com.hybris.addon.cockpits.liveedit.generic.wizard.pages.DefaultWizardItemDecisionPage"
+		scope="prototype">
+		<property name="controller" ref="wizardDecisionPageController" />
+	</bean>
+
+	<alias name="defaultWizardItemMandatoryPage" alias="wizardItemMandatoryPage" />
+	<bean id="defaultWizardItemMandatoryPage" class="com.hybris.addon.cockpits.liveedit.generic.wizard.pages.DefaultWizardItemMandatoryPage"
+		scope="prototype">
+		<property name="controller" ref="wizardMandatoryPageController" />
+		<property name="parameters">
+			<map>
+				<entry key="forceCreateInWizard" value="true" />
+			</map>
+		</property>
+	</bean>
+
+	<alias name="defaultItemWizardPage" alias="itemWizardPage" />
+	<bean id="defaultItemWizardPage" class="com.hybris.addon.cockpits.liveedit.generic.wizard.pages.DefaultItemWizardPage"
+		scope="prototype" />
+
+	<!-- Generic default Controller -->
+	<alias name="defaultDefaultWizardPageController" alias="defaultWizardPageController" />
+	<bean id="defaultDefaultWizardPageController" class="com.hybris.addon.cockpits.liveedit.generic.wizard.controllers.DefaultWizardPageController">
+		<property name="sessionService" ref="sessionService" />
+		<property name="typeService" ref="cockpitTypeService" />
+	</bean>
+
+	<!-- Wizard -->
+
+	<alias name="defaultAfterSaveActionHandlers" alias="afterSaveActionHandlers" />
+	<util:list id="defaultAfterSaveActionHandlers" />
+
+	<alias name="defaultBeforeSaveActionHandlers" alias="beforeSaveActionHandlers" />
+	<util:list id="defaultBeforeSaveActionHandlers" />
+
+	<alias name="defaultGenericItemWizard" alias="genericItemWizard" />
+	<bean id="defaultGenericItemWizard" class="com.hybris.addon.cockpits.liveedit.generic.wizard.DefaultGenericItemWizard"
+		scope="prototype">
+		<property name="defaultController" ref="defaultWizardPageController" />
+		<property name="pageRoot" value="/cmscockpit/wizards/" />
+		<property name="afterSaveActionHandlers" ref="afterSaveActionHandlers" />
+		<property name="beforeSaveActionHandlers" ref="beforeSaveActionHandlers" />
+	</bean>
+
+</beans>

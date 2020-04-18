@@ -1,0 +1,126 @@
+.zipUploadContainer {
+	border: thick;
+}
+.z-border-layout {
+	background: #38405a;
+}
+.z-south {
+    background: none repeat scroll 0 0 #E2E3E7;
+    border: 1px solid #999999;
+    overflow: hidden;
+    padding: 5px 8px;
+    bottom: 0;
+}
+.bulkUploadLabel {
+	color: white;
+}
+.zipUploadContainer > label {
+	font-size: 18px; 
+	color: white; 
+	background: #1f2b4b; 
+	padding: 10px; 
+	float: left;
+}
+/*
+START Media Tag Styling
+**************************/
+.bulkUploadMediaWindow .zip-upload {
+	font-size: 16px;
+	background: #021e2f;
+	padding: 10px;
+	-webkit-border-radius: 12px;
+	border-radius: 12px;
+	background-clip: padding-box;
+}
+.bulkUploadMediaWindow .zip-upload:before {
+	content: "»";
+}
+.bulkUploadMediaWindow .zipUploadContainer {
+	clear: both;
+	/*margin-bottom: 15px;*/
+}
+.bulkUploadMediaWindow  div.referenceSelector {
+	float: left;
+}
+.bulkUploadMediaWindow .z-center-body {
+	padding: 20px;
+	margin-bottom: 20px;
+}
+.bulkUploadMediaWindow tr.z-row td.z-row-inner, 
+.bulkUploadMediaWindow tr.z-row td.z-group-inner, 
+.bulkUploadMediaWindow tr.z-row td.z-group-foot-inner {
+	background-color: transparent;
+	border-bottom: 3px solid #1f2b4b;
+	padding: 5px 10px;
+}
+.bulkUploadMediaWindow .z-label {
+	color: #ffffff;
+	font-size: 14px;
+	float: left;
+	padding: 3px 12px 5px 1px;
+	clear: both;
+}
+.bulkUploadMediaWindow .mediaTagContainer .z-label {
+	padding: 0;
+}
+.bulkUploadMediaWindow .z-paging {
+	color: #ffffff;
+	margin: 0 8px;
+}
+.bulkUploadMediaWindow .z-grid-footer {
+	float: left;
+    clear: both;
+    margin-bottom: 20px;
+}
+.mediaTagContainer {
+	clear: both;
+}
+.mediaTagContainer > label {
+	font-size: 18px; 
+	color: white; 
+	background: #1f2b4b; 
+	padding: 10px; 
+	float: left;
+}
+.mediaTagContainer .z-label {
+	font-size: 12px;
+}
+.mediaTagContainer .z-grid-body table {
+	margin-bottom: 20px;
+}
+/*
+END Media Tag Styling
+**************************/
+
+/*
+START Media Conversion Styling
+**************************/
+.bulkUploadMediaWindow .conversionGroupListBox {
+	clear: both;
+	margin-bottom: 15px;
+	background: #b1b1b1;
+	padding: 12px 0;
+}
+
+.bulkUploadMediaWindow .containerCodeInput {
+	/*clear: both;
+	margin-bottom: 15px;
+	float: left;*/
+}
+.bulkUploadMediaWindow .conversionGroupListBox table tr td div input {
+	margin-right: 8px;
+}
+/*
+END Media Conversion Styling
+**************************/
+
+.containerCodeEditor {
+	margin-bottom: 20px;
+}
+.mediaPreview {
+	max-height: 130px;
+	margin-bottom: 20px;
+}
+.conversionGroupListBoxGroup div.z-list-cell-cnt {
+	font-weight: bold;
+}

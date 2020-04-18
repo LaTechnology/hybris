@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wizard-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="wizard-config.xsd"
+	showPrefilledValues="false" selectMode="true" createMode="true" createWithinPopup="false">
+	<displayed-properties>
+		<group qualifier="General" visible="true" initially-opened="true">
+			<label key="cockpit.config.label.General" />
+			<property qualifier="GreenleeProductFeatureTab.catalogVersion" editorCode="shortListEditor">
+				<parameter name="autocomplete" value="false"/>
+				<parameter name="autodrop" value="true"/>
+				<parameter name="constraint" value="strict"/>
+			</property>
+			<property qualifier="GreenleeProductFeatureTab.tabCode" />						
+			<property qualifier="GreenleeProductFeatureTab.tabName" />
+			<property qualifier="GreenleeProductFeatureTab.tabDescription" editorCode="wysiwyg"/>
+		</group>
+	</displayed-properties>
+</wizard-config>

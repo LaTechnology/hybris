@@ -1,0 +1,24 @@
+#auto_location_form {
+    width: 100%;
+    overflow: hidden;
+}
+
+body div#header div.headerContent ul.nav li.logged_in {
+    position: static;
+}
+
+#checkoutContentPanel .contentPanelRight {
+    width: auto;
+    float: right;
+}
+
+.change_location-link {
+    width: 100% !important;
+    float: right !important;
+}
+
+.user-location-search-term {
+    float: left;
+    margin-bottom: 3px;
+    font-size: 14px;
+}

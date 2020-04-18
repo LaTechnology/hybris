@@ -1,0 +1,166 @@
+.doc-search-container {
+	h1 {
+		border-bottom: 1px solid #eee;
+		font-family: $robo-thin;
+		@include font-size(36px);
+		margin: 20px -20px;
+		padding: 0 20px 20px;
+		text-align: center;
+		text-transform: uppercase;
+		@media (min-width: $screen-md-min) {
+			margin: 0 0 20px;
+		}
+	}
+	.search-here {
+		padding-bottom: 30px;
+		p {
+			color: $gray-lighter;
+			margin-bottom: 20px;
+			text-align: center;
+		}
+		.control-group {
+			@media (min-width: $screen-md-min) {
+				margin: 0 auto;
+				width: 50%;
+			}
+			.controls {
+				position: relative;
+				input[type='text'] {
+					@include font-size(12px);
+					padding: 8.5px 30px 8.5px 15px;
+				}
+				button {
+					background: none;
+					height: 16px;
+					margin-top: -8px;
+					position: absolute;
+					right: 4px;
+					top: 50%;
+					i {
+						display: block;
+					}
+				}
+				.over-label {
+					color: $gray-lighter;
+					background: $white;
+					border: 1px solid #ccc;
+					border-radius: 3px;
+					display: none;
+					height: 37px;
+					left: 0;
+					overflow: hidden;
+					padding: 7px 30px 7px 15px;
+					position: absolute;
+					text-transform: none;
+					top: 0;
+					white-space: nowrap;
+					width: 100%;
+					span {
+						color: #ff8a01;
+						font-family: $robo-medium;
+						display: inline-block;
+						width: 71%;
+						overflow: hidden;
+						vertical-align: top;
+						padding-left: 5px;
+						
+						@media (min-width: 420px) {
+							width:80%;
+						}
+						@media (min-width: $screen-sm-min) {
+							width:89%;
+						}
+						@media (min-width: $screen-md-min) {
+							width:82%;
+						}
+						
+						
+					}
+					a {
+						position: absolute;
+						right: 12px;
+						i {
+							color: #ff8a01;
+						}
+					}
+				}
+			}
+		}
+	}
+	.search-output {
+		margin-bottom: 35px;
+		h2 {
+			border-bottom: 1px solid $light-grey;
+			color: $gray-lighter;
+			@include font-size(20px);
+			margin: 0 0 25px;
+			padding-bottom: 12px;
+			text-align: center;
+			text-transform: uppercase;
+		}
+		.header {
+			.name, .type, .size {
+				text-transform: uppercase;
+				font-family: $robo-medium;
+			}
+		}
+		.row {
+			margin-bottom: 18px;
+			.name, .type, .size {
+				color: $gray-lighter;
+			}
+			.type, .size {
+				text-align: right;
+			}
+			.type {
+				text-align: center;
+				text-transform: uppercase;
+			}
+			.name {
+				a {
+					color: $gray-lighter;
+					display: inline-block;
+					padding-left: 25px;
+					position: relative;
+					text-decoration: underline;
+					i {
+						left: 1px;
+						margin-right: 8px;
+						position: absolute;
+						top: 1px;
+						&.fa-file-pdf-o {
+							color: #ff2222;
+						}
+						&.fa-download {
+							color: $gray-lighter;
+						}
+					}
+				}
+			}
+		}
+	}
+	.did-you-find {
+		background-color: #f6f6f6;
+		color: $gray-lighter;
+		margin: 25px auto 30px;
+		padding: 30px 0 10px;
+		text-align: center;
+		width: 90%;
+		h3 {
+			color: $gray-lighter;
+			font-family: $robo-medium;
+			@include font-size(16px);
+			margin: 0 0 10px;
+			text-transform: uppercase;
+		}
+	}
+	&.search-result {
+		.search-here {
+			.control-group {
+				.over-label {
+					display: block;
+				}
+			}
+		}
+	}
+}

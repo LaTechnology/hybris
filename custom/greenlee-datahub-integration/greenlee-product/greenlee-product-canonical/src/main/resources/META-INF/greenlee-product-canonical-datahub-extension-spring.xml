@@ -1,0 +1,25 @@
+<!--
+  ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2013 hybris AG
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of hybris
+  ~ ("Confidential Information"). You shall not disclose such Confidential
+  ~ Information and shall use it only in accordance with the terms of the
+  ~ license agreement you entered into with hybris.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<alias name="greenleeSAPRawMATMASCanonicalSalesProductDeleteunit" alias="sapRawMATMASCanonicalSalesProductDeleteunit"/>
+	<bean id="greenleeSAPRawMATMASCanonicalSalesProductDeleteunit" class="com.hybris.datahub.sapidocintegration.composition.DeleteCompositionHandler">
+		<property name="canonicalItem" value="CanonicalSalesProduct" />
+		<property name="canonicalAttribute" value="unit" />
+		<property name="rawItem" value="RawMATMAS" />
+		<property name="rawAttribute" value="E1MARAM-MEINS" />
+	</bean>
+
+</beans>

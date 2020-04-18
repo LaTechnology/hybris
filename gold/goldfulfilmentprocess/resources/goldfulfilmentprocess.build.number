@@ -1,9 +1,0 @@
-#Ant properties
-#Thu Oct 12 09:39:07 CEST 2017
-builddate=20171012 0936
-description=goldfulfilmentprocess
-name=goldfulfilmentprocess
-releasedate=20170803 1323
-vendor=hybris
-version=6.5.0.2
-version.api=6.5.0

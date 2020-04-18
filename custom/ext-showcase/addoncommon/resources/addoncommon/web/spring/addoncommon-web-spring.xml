@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2013 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris. -->
+
+
+<!-- WARNING: This is the Spring WEB configuration file. If you want to replace 
+	items or managers you have to do this from the extensions core configuration 
+	file (feedbackaddon/resources/feedbackaddon-spring.xml) -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/context
+		   http://www.springframework.org/schema/context/spring-context-3.1.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+           http://www.springframework.org/schema/mvc
+	       http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+           http://www.springframework.org/schema/util
+		   http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+		   
+  	<bean id="x" class="com.hybris.addon.common.config.X" />
+  	
+  	
+  	<bean id="addonCmsComponentRendererMapping"  class="de.hybris.platform.addonsupport.renderer.impl.AddOnCMSComponentRendererMapping" abstract="true" />
+
+	<bean id="addOnJspIncludeCMSComponentRenderer" class="de.hybris.platform.addonsupport.renderer.impl.DefaultAddOnCMSComponentRenderer">
+		<property name="typeService" ref="typeService" />
+		<property name="uiExperienceService" ref="uiExperienceService" />
+		<property name="modelService" ref="modelService" />
+		<property name="cmsComponentService" ref="cmsComponentService" />
+	</bean>
+	
+	<bean id="genericAddOnCMSComponentRenderer"  class="com.hybris.addon.common.renderer.GenericAddOnCMSComponentRenderer">
+		<property name="typeService" ref="typeService" />
+		<property name="uiExperienceService" ref="uiExperienceService" />
+		<property name="modelService" ref="modelService" />
+		<property name="cmsComponentService" ref="cmsComponentService" />
+	</bean>
+	
+	<alias name="addOnPreviewContextInformationLoader" alias="contextInformationLoader"/>
+	<bean id="addOnPreviewContextInformationLoader" class="com.hybris.addon.common.strategies.impl.AddOnPreviewContextInformationLoader" parent="defaultContextInformationLoader">
+	    <property name="strategies" ref="contextLoadStrategiesList"/>
+        <property name="previewRequestStrategies" ref="previewRequestStrategiesList"/>
+        <property name="siteContextLoadStrategies" ref="siteContextLoadStrategies"/>
+	</bean>
+	
+	<alias name="defaultContextLoadStrategiesList" alias="contextLoadStrategiesList" />
+	<util:list id="defaultContextLoadStrategiesList"  >
+	    
+	    <bean id="loadUserStrategy" parent="defaultContextInformationLoader" class="com.hybris.addon.common.strategies.impl.AddOnPreviewContextInformationLoader$LoadUserStrategy"/>
+		<bean id="loadUserGroupStrategy" parent="defaultContextInformationLoader" class="com.hybris.addon.common.strategies.impl.AddOnPreviewContextInformationLoader$LoadUserGroupStrategy"/>
+		<bean id="loadLanguageStrategy" parent="defaultContextInformationLoader" class="com.hybris.addon.common.strategies.impl.AddOnPreviewContextInformationLoader$LoadLanguageStrategy"/>
+		<bean id="loadDateStrategy" parent="defaultContextInformationLoader" class="com.hybris.addon.common.strategies.impl.AddOnPreviewContextInformationLoader$LoadDateStrategy"/>
+		
+	</util:list>
+	
+	<alias name="defaultSiteContextLoadStrategiesList" alias="siteContextLoadStrategies" />
+	<util:list id="defaultSiteContextLoadStrategiesList">
+		
+	</util:list>
+	
+	<!-- Creating abstract bean for JS properties before view handler adaptee -->
+	<bean id="abstractBeforeViewJsPropsHandlerAdaptee" abstract="true" class="de.hybris.platform.addonsupport.config.javascript.BeforeViewJsPropsHandlerAdaptee">
+		<property name="i18NService" ref="i18NService" />
+	</bean>
+	
+	<bean id="activeCatalogVersionsPreviewStrategy"  class="com.hybris.addon.common.strategies.impl.ActiveCatalogVersionPreviewContext">
+	<property name="baseSiteService" ref="baseSiteService" />
+	<property name="catalogVersionService" ref="catalogVersionService" />
+	</bean>
+
+    <alias name="defaultPreviewRequestStrategiesList" alias="previewRequestStrategiesList" />
+    <util:list id="defaultPreviewRequestStrategiesList">
+        <ref bean="activeCatalogVersionsPreviewStrategy" />
+        <ref bean="uiExperienceLevelPreviewStrategy" />
+    </util:list>
+
+    <bean id="listMergeBeanPostProcessor" class="de.hybris.platform.commerceservices.spring.config.ListMergeDirectiveBeanPostProcessor"/>
+    <bean id="mapMergeBeanPostProcessor" class="de.hybris.platform.commerceservices.spring.config.MapMergeDirectiveBeanPostProcessor"/>
+
+</beans>

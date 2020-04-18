@@ -1,0 +1,44 @@
+.add-address {
+	.account-body {
+		h1 {
+			border: none;
+			margin-bottom: 0;
+			@media (min-width: $screen-md-min) {
+				border-bottom: 1px solid $light-grey;
+				margin-bottom: 15px;
+			}
+		}
+		.select-wrapper {
+			.holder {
+				text-transform: uppercase;
+			}
+		}
+		.glcheckbox {
+			margin-top: 10px;
+			label {
+				font-size: 12px;
+				line-height: 20px;
+			}
+		}
+		.form-actions {
+			margin-bottom: 20px;
+		}
+		
+	}
+}
+
+#updateProfileForm{
+	margin-bottom:20px;
+}
+.isBorder{
+	.select-wrapper {
+			.holder {
+				height: 38px;
+			}
+		}	
+}
+.select-wrapper {
+			.holder {
+				height: 40px;
+			}
+		}

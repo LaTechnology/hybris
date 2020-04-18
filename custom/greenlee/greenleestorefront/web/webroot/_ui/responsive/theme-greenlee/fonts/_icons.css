@@ -1,0 +1,33 @@
+@font-face {
+	font-family: "greenlee-icon";
+	src: url('./resources/sassgreenlee-icon.eot');
+	src: url('./resources/sassgreenlee-icon.eot?#iefix') format('eot'),
+		url('./resources/sassgreenlee-icon.woff') format('woff'),
+		url('./resources/sassgreenlee-icon.ttf') format('truetype'),
+		url('./resources/sassgreenlee-icon.svg#greenlee-icon') format('svg');
+}
+
+.icon:before {
+	font-family: "greenlee-icon";
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	/* speak: none; only necessary if not using the private unicode range (firstGlyph option) */
+	text-decoration: none;
+	text-transform: none;
+}
+
+
+.icon-uEA01-shop:before {
+	content: "\E001";
+}
+
+.icon-uEA02-solution:before {
+	content: "\E002";
+}
+
+.icon-uEA03-remove:before {
+	content: "\E003";
+}

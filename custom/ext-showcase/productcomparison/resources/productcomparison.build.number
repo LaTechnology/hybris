@@ -1,0 +1,12 @@
+#Thu, 29 Aug 2013 15:53:54 +0200
+#Ant properties
+#Thu Aug 29 15:53:54 CEST 2013
+builddate=20130829 1553
+description=productcomparison
+name=productcomparison
+vendor=hybris
+version=5.0.3.0
+version.api=5.0.3
+
+revision=21154
+svnurl=https\://partnersvn.hybris.de/hybris/projectaccelerator/tags/5.0.3.0/projectaccelerator/productcomparison

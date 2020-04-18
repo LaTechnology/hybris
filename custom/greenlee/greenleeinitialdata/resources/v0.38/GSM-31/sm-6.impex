@@ -1,0 +1,92 @@
+#-------------------------------------------------------------------------------------------------------
+# Business Category Staged
+#-------------------------------------------------------------------------------------------------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Small Business Category Landing page              #################
+
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]             ; name                            ; media(code, $productCV)[forceWrite=true] ; content                                                                                                                                                                                                                                                                                                                                      ; &componentRef                      ; urlLink                                                               
+                              ;                         ; SmallBusinessTestimonialBanner1 ; SmallBusiness Testimonial Banner 1 ; ASK306_Airscout-CartPage ; "<blockquote> <p style=""text-align: justify; ""><font size=""3"">The explosive growth in wireless communications is fueled by the rapid increase in connected devices, Wi-Fi&reg; calling, and the emergence of IoT technology. This increase is creating a strain on the existing wireless infrastructure and causing quality of service issues. Unplanned Wi-Fi&reg; deployments are resulting in high hidden costs, poor performance and sub-par functionality of connected devices. These issues can be addressed with the AirScout&reg; Enterprise WLAN system for pre-deployment planning, verification, and troubleshooting. Greenlee Communication&rsquo;s AirScout&reg; Wi-Fi&reg; &nbsp;test solution simplifies the process of ensuring Wi-Fi&reg; &nbsp;installations are ready for the delivery of high-performance services.</font></p></blockquote>" ; SmallBusinessTestimonialBanner1 ; "/"
+
+INSERT_UPDATE RotatingImagesComponent ; $contentCV[unique=true] ; uid[unique=true]                       ; name                                                      ; banners(&componentRef)                                                                   ; &componentRef                         
+                                      ;                         ; SmallBusinessTestimonialRotatingComponent ; SmallBusiness Homepage Testimonial Rotating Images Component ; SmallBusinessTestimonialBanner1; SmallBusinessTestimonialRotatingComponent
+
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                        ; name                                       ; content              ; &componentRef                          
+                                    ;                         ; SmallBusinessTestimonialParagraphComponent ; SmallBusiness Testimonial Paragraph Home Page ; <h3>ARE YOU PREPARED?</h3> ; SmallBusinessTestimonialParagraphComponent
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;          active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section6ContentSlot-SMCatPage  ;  true   ; SmallBusinessTestimonialParagraphComponent,SmallBusinessTestimonialRotatingComponent                                                                            
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section6ContentSlot-SMCatPage  ; SmallBusiness Section 6 Slot for CategoryLandingpage  ; true   ; SmallBusinessTestimonialParagraphComponent,SmallBusinessTestimonialRotatingComponent                                                                            
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section6-smallbusinesscategory      ; Section6              ;                                                                 ; Section6ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section6-smallbusinesscategory      ; Section6              ;                                                                 ; Section6ContentSlot-SMCatPage            
+
+								 
+#-------------------------------------------------------------------------------------------------------
+# Business Category Online
+#------------------------------------------------------------------------------------------------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Online'])[default=$contentCatalog:Online]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Small Business Category Landing page              #################
+
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]             ; name                            ; $picture[lang=$lang] ; content                                                                                                                                                                                                                                                                                                                                      ; &componentRef                      ; urlLink                                                               
+                              ;                         ; SmallBusinessTestimonialBanner1 ; SmallBusiness Testimonial Banner 1 ; ; "<blockquote> <p style=""text-align: justify; ""><font size=""3"">The explosive growth in wireless communications is fueled by the rapid increase in connected devices, Wi-Fi&reg; calling, and the emergence of IoT technology. This increase is creating a strain on the existing wireless infrastructure and causing quality of service issues. Unplanned Wi-Fi&reg; deployments are resulting in high hidden costs, poor performance and sub-par functionality of connected devices. These issues can be addressed with the AirScout&reg; Enterprise WLAN system for pre-deployment planning, verification, and troubleshooting. Greenlee Communication&rsquo;s AirScout&reg; Wi-Fi&reg; &nbsp;test solution simplifies the process of ensuring Wi-Fi&reg; &nbsp;installations are ready for the delivery of high-performance services.</font></p></blockquote>" ; SmallBusinessTestimonialBanner1 ; "/"
+
+INSERT_UPDATE RotatingImagesComponent ; $contentCV[unique=true] ; uid[unique=true]                       ; name                                                      ; banners(&componentRef)                                                                   ; &componentRef                         
+                                      ;                         ; SmallBusinessTestimonialRotatingComponent ; SmallBusiness Homepage Testimonial Rotating Images Component ; SmallBusinessTestimonialBanner1; SmallBusinessTestimonialRotatingComponent
+
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                        ; name                                       ; content              ; &componentRef                          
+                                    ;                         ; SmallBusinessTestimonialParagraphComponent ; SmallBusiness Testimonial Paragraph Home Page ; <h3>ARE YOU PREPARED?</h3> ; SmallBusinessTestimonialParagraphComponent
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section6ContentSlot-SMCatPage  ; SmallBusiness Section 6 Slot for CategoryLandingpage  ; true   ; SmallBusinessTestimonialParagraphComponent,SmallBusinessTestimonialRotatingComponent                                                                            
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section6-smallbusinesscategory      ; Section6              ;                                                                 ; Section6ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section6-smallbusinesscategory      ; Section6              ;                                                                 ; Section6ContentSlot-SMCatPage            

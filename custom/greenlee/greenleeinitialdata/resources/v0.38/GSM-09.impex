@@ -1,0 +1,17 @@
+#--------------------------------------------------------------------------------------------------------------------------                               				
+#  GSM-09
+#--------------------------------------------------------------------------------------------------------------------------                               				
+
+INSERT_UPDATE B2BUnit;uid[unique=true];locName[lang=en] ;userType(code);groups(uid);contactAddress(&addrID);currencyPreference(isocode)
+					 ;dummydistributor_cad	  ;dummydistributor cad	;B2B		   ;		   ;		   ;CAD
+					 ;B2ECUST_CAD	  ;dummy b2e cad	;B2E		   ;		   ;					   ;CAD 
+					 ;B2CCUST_CAD	  ;dummy b2c cad	;B2C		   ;		   ;					   ;CAD   
+					 
+#--------------------------------------------------------------------------------------------------------------------------                               				
+#  GSM-09
+#--------------------------------------------------------------------------------------------------------------------------                               				
+
+INSERT_UPDATE B2BUnit;uid[unique=true];locName[lang=en] ;userType(code);groups(uid);contactAddress(&addrID);currencyPreference(isocode)
+					 ;dummydistributor	  ;dummydistributor	;B2B		   ;		   ;		   ;USD
+					 ;B2ECUST	  ;dummy b2e	;B2E		   ;		   ;					   ;USD 
+					 ;B2CCUST	  ;dummy b2c	;B2C		   ;		   ;					   ;USD         				      				

@@ -1,0 +1,87 @@
+#------------------
+# Business Category Staged
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Small Business Category Landing page              #################
+							 
+INSERT_UPDATE FlashComponent ; $contentCV[unique=true] ; uid[unique=true]                        ; name                                                         ; &componentRef                           ; urlLink                                    
+                             ;                         ; SmallBusinessCategoryLandingVideoComponent ; Greenlee Video Component for SmallBusinessCategory Landing page ; SmallBusinessCategoryLandingVideoComponent ; "https://www.youtube.com/embed/wnVFSl-CB4Y"
+
+				 
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                            ; name                                  ;content; &componentRef                              
+                                    ;                         ; SmallBusinessCategoryApplicationsTextComponent ; SmallBusiness Category Applications Text ;"<h2>APPLICATIONS</h2> <p style=""text-align: justify;"">AirScout Cloud provides a rapid and largely automated means of surveying a small business for effective Wi-Fi service. Key AirScout applications are, maintenance of existing Wi-Fi services including Upgrades e.g. from 11n to 11ac, new installations of Wi-Fi services, and up-sell of additional services or hardware to enhance or extend coverage and capacity</p> <p style=""text-align: justify;"">For both new and existing deployments the best practices call for conducting the site surveys to guide deployments of the Access Points assuring that Wi-Fi networks meet business requirements while costs of maintaining Wi-Fi are minimized.</p>"  ;SmallBusinessCategoryApplicationsTextComponent
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;          active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section4ContentSlot-SMCatPage  ;   true   ; SmallBusinessCategoryLandingVideoComponent,SmallBusinessCategoryApplicationsTextComponent                                                                       
+        
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section4ContentSlot-SMCatPage  ; SmallBusiness Section4 Slot for CategoryLandingPage   ; true   ; SmallBusinessCategoryLandingVideoComponent,SmallBusinessCategoryApplicationsTextComponent                                                                       
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section4-smallbusinesscategory      ; Section4              ;                                                                 ; Section4ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section4-smallbusinesscategory      ; Section4              ;                                                                 ; Section4ContentSlot-SMCatPage            
+
+#------------------
+# Business Category Online
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Online'])[default=$contentCatalog:Online]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Small Business Category Landing page              #################
+							 
+INSERT_UPDATE FlashComponent ; $contentCV[unique=true] ; uid[unique=true]                        ; name                                                         ; &componentRef                           ; urlLink                                    
+                             ;                         ; SmallBusinessCategoryLandingVideoComponent ; Greenlee Video Component for SmallBusinessCategory Landing page ; SmallBusinessCategoryLandingVideoComponent ; "https://www.youtube.com/embed/wnVFSl-CB4Y"
+
+				 
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                            ; name                                  ;content; &componentRef                              
+                                    ;                         ; SmallBusinessCategoryApplicationsTextComponent ; SmallBusiness Category Applications Text ;"<h2>APPLICATIONS</h2> <p style=""text-align: justify;"">AirScout Cloud provides a rapid and largely automated means of surveying a small business for effective Wi-Fi service. Key AirScout applications are, maintenance of existing Wi-Fi services including Upgrades e.g. from 11n to 11ac, new installations of Wi-Fi services, and up-sell of additional services or hardware to enhance or extend coverage and capacity</p> <p style=""text-align: justify;"">For both new and existing deployments the best practices call for conducting the site surveys to guide deployments of the Access Points assuring that Wi-Fi networks meet business requirements while costs of maintaining Wi-Fi are minimized.</p>"  ;SmallBusinessCategoryApplicationsTextComponent
+        
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section4ContentSlot-SMCatPage  ; SmallBusiness Section4 Slot for CategoryLandingPage   ; true   ; SmallBusinessCategoryLandingVideoComponent,SmallBusinessCategoryApplicationsTextComponent                                                                       
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section4-smallbusinesscategory      ; Section4              ;                                                                 ; Section4ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section4-smallbusinesscategory      ; Section4              ;                                                                 ; Section4ContentSlot-SMCatPage            

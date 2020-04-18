@@ -1,0 +1,14 @@
+
+$productCatalog=greenleeProductCatalog
+$productCatalogName=greenlee Product Catalog
+
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+
+
+INSERT_UPDATE ProductReference;source(code,$catalogVersion)[unique=true];target(code,$catalogVersion)[unique=true];referenceType(code);active;preselected
+ ;20001;000000000001131;FOLLOWUP;true;false
+ ;20001;000000000001132;FOLLOWUP;true;false
+ ;20001;000000000001133;FOLLOWUP;true;false
+ ;20001;000000000001133;SIMILAR;true;false
+ ;20001;000000000001133;SIMILAR;true;false
+ ;20001;000000000001133;SIMILAR;true;false

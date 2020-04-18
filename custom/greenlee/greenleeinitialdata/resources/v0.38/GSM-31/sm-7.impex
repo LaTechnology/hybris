@@ -1,0 +1,82 @@
+
+#------------------
+# Business Staged
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Small Business Category Landing page              #################
+
+INSERT_UPDATE ProductListComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                ; productsFromContext[default=false] ; pagination[default=false] ; layout(code)[default='thumbViewLayout'] ; categoryCode ; &componentRef                      
+                                   ;                         ; CategoryLandingProductListComponent ; Category Landing ProductList Component ;                                    ;                           ;                                         ; business     ; CategoryLandingProductListComponent
+
+												  
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;         active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7ContentSlot-SMCatPage  ;   true   ; CategoryLandingProductListComponent                                                                                                             
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7ContentSlot-SMCatPage  ; SmallBusiness Section7 Slot for CategoryLandingPage   ; true   ; CategoryLandingProductListComponent                                                                                                             
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7-smallbusinesscategory      ; Section7              ;                                                                 ; Section7ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7-smallbusinesscategory      ; Section7              ;                                                                 ; Section7ContentSlot-SMCatPage            
+
+#------------------
+# Business online
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Online'])[default=$contentCatalog:Online]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Small Business Category Landing page              #################
+
+INSERT_UPDATE ProductListComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                ; productsFromContext[default=false] ; pagination[default=false] ; layout(code)[default='thumbViewLayout'] ; categoryCode ; &componentRef                      
+                                   ;                         ; SmallBusinessCategoryLandingProductListComponent ; SmallBusinessCategory LandingProductList Component ;                                    ;                           ;                                         ; business     ; SmallBusinessCategoryLandingProductListComponent
+
+												  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7ContentSlot-SMCatPage  ; SmallBusiness Section7 Slot for CategoryLandingPage   ; true   ; SmallBusinessCategoryLandingProductListComponent                                                                                                             
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7-smallbusinesscategory      ; Section7              ;                                                                 ; Section7ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7-smallbusinesscategory      ; Section7              ;                                                                 ; Section7ContentSlot-SMCatPage            

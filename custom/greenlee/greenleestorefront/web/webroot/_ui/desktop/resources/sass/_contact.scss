@@ -1,0 +1,141 @@
+.greenlee-contact {
+    h1 {
+        @include font-size(36px);
+        font-family: 'robotothin';
+        text-transform: uppercase;
+        text-align: center;
+        margin: 0 0 20px;
+    }
+    .simple-responsive-banner-component {
+        border-top: 1px soild $light-grey;
+        margin-bottom: 10px;
+        @media (min-width: $screen-md-min) {
+            margin-bottom: 30px;
+        }
+        img {
+            width: 100%;
+        }
+    }
+    .col-md-pull-5 {
+        @media (min-width: $screen-md-min) {
+            right: 39.7%;
+        }
+        @media (min-width: $screen-lg-min) {
+            right: 39.75%;
+        }
+    }
+    .contact {
+        margin-top: 40px;
+        @media (min-width: $screen-md-min) {
+            margin-top: 0;
+        }
+        h3 {
+            @include font-size(18px);
+            font-family: 'robotomedium';
+            text-transform: uppercase;
+            margin: 0 0 15px;
+        }
+        p {
+            margin-bottom: 0;
+        }
+        .form-actions {
+            margin: 20px 0;
+            .btn-white {
+                width: 100%;
+                @media (min-width: $screen-md-min) {
+                    width: 140px;
+                }
+            }
+        }
+        input.btn-white {
+            border: none;
+            margin-bottom: 20px;
+            @media (min-width: $screen-md-min) {
+                width: 140px;
+            }
+        }
+    }
+    .tab-container {
+        background: $jumbotron-bg;
+        margin-bottom: 10px;
+        padding: 3px 0;
+        @media (min-width: $screen-md-min) {
+            padding: 15px;
+        }
+        .tabhead {
+            @include font-size(18px);
+            font-family: 'robotomedium';
+            cursor: pointer;
+            padding: 20px;
+            @media (min-width: $screen-md-min) {
+                padding: 22px;
+            }
+            &.active {
+                .fa {
+                    transform: rotate(0deg);
+                }
+            }
+            .fa {
+                float: right;
+                transition: 0.4s ease-out;
+                @include font-size(26px);
+                -webkit-transform: rotate(180deg);
+                -moz-transform: rotate(180deg);
+                -ms-transform: rotate(180deg);
+                -o-transform: rotate(180deg);
+                transform: rotate(180deg);
+            }
+        }
+        .tabbody {
+            padding: 0 20px;
+            @media (min-width: $screen-md-min) {
+                padding: 0 22px;
+            }
+            &.active {
+                display: block;
+            }
+            label {
+                display: none;
+                @media (min-width: $screen-md-min) {
+                    text-tranform: capitalize;
+                    width: 70px;
+                    display: inline-block;
+                }
+            }
+            a[href^="mailto:"] {
+                text-decoration: underline;
+                width: 80%;
+                word-break: break-all;
+                position: relative;
+                display: inline-block;
+                vertical-align: top;
+                @media (min-width: $screen-md-min) {
+                    text-decoration: none;
+                }
+            }
+            .fa {
+                padding-right: 10px;
+                @media (min-width: $screen-md-min) {
+                    display: none;
+                }
+            }
+            address {
+                display: inline-block;
+                width: 90%;
+                vertical-align: top;
+                padding-bottom: 20px;
+                @media (min-width: $screen-md-min) {
+                    width: 310px;
+                    font-style: normal;
+                }
+            }
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+            li {
+                margin: 0 0 13px;
+            }
+        }
+    }
+}

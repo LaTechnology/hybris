@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="base.xsd">
+	<search>
+		<search-properties>
+			<property qualifier="MediaTag.code"/>
+			<property qualifier="MediaTag.description"/>
+		</search-properties>
+		<sort-properties>
+			<property qualifier="MediaTag.code"/>
+			<property qualifier="MediaTag.description"/>
+		</sort-properties>
+	</search>
+	<label>
+		<property qualifier="MediaTag.code"/>
+		<property qualifier="MediaTag.description"/>
+	</label>
+</base>

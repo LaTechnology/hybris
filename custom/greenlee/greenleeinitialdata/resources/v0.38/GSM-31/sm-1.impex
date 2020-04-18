@@ -1,0 +1,133 @@
+
+#------------------
+# Business Category Staged
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Business Category Landing page              #################
+#INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+#                    ;                         ; smallbusiness-category-image        ; smallbusiness-category-image        ; $siteResource/images/theme/smallbusiness-category-image.jpg                 ; image/jpg                  ; Smallbusiness Category           ;                                     ; desktop               
+#                    ;                         ; smallbusiness-category-image-mobile ; smallbusiness-category-image-mobile ; $siteResource/images/theme/smallbusiness-category-image.jpg               ; image/jpg                  ; Smallbusiness Category on Mobile ;                                     ; mobile                
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ; SmallBusinessCategoryLandingBanner ; Small Business Category Landing Page Banner ; SmallBusinessCategoryLandingBanner,SmallBusinessCategoryLandingBanner-Mobile
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name;media(qualifier, $contentCV)   ; &componentRef                       
+                                              ;                         ; SmallBusinessCategoryBannerComponent ; SmallBusiness CategoryBannerComponent;SmallBusinessCategoryLandingBanner ; SmallBusinessCategoryBannerComponent
+INSERT_UPDATE ContentPage ; $contentCV[unique=true] ; uid[unique=true]    ; searchable[allownull=true] ; name                      ; masterTemplate(uid,$contentCV)              ; label               ; defaultPage[default='true'] ; approvalStatus(code)[default='approved'] ; homepage[default='false']
+                          ;                         ; smallbusinesscategory ; 0                          ; Small Business Category Landing Page ; ContentPage2Template ; /smallbusinesscategory
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]              		 ; active                                                                                                                              
+                          ;                         ; Section1ContentSlot-SMCatPage  ; true                                                                                                                        
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section1ContentSlot-SMCatPage  ; SmallBusiness Section1 Slot for CategoryLandingPage   ; true   ; SmallBusinessCategoryBannerComponent                                                                                                                         
+ 
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section1-smallbusinesscategory      ; Section1              ;                                                                 ; Section1ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section1-smallbusinesscategory      ; Section1              ;                                                                 ; Section1ContentSlot-SMCatPage            
+
+#---------TopHeaderSlot
+INSERT_UPDATE JspIncludeComponent;$contentCV[unique=true];uid[unique=true];name;page;actions(uid,$contentCV);&componentRef
+;;SwitchAccountComponent;Switch Account Component;/WEB-INF/views/desktop/pages/account/switchaccount.jsp;;SwitchAccountComponent
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]              		 ; active                                                                                                                              
+                          ;                         ; TopHeaderSlot-smallbusinesscategory  ; true                                                                                                                        
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;TopHeaderSlot-smallbusinesscategory;SmallBusiness Category Top Header Slot for LandingPage;true;SwitchAccountComponent
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; TopHeaderContentSlotForPage-smallbusinesscategory     ; TopHeaderSlot              ;                                                                 ; TopHeaderSlot-smallbusinesscategory           
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; TopHeaderContentSlotForPage-smallbusinesscategory      ; TopHeaderSlot              ;                                                                 ; TopHeaderSlot-smallbusinesscategory            
+
+#---------Section8ContentSlot
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;linkName;&linkRef;&componentRef;target(code)[default='sameWindow'];styleAttributes
+;;PoliciesAndTermsLink;Policies and Terms Link;"/policies-and-terms";Privacy Policy| Terms of Use;PoliciesAndTermsLink;PoliciesAndTermsLink;newWindow;
+
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]         ;  visible   ;name                           ;content    ;  &componentRef                              
+                                    ;                         ; Footertextcomponent2     ;  true      ;Footer Text Component 2        ; "<p>&nbsp;Copyright &copy; 2016 Greenlee Textron Inc., a subsidiary of Textron Inc.&nbsp;</p>" ;Footertextcomponent2    
+
+INSERT_UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;$picture[lang=$lang];urlLink
+;;FooterLogoBanner;Footer Logo Component;FooterLogoBanner;footerlogo-image;"http://www.greenleecommunications.com"
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]              		 ; active                                                                                                                              
+                          ;                         ; Section8ContentSlot-smallbusinesscategory  ; true                                                                                                                        
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;Section8ContentSlot-smallbusinesscategory; SmallBusiness Category Section8 Slot for CategoryLandingPage;true;Footertextcomponent2,PoliciesAndTermsLink,FooterLogoBanner
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section8ContentSlotForPage-smallbusinesscategory      ; Section8              ;                                                                 ; Section8ContentSlot-smallbusinesscategory           
+
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section8ContentSlotForPage-smallbusinesscategory      ; Section8              ;                                                                 ; Section8ContentSlot-smallbusinesscategory           
+
+
+#------------------
+# Business Category online
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Online'])[default=$contentCatalog:Online]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Business Category Landing page              #################
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; smallbusiness-category-image        ; smallbusiness-category-image        ; $siteResource/images/theme/smallbusiness-category-image.jpg                 ; image/jpg                  ; Smallbusiness Category           ;                                     ; desktop               
+                    ;                         ; smallbusiness-category-image-mobile ; smallbusiness-category-image-mobile ; $siteResource/images/theme/smallbusiness-category-image.jpg               ; image/jpg                  ; Smallbusiness Category on Mobile ;                                     ; mobile                
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ; category-smallbusiness-container ; Category-SmallBusiness-Container ; smallbusiness-category-image,smallbusiness-category-image-mobile
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name;media(qualifier, $contentCV)   ; &componentRef                       
+                                              ;                         ; SmallBusinessCategoryBannerComponent ; SmallBusiness CategoryBannerComponent;category-smallbusiness-container ; SmallBusinessCategoryBannerComponent
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]              		 ; active                                                                                                                              
+                          ;                         ; Section1ContentSlot-SMCatPage  ; true                                                                                                                        
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section1ContentSlot-SMCatPage  ; SmallBusiness Section1 Slot for CategoryLandingPage   ; true   ; SmallBusinessCategoryBannerComponent                                                                                                                         
+ 
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section1-smallbusinesscategory      ; Section1              ;                                                                 ; Section1ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section1-smallbusinesscategory      ; Section1              ;                                                                 ; Section1ContentSlot-SMCatPage            
+

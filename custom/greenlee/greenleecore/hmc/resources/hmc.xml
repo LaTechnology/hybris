@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2015 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+<configuration xmlns="hybris.de/schemas/hmc/generic"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="hybris.de/schemas/hmc/generic hmc.xsd">
+
+
+	<!-- Configuration for extension greenleecore -->
+	
+	<explorertree>
+		<group name="greenleegroup" description="group.greenleegroup.description">
+			<typeref type="GreenleeProductFeatureTab" description="greenleeproductfeaturetab.units.description" />
+			<typeref type="ProductDocument" />		
+			<typeref type="HelpMeChooseQuestion" description="greenleehelpmechoose.question.description"/>
+			<typeref type="HelpMeChooseAnswer" description="greenleehelpmechoose.answer.description"/>
+		</group>
+	</explorertree>
+	
+	<type name="Consignment" mode="append">
+		<organizer>
+			<editor mode="append">
+				<tab name="properties" position="0" mode="append">
+					<section name="consignment.details">
+						<listlayout mode="append">
+							 <attribute name="consignmentValue" />
+							 <attribute name="taxBreakUp" />
+							 <attribute name="dutyBreakUp" />
+							 <attribute name="promotionBreakUp" />
+							 <attribute name="freightBreakUp" />
+							 <action type="item" classname="com.greenlee.core.hmc.PickupConfirmationHMCAction" name="btn.consignment.confirm.pickup"/>
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+	</type>
+	
+	<type name="HelpMeChooseQuestion" mode="append">
+		<organizer>
+			<search mode="replace">
+				<condition attribute="code" operator="contains" />
+				<condition attribute="question" operator="contains" />
+			</search>
+			<result>
+				<listview mode="replace">
+					<itemlayout>
+						<attribute name="code" />
+						<attribute name="question" />
+					</itemlayout>
+				</listview>
+			</result>
+		</organizer>
+		<defaultreference searchattribute="code" mode="replace">
+			<itemlayout>
+				<attribute name="code" />
+				<attribute name="question" />
+			</itemlayout>
+		</defaultreference>
+	</type>
+	
+	<type name="HelpMeChooseAnswer" mode="append">
+		<organizer>
+			<search mode="replace">
+				<condition attribute="code" operator="contains" />
+				<condition attribute="answer" operator="contains" />
+			</search>
+			<result>
+				<listview mode="replace">
+					<itemlayout>
+						<attribute name="code" />
+						<attribute name="answer" />
+					</itemlayout>
+				</listview>
+			</result>
+		</organizer>
+		<defaultreference searchattribute="code" mode="replace">
+			<itemlayout>
+				<attribute name="code" />
+				<attribute name="answer" />
+			</itemlayout>
+		</defaultreference>
+	</type>
+	
+</configuration>

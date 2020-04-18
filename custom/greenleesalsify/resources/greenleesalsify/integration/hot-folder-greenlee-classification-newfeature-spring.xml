@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2015 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris. -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:file="http://www.springframework.org/schema/integration/file"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration 
+	http://www.springframework.org/schema/integration/spring-integration.xsd
+	http://www.springframework.org/schema/integration/file 
+	http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config />
+
+	<bean id="newbaseDirectoryForGreenlee" class="java.lang.String">
+		<constructor-arg value="#{baseDirectory}/${tenantId}/greenlee" />
+	</bean>
+
+	<!-- 1) Scan for files -->
+	<file:inbound-channel-adapter id="newbatchFilesClassification"
+		directory="#{newbaseDirectoryForGreenlee}" filename-regex="(.*)-(\d+)\.csv" comparator="newfileOrderComparator">
+		<int:poller fixed-rate="1000" />
+	</file:inbound-channel-adapter>
+
+
+	<!-- 2) move the file to processing and create header for classification attributes -->
+	<!-- <file:outbound-gateway request-channel="newbatchFilesClassification"
+		reply-channel="newbatchFilesClassificationProc" directory="#{newbaseDirectoryForGreenlee}/processing"
+		delete-source-files="true" />
+	<int:service-activator input-channel="newbatchFilesClassificationProc"
+		output-channel="newbatchFilesHeaderInit" method="execute" ref="newgreenleeClassificationHeaderSetupTask" />
+	<bean id="newgreenleeClassificationHeaderSetupTask" 
+		class="com.hybris.platform.acceleratorservices.dataimport.batch.task.GreenleeHeaderSetupTask">
+		<property name="catalog" value="greenleeClassification" /> 
+		<property name="net" value="false" />
+		<property name="csvReaderService" ref="csvReaderService" />
+		<property name="attributecode" value="UNSPSC" />
+		<property name="headerLastIndex" value="All Assets Linked to Products" />
+		<property name="fieldSeparator" value="," />
+		<property name="storeBaseDirectory" ref="newbaseDirectoryForGreenlee" />
+	</bean> -->
+	
+	<!-- 2.1) move the file to processing and create header for classification class -->
+	<file:outbound-gateway request-channel="newbatchFilesClassification"
+		reply-channel="newbatchFilesClassificationProc" directory="#{newbaseDirectoryForGreenlee}/processing"
+		delete-source-files="true" />
+	<int:service-activator input-channel="newbatchFilesClassificationProc"
+		output-channel="newbatchFilesHeaderInit" method="execute" ref="newgreenleeClassificationHeaderSetupTask" />				<bean name="csvReaderService"		class="com.hybris.datahub.csv.service.impl.DefaultCsvReaderService" />
+	<bean id="newgreenleeClassificationHeaderSetupTask" 
+		class="com.greenlee.greenleesalsifyservices.dataimport.batch.task.GreenleeClassificationSetupTask">
+		<property name="catalog" value="greenleeClassification" /> 
+		<property name="net" value="false" />
+		<property name="csvReaderService" ref="csvReaderService" />
+		<property name="fieldSeparator" value="," />
+		<property name="storeBaseDirectory" ref="newbaseDirectoryForGreenlee" />
+	</bean>
+	
+	<!-- 3) transform csv to impex file -->
+	<int:service-activator input-channel="newbatchFilesHeaderInit"
+		output-channel="batchFilesHeader" method="execute" ref="newclassificationBatchTransformerTask" />
+	<bean id="newclassificationBatchTransformerTask"
+		class="com.greenlee.greenleesalsifyservices.dataimport.batch.task.GreenleeImpexTransformerTask"
+		init-method="initConvertersMap">
+		<property name="fieldSeparator" value="," />
+		<property name="encoding" value="UTF-8" />
+		<property name="linesToSkip" value="1" />
+		<property name="cleanupHelper" ref="cleanupHelper" />
+	</bean>
+
+
+<!-- variable import -->
+	<bean id="defaultImpexProductFeatureHeaders" class="java.lang.String">
+		<constructor-arg>
+			<value>
+			
+				# ImpEx for Importing Product
+				#Classifications into Greenlee Store
+				#%impex.setLocale(Locale.ENGLISH);
+
+				$catalogVersion=catalogVersion(catalog(id[default='greenleeProductCatalog']),version[default='Staged'])[unique=true,default='greenleeProductCatalog':Staged]
+				$clAttrModifiers=system='greenleeClassification',version='1.0',translator=de.hybris.platform.catalog.jalo.classification.impex.ClassificationAttributeTranslator,lang=EN
+				
+				# Classification: Acid buffers (1027)
+				$feature1=@14111512,upc[$clAttrModifiers]; #upc
+				$feature2=@14111512,Invoice Description[$clAttrModifiers]; #Invoice Description
+				$feature3=@14111512,UNSPSC Name[$clAttrModifiers]; # UNSPSC Name
+				$feature4=@14111512,UNSPSC Required Attributes Reviewed[$clAttrModifiers]; #UNSPSC Required Attributes Reviewed
+				
+			</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- 4) Transformer converters mappings -->
+	
+	<bean id="newgreenleeClassificationAttributesConverterMapping"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+		p:mapping="gre_class_attr" p:converter-ref="newgreenleeClassificationAttributesConverter" />
+
+	<bean id="newgreenleeClassificationAttributesConverter"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+		<property name="header">
+			<value>
+				#{defaultImpexProductHeader}
+				# Classification Class
+				$catalogVersion=catalogVersion(catalog(id[default='greenleeClassification']),version[default='1.0'])[unique=true,default='greenleeClassification:1.0']
+				$systemVersion=systemVersion(catalog(id[default='greenleeClassification']),version[default='1.0'])[unique=true]
+				$lang=en
+				INSERT_UPDATE ClassificationAttribute;code[unique=true];name[lang=$lang];$systemVersion
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>
+			  	   ;{+0},{+1};{+1};
+				   ;{+0},{+2};{+2};
+				   ;{+0},{+3};{+3};
+				   ;{+0},{+4};{+4}; 
+				  </value>
+		</property>
+		<property name="type" value="ClassificationAttribute" />
+	<!-- 	<property name="rowFilter">
+			<bean
+				class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexRowFilter">
+				<property name="expression" value="row[1]" />
+			</bean>
+		</property>  -->
+	</bean>
+
+	<bean id="newgreenleeProductClassificationConverterMapping"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+		p:mapping="gre_prd_class" p:converter-ref="newgreenleeProductClassificationConverter" />
+
+	<bean id="newgreenleeProductClassificationConverter"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+		<property name="header">
+			<value>
+				#{defaultImpexProductHeader}
+				#{defaultImpexProductFeatureHeaders}
+				# ImpEx for Importing Product features into Greenlee Store
+				#%impex.setLocale(Locale.ENGLISH);
+
+				$catalogVersion=catalogVersion(catalog(id[default='greenleeProductCatalog']),version[default='Staged'])[unique=true,default='greenleeProductCatalog':Staged]
+				$clAttrModifiers=system='greenleeClassification',version='1.0',translator=de.hybris.platform.catalog.jalo.classification.impex.ClassificationAttributeTranslator,lang=EN
+
+				INSERT_UPDATE GreenleeProduct;code[unique=true];$feature1;$feature2;$feature3;$feature4;$catalogVersion
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>;{+0};{1};{2};{3};{4};
+			</value>
+		</property>
+		<property name="type" value="GreenleeProduct" />
+	</bean>
+
+ 
+	
+	<!-- 4) File Order Processing -->
+	<alias name="newgreenleeFileOrderComparator" alias="newfileOrderComparator" />
+	<bean id="newgreenleeFileOrderComparator"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.FileOrderComparator">
+		<property name="prefixPriority">
+			<map>
+				<!-- default priority is 0 -->
+				<entry key="gre_prd_class" value="1" />
+				<entry key="gre_class_attr" value="2" />
+			</map>
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,389 @@
+ <!-- ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2015 hybris AG
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of hybris
+  ~ ("Confidential Information"). You shall not disclose such Confidential
+  ~ Information and shall use it only in accordance with the terms of the
+  ~ license agreement you entered into with hybris.
+  -->
+<extension xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.hybris.com/schema/"
+		   xsi:schemaLocation="http://www.hybris.com/schema/ http://www.hybris.com/schema/datahub-metadata-schema-1.2.0.xsd"
+		   name="greenlee-order-target">
+
+	<dependencies>
+		<dependency>
+			<extension>greenlee-order-canonical</extension>
+		</dependency>
+		<dependency>
+			<extension>saporder-target</extension>
+		</dependency>
+	</dependencies>
+
+	<targetSystems>
+		<targetSystem>
+			<name>SapErpSystem</name>
+			<type>SAP_IDOC</type>
+			<exportURL>${targetsystem.saperp.url}</exportURL>
+			<userName>${targetsystem.saperp.username}</userName>
+			<password>${targetsystem.saperp.password}</password>
+			<exportCodes>
+				<exportCode>receiverpartner=${targetsystem.saperp.receivername}</exportCode>
+			</exportCodes>
+			<targetItems>
+				<item>
+					<type>SALESORDER_CREATEFROMDAT202$E1SALESORDER_CREATEFROMDAT2$E1BPSDHD1</type>
+					<exportCode>idockeyfield=SALESDOCUMENTIN</exportCode>
+					<description>Sales order header of SALESORDER_CREATEFROMDAT202 iDoc type</description>
+					<updatable>true</updatable>
+					<canonicalItemSource>CanonicalOrder</canonicalItemSource>
+					<status>ACTIVE</status>
+					<attributes>
+						<attribute override="true">
+							<name>DOC_TYPE</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>orderType</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute override="true">
+							<name>SALES_ORG</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>salesOrg</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute>
+							<name>REF_1</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>orderId</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute>
+							<name>PO_METHOD</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>poType</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute>
+							<name>INCOTERMS1</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>incoterms1</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute>
+							<name>INCOTERMS2</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>incoterms2</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute override="true">
+							<name>PURCH_NO_C</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>purchaseOrderNumber != null and purchaseOrderNumber.length() > 0  ? purchaseOrderNumber : orderId</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute>
+							<name>REQ_DATE_H</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>abapDate(shipByDate)</transformationExpression>
+							<exportCode>date</exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute>
+							<name>NAME</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>orderer</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+					</attributes>
+				</item>
+				<item>
+					<type>SALESORDER_CREATEFROMDAT202$E1SALESORDER_CREATEFROMDAT2$E1BPSDLS</type>
+					<exportCode>idockeyfield=SALESDOCUMENTIN</exportCode>
+					<description>Logic switches of SALESORDER_CREATEFROMDAT202 iDoc type</description>
+					<updatable>true</updatable>
+					<canonicalItemSource>CanonicalOrder</canonicalItemSource>
+					<status>ACTIVE</status>
+					<attributes>
+						<attribute disabled="true">
+							<name>PRICING</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>"G"</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+					</attributes>
+				</item>
+				<item>
+					<type>SALESORDER_CREATEFROMDAT202$E1SALESORDER_CREATEFROMDAT2$E1BPSDITM</type>
+					<exportCode>idockeyfield=SALESDOCUMENTIN</exportCode>
+					<description>Sales order item details of SALESORDER_CREATEFROMDAT202 iDoc type</description>
+					<updatable>true</updatable>
+					<canonicalItemSource>CanonicalOrderItem</canonicalItemSource>
+					<status>ACTIVE</status>
+					<attributes>
+						<attribute>
+							<name>ROUTE</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>resolve('CanonicalOrder').deliveryMode</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+					</attributes>
+				</item>
+				<item>
+					<type>SALESORDER_CREATEFROMDAT202$E1SALESORDER_CREATEFROMDAT2$E1BPSDTEXT</type>
+					<exportCode>idockeyfield=SALESDOCUMENTIN</exportCode>
+					<description>Logic switches of SALESORDER_CREATEFROMDAT202 iDoc type</description>
+					<updatable>true</updatable>
+					<canonicalItemSource>CanonicalOrderSDComponent</canonicalItemSource>
+					<status>ACTIVE</status>
+					<attributes>
+						<attribute>
+							<name>SALESDOCUMENTIN</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>orderId</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute>
+							<name>ITM_NUMBER</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>entryNumber != null ? convertOrderEntryNumber(entryNumber,orderId):''</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>false</mandatoryInHeader>
+						</attribute>
+						<attribute>
+							<name>TEXT_LINE</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>textLine</transformationExpression>
+							<exportCode>keyfield=true</exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute><attribute>
+							<name>TEXT_ID</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>textId</transformationExpression>
+							<exportCode>keyfield=true</exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute>
+							<name>LANGU</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>"E"</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute>
+							<name>LANGU_ISO</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>"EN"</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute>
+							<name>FUNCTION</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>"009"</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+					</attributes>
+				</item>
+				<item>
+					<type>SALESORDER_CREATEFROMDAT202$E1SALESORDER_CREATEFROMDAT2$E1BPCCARD</type>
+					<exportCode>idockeyfield=SALESDOCUMENTIN</exportCode>
+					<description>Credit card payment information of SALESORDER_CREATEFROMDAT202 iDoc type</description>
+					<updatable>true</updatable>
+					<canonicalItemSource>CanonicalCreditCardPaymentInfo</canonicalItemSource>
+					<status>ACTIVE</status>
+					<attributes>
+						<attribute disabled="true">
+							<name>AUTH_REFNO</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>(new java.math.BigInteger(requestId)).toString(32).toUpperCase()</transformationExpression>
+							<exportCode>keyfield=true</exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute disabled="true">
+							<name>CC_TYPE</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>paymentProvider.toUpperCase()</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute disabled="true">
+							<name>CC_NUMBER</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>subscriptionId</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute disabled="true">
+							<name>CC_VALID_T</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>convertValidToDate(validToYear,validToMonth)</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute disabled="true">
+							<name>CC_NAME</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>ccOwner</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+					</attributes>
+				</item>
+				<item>
+					<type>SALESORDER_CREATEFROMDAT202$E1SALESORDER_CREATEFROMDAT2$E1BPADR1</type>
+					<exportCode>idockeyfield=SALESDOCUMENTIN</exportCode>
+					<description>Address information of SALESORDER_CREATEFROMDAT202 iDoc type</description>
+					<updatable>true</updatable>
+					<canonicalItemSource>CanonicalOrderAddress</canonicalItemSource>
+					<status>ACTIVE</status>
+					<attributes>
+						<attribute override="true">
+							<name>NAME_3</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>houseNumber</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute override="true">
+							<name>HOUSE_NO</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression></transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute>
+							<name>ADR_NOTES</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>cardDetails</transformationExpression>
+							<exportCode></exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+					</attributes>
+				</item>
+				
+				
+			</targetItems>
+		</targetSystem>
+		<targetSystem>
+			<name>HybrisCore</name>
+			<type>HybrisCore</type>
+			<exportURL>${targetsystem.hybriscore.url}</exportURL>
+			<userName>${targetsystem.hybriscore.username}</userName>
+			<password>${targetsystem.hybriscore.password}</password>
+			<exportCodes>
+			</exportCodes>
+			<targetItems>
+				<item>
+					<type>TargetOrderItemCancelNotification</type>
+					<exportCode>order</exportCode>
+					<description>Order</description>
+					<updatable>true</updatable>
+					<canonicalItemSource>CanonicalOrderItemCancelNotification</canonicalItemSource>
+					<status>ACTIVE</status>
+					<attributes>
+						<attribute>
+							<name>code</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>orderId</transformationExpression>
+							<exportCode>code[unique=true]</exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute>
+							<name>versionID</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression></transformationExpression>
+							<exportCode>versionID[unique=true]</exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+						<attribute>
+							<name>translatorEventCall</name>
+							<localizable>false</localizable>
+							<collection>true</collection>
+							<transformationExpression>cancellationDetails</transformationExpression>
+							<exportCode>@order[translator=com.greenlee.sapintegration.orderexchange.inbound.events.GreenleeDataHubOrderItemCancelTranslator]</exportCode>
+							<mandatoryInHeader>false</mandatoryInHeader>
+						</attribute>
+					</attributes>
+				</item>
+				<item><!-- NON PGI Event (@ Step 1 triggered from SAP)  -->
+					<type>TargetDeliveryCreationNotification</type>
+					<exportCode>order</exportCode>
+					<description>Order</description>
+					<updatable>true</updatable>
+					<canonicalItemSource>CanonicalDeliveryCreationNotification</canonicalItemSource>
+					<status>ACTIVE</status>
+					<attributes>
+						<attribute override="true">
+							<name>translatorEventCall</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>plant + "#" + deliveryNumber + "#" + entryNumber + "#" + delQuantity + "#" + consignmentValue + "#" + taxBreakUp + "#" + dutyBreakUp + "#" + promotionBreakUp + "#" + freightBreakUp</transformationExpression>
+							<exportCode>@order[translator=com.greenlee.sapintegration.orderexchange.inbound.events.GreenleeDataHubDeliveryTranslator]</exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+					</attributes>
+				</item>
+				<item>
+					<type>TargetGoodsIssueNotification</type><!-- PGI Event (@ Step 2 triggered from SAP) --> 
+					<exportCode>order</exportCode>
+					<description>Order</description>
+					<updatable>true</updatable>
+					<canonicalItemSource>CanonicalGoodsIssueNotification</canonicalItemSource>
+					<status>ACTIVE</status>
+					<attributes>
+						<attribute override="true">
+							<name>translatorEventCall</name>
+							<localizable>false</localizable>
+							<collection>false</collection>
+							<transformationExpression>plant + "#" + deliveryNumber + "#" + entryNumber + "#" + delQuantity + "#" + consignmentValue + "#" + taxBreakUp + "#" + dutyBreakUp + "#" + promotionBreakUp + "#" + freightBreakUp + "#" + goodsIssueDate + "#" + trackingNumber +"#"+ trackingInfos</transformationExpression>
+							<exportCode>@order[translator=com.greenlee.sapintegration.orderexchange.inbound.events.GreenleeDataHubGoodsIssueTranslator]</exportCode>
+							<mandatoryInHeader>true</mandatoryInHeader>
+						</attribute>
+					</attributes>
+				</item>
+			</targetItems>
+		</targetSystem>
+	</targetSystems>
+
+</extension>

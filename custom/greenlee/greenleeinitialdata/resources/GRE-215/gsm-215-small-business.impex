@@ -1,0 +1,340 @@
+#--------------------------------------------------------------------------------------
+# Live Business Category Staged or Small Business Category
+#-------------------------------------------------------------------------------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+
+#-----------------------------------------------------------------------------------------#
+#PageTemplate:ContentPage4Template
+#ContentSlotName:SiteLogo, ........socialslot
+#ContentSlotForTemplate: SiteLogo-smallbusiness, 
+#-----------------------------------------------------------------------------------------#	
+
+INSERT_UPDATE PageTemplate;$contentCV[unique=true];uid[unique=true];name;frontendTemplateName;restrictedPageTypes(code);active[default=true]
+;;ContentPage4Template;Content Page 4 Template;layout/contentLayout4Page;ContentPage
+
+# Add Velocity templates that are in the CMS Cockpit. These give a better layout for editing pages
+# The FileLoaderValueTranslator loads a File into a String property. The templates could also be inserted in-line in this file.
+UPDATE PageTemplate;$contentCV[unique=true];uid[unique=true];velocityTemplate[translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+;;ContentPage4Template      ;$jarResourceCms/structure_contentPage4Template.vm
+
+# Content page 4 template
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='ContentPage4Template'];validComponentTypes(code);compTypeGroup(code)
+;SiteLogo;;;logo
+;HeaderLinks;;;headerlinks
+;SearchBox;;;searchbox
+;MiniCart;;;minicart
+;NavigationBar;;;navigation
+;BreadCrumbSlot;;;wide
+;Section1;;;wide
+;Section2;;;wide
+;Section2b;;;wide
+;Section3;;;narrow
+;Section4;;;narrow
+;Section5;;;narrow
+;Section5a;;;narrow
+;Section6;;;narrow
+;Section7a;;;narrow
+;Section7;;;narrow
+;Section7b;;;narrow
+;Footer;;;footer
+;TopHeaderSlot;;;wide
+;BottomHeaderSlot;;;wide
+;PlaceholderContentSlot;;;
+;Section8;;;wide
+;socialslot;;;wide
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='ContentPage4Template'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-smallbusiness;SiteLogo;;SiteLogoSlot;true
+;;HomepageLink-smallbusiness;HomepageNavLink;;HomepageNavLinkSlot;true
+;;MiniCart-smallbusiness;MiniCart;;MiniCartSlot;true
+;;NavigationBar-smallbusiness;NavigationBar;;NavigationBarSlot;true
+;;Footer-smallbusiness;Footer;;FooterSlot;true
+;;HeaderLinks-smallbusiness;HeaderLinks;;HeaderLinksSlot;true
+;;SearchBox-smallbusiness;SearchBox;;SearchBoxSlot;true
+;;TopHeaderSlot-smallbusiness;TopHeaderSlot;;TopHeaderSlot;true
+;;BottomHeaderSlot-smallbusiness;BottomHeaderSlot;;BottomHeaderSlot;true
+;;PlaceholderContentSlot-smallbusiness;PlaceholderContentSlot;;PlaceholderContentSlot;true
+;;BreadCrumb-smallbusiness;BreadCrumbSlot;;BreadCrumbCompSlot;true
+;;BottomFooter-smallbusiness;Section8;;BottomFooterSlot;true
+;;SocialContent-smallbusiness;socialslot;;SocialContentSlot;true
+
+#-----------------------------------------------------------------------------------------#
+#Component: LiveBusinessCategoryLandingBanner
+#Position: Section1
+#Content Page: livebusinesscategory
+#Content Slot: Section1ContentSlot-livebusinesscategory 
+#ContentSlotForPage: Section1-livebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; section-1-livebusiness-banner-jpg        ; live-banner-lg.png        ; $siteResource/images/theme/live-banner-lg.png                 ; image/jpg                  ; Live Business Category           ;                                     ; desktop               
+                    ;                         ; m-section-1-livebusiness-banner-jpg ; live-banner-sm.png  ; $siteResource/images/theme/live-banner-sm.png               ; image/jpg                  ; Live Business Category on Mobile ;                                     ; mobile                
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ; LiveBusinessCategoryLandingBanner ; LiveBusiness Category Landing Page Banner ; section-1-livebusiness-banner-jpg,m-section-1-livebusiness-banner-jpg
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name;media(qualifier, $contentCV)   ; &componentRef                       
+                                              ;                         ; LiveBusinessCategoryBannerComponent ; LiveBusiness CategoryBannerComponent;LiveBusinessCategoryLandingBanner ; LiveBusinessCategoryBannerComponent
+INSERT_UPDATE ContentPage ; $contentCV[unique=true] ; uid[unique=true]    ; searchable[allownull=true] ; name                      ; masterTemplate(uid,$contentCV)              ; label               ; defaultPage[default='true'] ; approvalStatus(code)[default='approved'] ; homepage[default='false']
+                          ;                         ; livebusinesscategory ; 0                          ; LiveBusiness Category Landing Page ; ContentPage4Template ; /livebusinesscategory
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section1ContentSlot-livebusinesscategory  ; LiveBusiness Section1 Slot for CategoryLandingPage   ; true   ; LiveBusinessCategoryBannerComponent                                                                                                                         
+ 
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='livebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section1-livebusinesscategory      ; Section1              ;                                                                 ; Section1ContentSlot-livebusinesscategory            
+
+#-----------------------------------------------------------------------------------------#
+#Component: SwitchAccountComponent
+#Position: TopHeaderSlot
+#Content Slot: TopHeaderContentSlotForPage-livebusinesscategory 
+#ContentSlotForPage: TopHeaderContentSlotForPage-livebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE JspIncludeComponent;$contentCV[unique=true];uid[unique=true];name;page;actions(uid,$contentCV);&componentRef
+;;SwitchAccountComponent;Switch Account Component;/WEB-INF/views/desktop/pages/account/switchaccount.jsp;;SwitchAccountComponent
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]              		 ; active                                                                                                                              
+                          ;                         ; TopHeaderSlot-livebusinesscategory  ; true                                                                                                                        
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;TopHeaderSlot-livebusinesscategory;SmallBusiness Category Top Header Slot for LandingPage;true;SwitchAccountComponent
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='livebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; TopHeaderContentSlotForPage-livebusinesscategory     ; TopHeaderSlot              ;                                                                 ; TopHeaderSlot-livebusinesscategory           
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='livebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; TopHeaderContentSlotForPage-livebusinesscategory      ; TopHeaderSlot              ;                                                                 ; TopHeaderSlot-livebusinesscategory            
+
+#-----------------------------------------------------------------------------------------#
+#Component: LiveBusinessCategoryOverviewLink,LiveBusinessCategoryFeaturesLink
+#Position: Section2
+#Content Slot: Section2ContentSlot-livebusinesscategory 
+#ContentSlotForPage: Section2-livebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+							 
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; LiveBusinessCategoryOverviewLink      ; LiveBusiness CategoryOverview Link  ; "#overview"                     ; Overview                      ; LiveBusinessCategoryOverviewLink      ; LiveBusinessCategoryOverviewLink      ;                                    ;                                                 
+                               ;                         ; LiveBusinessCategoryFeaturesLink  ; LiveBusiness CategoryFeatures Link  ; "#features"                     ; Features                      ; LiveBusinessCategoryFeaturesLink  ; LiveBusinessCategoryFeaturesLink  ;                                    ;                                                 
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2ContentSlot-livebusinesscategory  ; LiveBusiness Section2 Slot for CategoryLandingPage   ; true   ; LiveBusinessCategoryOverviewLink,LiveBusinessCategoryFeaturesLink                       
+ 
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='livebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2-livebusinesscategory      ; Section2              ;                                                                 ; Section2ContentSlot-livebusinesscategory            
+
+#-----------------------------------------------------------------------------------------#
+#Component: LiveBusinessCategorySelectModelsLink
+#Position: Section2b
+#Content Slot: Section2bContentSlot-livebusinesscategory 
+#ContentSlotForPage: Section2b-livebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; LiveBusinessCategorySelectModelsLink  ; LiveBusiness CategorySelectModels Link  ; "#models"                       ; Select a Model                ; LiveBusinessCategorySelectModelsLink  ; LiveBusinessCategorySelectModelsLink  ;                                    ; class="scrollTrigger btn"                       
+											  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2bContentSlot-livebusinesscategory ; LiveBusiness Section2b Slot for CategoryLandingPage  ; true   ; LiveBusinessCategorySelectModelsLink                                                                                                                        
+ 
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='livebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2b-livebusinesscategory     ; Section2b             ;                                                                 ; Section2bContentSlot-livebusinesscategory           
+
+#-----------------------------------------------------------------------------------------#
+#Component: LiveBusinessCategoryOverviewTextComponent
+#Position: Section3
+#Content Slot: Section3ContentSlot-livebusinesscategory 
+#ContentSlotForPage: Section3-livebusinesscategory
+#-----------------------------------------------------------------------------------------#							 
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                               ; name                                    ;content    ; &componentRef                              
+                                    ;                         ; LiveBusinessCategoryOverviewTextComponent     ; LiveBusiness Category Overview Text    ; "<p style=""text-align: justify; font-weight:700;font-family: robotomedium,sans-serif;""> AirScout Live provides continuous, real-time monitoring of the Wi-Fi&reg; environment giving you the visibility you need to effectively plan and troubleshoot wireless networks in less time .</p><p style=""text-align: justify;"">Wi-Fi complaints can arise from a number of issues, ranging from congestion and interference to misconfigured access points. AirScout Live offers seamless workflow integration and gives technicians the ability to identify and address the most prominent issues preventing reliable Wi-Fi.</p>"  ; LiveBusinessCategoryOverviewTextComponent    
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                           ;                         ; Section3ContentSlot-livebusinesscategory  ; LiveBusiness Section3 Slot for CategoryLandingPage   ; true   ; LiveBusinessCategoryOverviewTextComponent                                                                                                                   
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='livebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section3-livebusinesscategory      ; Section3              ;                                                                 ; Section3ContentSlot-livebusinesscategory            
+#-----------------------------------------------------------------------------------------#
+#Media: enterprise-category-banner-section4
+#MediaContainer: enterprise-category-banner-section4a-container
+#Component: EnterpriseBusinessCategoryApplicationPointsBannerComponent
+#Position: Section4
+#Content Slot: Section4ContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section4-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+							 
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; section-4-2-live-png        ;section-4-2-live.png      ; $siteResource/images/theme/section-4-2-live.png                 ; image/jpg                  ; Live Category           ;                                     ; desktop               
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ; section4-live-category-container; Category-live-Container ; section-4-2-live-png
+							 
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name								;media(qualifier, $contentCV)   ; &componentRef                       
+                                              ;                         ;LiveCategoryAirscoutProductComponent ; LiveCategory business Airscout Product Image Component;section4-live-category-container; LiveCategoryAirscoutProductComponent
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                            ; name                                  ;content; &componentRef                              
+								    ; 						  ; LiveBusinessApplicationMessageComponent ; LiveCategory Business Application Message Component ; "<p style=""text-align: justify; font-weight:700;font-family: robotomedium,sans-serif;font-size:1.2rem""> Access Points </p><p style=""text-align: justify;""> Get a live view to identify common problems like suboptimal signal or incorrect channel.</p><hr><p style=""text-align: justify; font-weight:700;font-family: robotomedium,sans-serif;font-size:1.2rem"">Channel Utilization</p><p style=""text-align: justify;"">Instantaneous 2.4Ghz and 5Ghz measurements of any channel's utilization and interference.</p> <hr><p style=""text-align: justify; font-weight:700;font-family: robotomedium,sans-serif;font-size:1.2rem"">No Training Required</p><p style=""text-align: justify;"">Technicians of all experience levels can operate the system effectively without expensive training</p><hr> <p style=""text-align: justify; font-weight:700;font-family: robotomedium,sans-serif;font-size:1.2rem""> FREE Phone App </p><p style=""text-align: justify;"">Free on Android phones! AirScout Live plus Wi-Fi analyzer and Ookla speed test compatibility.*</p><p style=""text-align: justify;"">*AirScout master client needed for AirScout Live and Ookla speed test functionality.</p> "  ;LiveBusinessApplicationMessageComponent
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section4ContentSlot-livebusinesscategory  ;LiveCategory Section4 ContentSlot  ; true   ;LiveCategoryAirscoutProductComponent, LiveBusinessApplicationMessageComponent                                                                                                                         
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='livebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section4-livebusinesscategory     ; Section4            ;                                                                 ; Section4ContentSlot-livebusinesscategory            
+#-----------------------------------------------------------------------------------------#
+#Component: LiveBusinessInstantActivationComponent,LiveBusinessSmartSetUpBannerComponent,LiveBusinessEasytoUseBannerComponent,LiveBusinessMultipleViewOptionsBannerComponent,LiveBusinessOptimizationBannerComponent,LiveBusinessDesigned4YouBannerComponent       
+#Position: Section5
+#Content Slot: Section5ContentSlot-livebusinesscategory 
+#ContentSlotForPage: Section5-livebusinesscategory
+#-----------------------------------------------------------------------------------------#
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                            ; name                                  ;content; &componentRef                              
+                                    ;                         ; LiveBusinessTheAirScoutLiveDifferenceTextComponent ; LiveBusiness TheAirScoutLive Difference TextComponent;"<h2>The AirScout Live Difference</h2>"  ;LiveBusinessTheAirScoutLiveDifferenceTextComponent
+	
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section5ContentSlot-livebusinesscategory  ; LiveBusiness Section5 Slot for CategoryLandingPage   ; true   ;LiveBusinessTheAirScoutLiveDifferenceTextComponent
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='livebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section5-livebusinesscategory      ; Section5              ;                                                                 ; Section5ContentSlot-livebusinesscategory            
+
+#-----------------------------------------------------------------------------------------#
+#Component: LiveBusinessInstantActivationComponent,LiveBusinessSmartSetUpBannerComponent,LiveBusinessEasytoUseBannerComponent,LiveBusinessMultipleViewOptionsBannerComponent,LiveBusinessOptimizationBannerComponent,LiveBusinessDesigned4YouBannerComponent       
+#Position: Section5a
+#Content Slot: Section5ContentSlot-livebusinesscategory 
+#ContentSlotForPage: Section5a-livebusinesscategory
+#-----------------------------------------------------------------------------------------#
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]               ; realfilename       ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; icon-instant.png        		; icon-instant       ; $siteResource/images/theme/icon-instant.png                 					 ; image/jpg                  ; icon-instant             ;                                     ; desktop               
+                    ;                         ; icon-setup.png					; icon-setup  		 ; $siteResource/images/theme/icon-setup.png               			 			 ; image/jpg                  ; icon-setup ;                                     ; desktop                
+                    ;                         ; live-icon-easy.png        		; live-icon-easy     ; $siteResource/images/theme/live-icon-easy.png                 				 ; image/jpg                  ; live-icon-easy         ;                                     ; desktop               
+                    ;                         ; icon-options.png 				; icon-options		 ; $siteResource/images/theme/icon-options.png               				 	 ; image/jpg                  ; icon-options ;                                     ; desktop  								 
+                    ;                         ; icon-optimization.png 			; icon-optimization	 ; $siteResource/images/theme/icon-optimization.png               				 ; image/jpg                  ; icon-optimization ;                                     ; desktop  								 
+                    ;                         ; icon-designed.png 				; icon-designed		 ; $siteResource/images/theme/icon-designed.png               				 	 ; image/jpg                  ; icon-designed	;                                     ; desktop  								 
+
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                                 ; name                                   ; &componentRef                                 	; headline ; $picture[lang=$lang]  ; urlLink   ;content[lang=$lang]
+                              ;                         ; LiveBusinessInstantActivationComponent           ; LiveBusiness Instant Activation Banner ; LiveBusinessInstantActivationComponent            ;          ; icon-instant.png     	   ; "/"       ;"<h6>Instant Activation</h6> <p class=""MsoNormal"">Power up and get a live look at your network within seconds.</p>"
+                              ;                         ; LiveBusinessSmartSetUpBannerComponent 		   ; LiveBusiness Smart SetUp Banner 		; LiveBusinessSmartSetUpBannerComponent 			;          ; icon-setup.png              ; "/"   	   ;"<h6>Smart Set Up</h6> <p class=""MsoNormal"">Identifies access point security settings. Open, WEP, WPA, WPA2,and/or 802.1x.</p>"
+                              ;                         ; LiveBusinessEasytoUseBannerComponent             ; LiveBusiness EasytoUse Banner          ; LiveBusinessEasytoUseBannerComponent              ;          ; live-icon-easy.png              ; "/"       ;"<h6>Easy to Use</h6> <p class=""MsoNormal"">Supports 802.11a a/b/g/n/ac - Easily identify and test any type of network.</p>"
+                              ;                         ; LiveBusinessMultipleViewOptionsBannerComponent   ; LiveBusiness MultipleView Banner       ; LiveBusinessMultipleViewOptionsBannerComponent    ;          ; icon-options.png            ; "/"       ;"<h6>Multiple View Options </h6> <p class=""MsoNormal"">Graphical and list views of in-range access points including their signal strength, security protocol, SSID, channel, channel width, MAC address, and radio capabiity.</p>"
+                              ;                         ; LiveBusinessOptimizationBannerComponent          ; LiveBusiness Optimization Banner       ; LiveBusinessOptimizationBannerComponent           ;          ; icon-optimization.png              ; "/"       ;"<h6>802.15.4 Optimization</h6> <p class=""MsoNormal"">Optimize your 802.15.4 Configuration by defining which SSID you want to avoid interfering with for seamless Wi-Fi performance.</p>"
+                              ;                         ; LiveBusinessDesigned4YouBannerComponent          ; LiveBusiness Designed4You Banner       ; LiveBusinessDesigned4YouBannerComponent           ;          ; icon-designed.png             ; "/"       ;"<h6>Designed for you</h6> <p class=""MsoNormal"">Fully upgradeable to AirScout Residential and AirScout Enterprise to tackle jobs of any size or complexity.</p>"
+   
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section5aContentSlot-livebusinesscategory  ; LiveBusiness Section5 Slot for CategoryLandingPage   ; true   ;LiveBusinessInstantActivationComponent,LiveBusinessSmartSetUpBannerComponent,LiveBusinessEasytoUseBannerComponent,LiveBusinessMultipleViewOptionsBannerComponent,LiveBusinessOptimizationBannerComponent,LiveBusinessDesigned4YouBannerComponent
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='livebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section5a-livebusinesscategory      ; Section5a              ;                                                                 ; Section5aContentSlot-livebusinesscategory            
+#-----------------------------------------------------------------------------------------#
+#Media: section-6-live-jpg
+#MediaContainer: section-6-live-category-container
+#Component: LiveCategoryAirscoutCommunicationGraphTheBigPictureBannerComponent
+#Position: Section6
+#Content Slot: Section6ContentSlot-livebusinesscategory 
+#ContentSlotForPage: Section6-livebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; section-6-live-jpg       ; section-6-live.jpg        ; $siteResource/images/theme/section-6-live.jpg                 ; image/jpg                  ; Live Category           ;                                     ; desktop               
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ; section-6-live-category-container; Category live Container ; section-6-live-jpg
+							 
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name								;media(qualifier, $contentCV)   ; &componentRef                       
+                                              ;                         ; LiveCategoryAirscoutCommunicationGraphTheBigPictureBannerComponent ; Live AirscoutCommunicationGraphTheBigPicture & The Big Picture Component; section-6-live-category-container; LiveCategoryAirscoutCommunicationGraphTheBigPictureBannerComponent
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section6ContentSlot-livebusinesscategory  ; LiveBusiness Section6 Slot for CategoryLandingPage   ; true   ; LiveCategoryAirscoutCommunicationGraphTheBigPictureBannerComponent                                                                       
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='livebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section6-livebusinesscategory      ; Section6              ;                                                                 ; Section6ContentSlot-livebusinesscategory            
+
+#-----------------------------------------------------------------------------------------#
+#Component: CategoryLandingProductListComponent
+#Position: Section7
+#Content Slot: Section7ContentSlot-livebusinesscategory 
+#ContentSlotForPage: Section7-livebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE CMSLinkComponent        ; $contentCV[unique=true]        ; uid[unique=true]                           ; url                                                                    ;  &linkRef                            ; &componentRef                       
+                               ;                                ; CategoryViewAllModelsLink                  ; "/en/USD/search?q=%3Arelevance&text=#"  ; CategoryViewAllModelsLink            ; CategoryViewAllModelsLink                                    
+
+INSERT_UPDATE ProductListComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                ; productsFromContext[default=false] ; pagination[default=false] ; layout(code)[default='thumbViewLayout'] ; categoryCode ; &componentRef                      
+                                   ;                         ; LiveCategoryLandingProductListComponent ; Live Category Landing ProductList Component ;                                    ;                           ;                                         ;     ; LiveCategoryLandingProductListComponent
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7ContentSlot-livebusinesscategory  ; Live Section7 Slot for CategoryLandingPage   ; true   ; LiveCategoryLandingProductListComponent                                                                                                             
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='livebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7-livebusinesscategory      ; Section7              ;                                                                 ; Section7ContentSlot-livebusinesscategory            
+		 
+#-----------------------------------------------------------------------------------------#
+#Component: SmallBusinessModelsTitleComponent
+#Position: Section7a
+#Content Slot: Section7aContentSlot-livebusinesscategory 
+#ContentSlotForPage: Section7a-livebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; SmallBusinessCategoryViewAllModelsLink ; Live CategoryViewAllModels Link ; "/search?q=%3Arelevance&text=#" ; View all models & accessories ; SmallBusinessCategoryViewAllModelsLink ; SmallBusinessCategoryViewAllModelsLink ;                                    ; class=""                                        
+
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                               ; content		 ; name                                  ; &componentRef                              
+                                    ;                         ; SmallBusinessModelsTitleComponent              ; <h2>Models</h2> ; SmallBusiness Models Title               ; SmallBusinessModelsTitleComponent             
+
+INSERT_UPDATE ProductComparisonComponent ; &componentRef                       ; $contentCV[unique=true] ; uid[unique=true]                    ; name                         				; openPopup ; visible[default=true]  ;showCheckbox[default=false] 				 ; showCompareButton[default=true] ; closePopupAfterAddToCart[default=true]
+                                         ;LiveProductComparePageComponent  ;                         ; LiveProductComparePageComponent  ; SmallBusiness Product Compare Page Button  ; false     ; true					 ;false                      				 ;                                 ;                                       
+								  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7aContentSlot-livebusinesscategory ; Live Section7a Slot for CategoryLandingPage  ; true   ; SmallBusinessModelsTitleComponent,LiveProductComparePageComponent,SmallBusinessCategoryViewAllModelsLink                                                     
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='livebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7a-livebusinesscategory     ; Section7a             ;                                                                 ; Section7aContentSlot-livebusinesscategory           
+
+		 
+#-----------------------------------------------------------------------------------------#
+#Component: SmallBusinessModelsTitleComponent
+#Position: Section7b
+#Content Slot: Section7bContentSlot-livebusinesscategory 
+#ContentSlotForPage: Section7b-livebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                              ; name                                       ; &componentRef                                 ; headline ; $picture[lang=$lang]  ; content ; urlLink        
+                              ;                         ; SmallBusinessHelpMeChooseTextOnlyBannerComponent ; Live Help Me Choose Text Only Banner ; SmallBusinessHelpMeChooseTextOnlyBannerComponent ;          ;                       ; "<h2>MAKE THE RIGHT CHOICE</h2><p><input name=""help"" type=""button"" value=""Help Me Choose"" /></p><p>Use this selector to choose the best AirScout<span style=""text-align: justify;"">&reg;</span>&nbsp;solution for your needs based on size and type of your Wi-Fi<span style=""text-align: justify;"">&reg;</span>&nbsp;installations.</p>"; "/helpmechoose"
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7bContentSlot-livebusinesscategory ; Live Section7b Slot for CategoryLandingPage  ; true   ; SmallBusinessHelpMeChooseTextOnlyBannerComponent                                                                                                             
+
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='livebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7b-livebusinesscategory     ; Section7b             ;                                                                 ; Section7bContentSlot-livebusinesscategory           
+
+#-----------------------------------------------------------------------------------------#
+#Component:PoliciesAndTermsLink, Footertextcomponent2
+#Position: Section8
+#Content Slot: Section8ContentSlot-livebusinesscategory 
+#ContentSlotForPage: Section8-livebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;linkName;&linkRef;&componentRef;target(code)[default='sameWindow'];styleAttributes
+;;PoliciesAndTermsLink;Policies and Terms Link;"/policies-and-terms";Privacy Policy| Terms of Use;PoliciesAndTermsLink;PoliciesAndTermsLink;newWindow;
+
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]         ;  visible   ;name                           ;content    ;  &componentRef                              
+                                    ;                         ; Footertextcomponent2     ;  true      ;Footer Text Component 2        ; "<p>&nbsp;Copyright &copy; 2016 Greenlee Textron Inc., a subsidiary of Textron Inc.&nbsp;</p>" ;Footertextcomponent2    
+
+INSERT_UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;$picture[lang=$lang];urlLink
+;;FooterLogoBanner;Footer Logo Component;FooterLogoBanner;footerlogo-image;"http://www.greenleecommunications.com"
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;Section8ContentSlot-livebusinesscategory; SmallBusiness Category Section8 Slot for CategoryLandingPage;true;Footertextcomponent2,PoliciesAndTermsLink,FooterLogoBanner
+
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='livebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section8-livebusinesscategory      ; Section8              ;                                                                 ; Section8ContentSlot-livebusinesscategory           
+
+

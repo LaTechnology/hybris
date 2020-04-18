@@ -1,0 +1,42 @@
+# ImpEx for Related Products
+
+# Macros / Replacement Parameter definitions
+$productCatalog=greenleeProductCatalog
+$productCatalogName=greenlee Product Catalog
+
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+
+$lang=en
+
+# Insert Product References
+INSERT_UPDATE ProductReference;source(code,$catalogVersion)[unique=true];target(code,$catalogVersion)[unique=true];referenceType(code);active[default=true];preselected[default=false]
+;000000000001111;000000000001131;FOLLOWUP;;
+;000000000001111;000000000001132;FOLLOWUP;;
+;000000000001111;000000000001133;FOLLOWUP;;
+;000000000001111;000000000001114;SIMILAR;;
+;000000000001111;000000000001115;SIMILAR;;
+;000000000001111;000000000001116;SIMILAR;;
+;000000000001111;000000000001117;SIMILAR;;
+;000000000001111;000000000001118;SIMILAR;;
+;000000000001112;000000000001131;FOLLOWUP;;
+;000000000001112;000000000001132;FOLLOWUP;;
+;000000000001112;000000000001133;FOLLOWUP;;
+;000000000001112;000000000001114;SIMILAR;;
+;000000000001112;000000000001115;SIMILAR;;
+;000000000001112;000000000001116;SIMILAR;;
+;000000000001112;000000000001117;SIMILAR;;
+;000000000001112;000000000001118;SIMILAR;;
+;000000000001113;000000000001131;FOLLOWUP;;
+;000000000001113;000000000001132;FOLLOWUP;;
+;000000000001113;000000000001133;FOLLOWUP;;
+;000000000001113;000000000001114;SIMILAR;;
+;000000000001113;000000000001115;SIMILAR;;
+;000000000001113;000000000001116;SIMILAR;;
+;000000000001113;000000000001117;SIMILAR;;
+;000000000001113;000000000001118;SIMILAR;;
+#####################sample data############################
+INSERT_UPDATE ProductReference;source(code,$catalogVersion)[unique=true];target(code,$catalogVersion)[unique=true]
+#;000000000001111;
+
+INSERT_UPDATE GreenleeProductFeatureTab; greenleeProduct(code,$catalogVersion)[unique=true];$catalogVersion;tabCode[unique=true];tabName[lang=$lang];tabDescription[lang=$lang];
+;000000000001111;;11110000;Test Feature Tab;"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."

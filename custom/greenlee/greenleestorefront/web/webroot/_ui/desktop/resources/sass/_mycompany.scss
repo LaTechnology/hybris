@@ -1,0 +1,308 @@
+.mycompany {
+    .mycompany-title {
+        border-bottom: 1px solid $light-grey;
+        padding-bottom: 8px;
+        h1 {
+            border: none;
+            margin: 0;
+            .company-head {
+                margin: 0;
+                font-family: 'robotomedium';
+                display: block;
+                text-transform: none;
+            }
+        }
+        span {
+            display: block;
+            &.users {
+                display: inline-block;
+                vertical-align: middle;
+                color: $gray-lighter;
+                width: 50%;
+                margin-right: -4px;
+                text-align: left;
+                @media (min-width: $screen-md-min) {
+                    width: auto;
+                    text-align: right;
+                }
+            }
+        }
+    }
+    .company-terms {
+        font-family: 'robotomedium';
+    }
+    .sortmycompany {
+        display: inline-block;
+        vertical-align: middle;
+        width: 130px;
+        width: 50%;
+        margin: 0;
+        @media (min-width: $screen-md-min) {
+            width: 155px;
+            margin: 0 33px 0 20px;
+        }
+        label {
+            color: $gray-lighter;
+            @include font-size(12px);
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .select-wrapper {
+            width: auto;
+            padding-right: 14px;
+            vertical-align: top;
+            &:after {
+                font-size: 14px;
+            }
+            .holder {
+                padding: 0;
+                margin: 0;
+                text-transform: uppercase;
+                font-family: 'robotomedium';
+                color: #666666;
+                width: 100%;
+                vertical-align: middle;
+                display: inline-block;
+                height: 24px;
+            }
+        }
+    }
+    .btn-white {
+        margin-top: 10px;
+        @media (min-width: $screen-md-min) {
+            width: 140px;
+            vertical-align: middle;
+            margin-top: -8px;
+        }
+    }
+    .inblock6.last {
+        margin-top: -10px;
+    }
+    .rwd-table {
+        tr.odd {
+            background: $odd-li;
+        }
+        th {
+            &.th-name {
+                @media (min-width: $screen-md-min) {
+                    padding-left: 34px;
+                }
+            }
+        }
+        td {
+            @media (min-width: $screen-md-min) {
+                border-bottom: 1px solid $light-grey;
+                &.name {
+                    padding-left: 34px;
+                }
+            }
+        }
+    }
+}
+.rwd-table {
+    width: 100%;
+    th {
+        display: none;
+        @media (min-width: $screen-md-min) {
+            display: table-cell;
+            padding: 17px 0;
+        }
+        text-align: left;
+        text-transform: uppercase;
+        font-weight: normal;
+        padding: 17px 5px;
+        border-bottom: 1px solid $light-grey;
+    }
+    tr {
+        border-bottom: 1px solid $light-grey;
+        padding: 10px 0;
+        display: inline-block;
+        width: 100%;
+        @media (min-width: $screen-md-min) {
+            display: table-row;
+            border: none;
+            padding: 0;
+            width: auto;
+        }
+    }
+    td {
+        clear: left;
+        float: left;
+        width: 100%;
+        text-align: left;
+        display: block;
+        padding: 17px 0;
+        @media (min-width: $screen-md-min) {
+            display: table-cell;
+            clear: none;
+            float: none;
+            width: auto;
+            &.name,
+            &.role,
+            &.user-manage2,
+            &.user-manage3 {
+                padding-right: 20px;
+                width: 22.702702702702704%;
+            }
+            &.email {
+                padding-right: 20px;
+                width: 33.837837837837836%;
+            }
+            &.actions {
+                width: 20.756756756756756%;
+            }
+            &.user-manage1 {
+                padding-right: 20px;
+                width: 30.27027027027027%;
+            }
+            &.user-manage4 {
+                width: 17.83783783783784%;
+            }
+        }
+        .tablesaw-cell-content {
+            width: 48%;
+            display: inline-block;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            -ms-word-break: break-all;
+            word-break: break-all;
+            word-break: break-word;
+            -ms-hyphens: auto;
+            -moz-hyphens: auto;
+            -webkit-hyphens: auto;
+            vertical-align: middle;
+            @media (min-width: $screen-md-min) {
+                display: inline;
+                max-width: none;
+            }
+        }
+    }
+    .tablesaw-cell-label {
+        padding: 0 0.6em 0 0;
+        width: 50%;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    a.btn-white {
+        @media (min-width: $screen-md-min) {
+            display: inline;
+            padding: 0;
+            background: none;
+            text-transform: none;
+            font-family: robotolight;
+            margin-right: 5px;
+            text-decoration: underline;
+            border-radius: 0;
+            vertical-align: top;
+        }
+        &.btn-edit {
+            margin-bottom: 10px;
+        }
+    }
+}
+.well {
+    background: $odd-li;
+    padding: 20px 10px 20px 15px;
+    border-bottom: 1px solid $light-grey;
+    margin-bottom: 20px;
+    @media (min-width: $screen-md-min) {
+        padding: 20px 10px 20px 35px;
+    }
+    .inblock {
+        padding: 0;
+    }
+    .edit-align {
+        float: right;
+        margin-top: -13px;
+        @media (min-width: $screen-md-min) {
+            float: none;
+            margin-top: 0;
+        }
+    }
+    &.top-well {
+        padding: 20px 10px 20px 15px;
+        .well-information {
+            margin-bottom: 10px;
+            @media (min-width: $screen-md-min) {
+                padding-left: 20px;
+                margin: 0;
+            }
+        }
+        .btn-edit {
+            margin-bottom: 10px;
+            @media (min-width: $screen-md-min) {
+                margin: 0 16px 0 0;
+            }
+        }
+    }
+    h5 {
+        margin: 0;
+        padding: 0;
+        @include font-size(14px);
+        text-transform: uppercase;
+        font-family: 'robotomedium';
+    }
+}
+.user-info {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    @media (min-width: $screen-md-min) {
+        table-layout: auto;
+    }
+    td {
+        width: 50%;
+        padding: 0 0 32px;
+        &.end {
+            padding: 0 0 32px;
+        }
+        @media (min-width: $screen-md-min) {
+            padding: 0 32px 32px 0;
+        }
+    }
+}
+.mycompany-user {
+    h1 {
+        margin: 0;
+    }
+    .well .inblock {
+        form {
+            display: inline-block;
+        }
+    }
+}
+.mycompony-role {
+    border-top: 1px solid $light-grey;
+    padding: 25px 0 0;
+    h5 {
+        padding-bottom: 16px;
+    }
+}
+.add-user {
+    padding: 0 0 62px;
+    h3 {
+        font-family: 'robotomedium';
+        text-transform: uppercase;
+        @include font-size(14px);
+        margin: 20px 0 0;
+        padding: 0;
+    }
+    @media (min-width: $screen-md-min) {
+        margin-left: 11.351351351351352%;
+        width: 34.054054054054056%;
+        float: left;
+        .add-adjust {
+            padding-right: 20px;
+        }
+    }
+}

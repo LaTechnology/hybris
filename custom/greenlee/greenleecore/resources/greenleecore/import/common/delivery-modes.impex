@@ -1,0 +1,41 @@
+#
+# Import Delivery Modes / Zones
+#
+#% impex.setLocale(Locale.GERMAN)
+
+# Currencies
+$ukCurrency=GBP
+$jpCurrency=JPY
+$usCurrency=USD
+$europeCurrency=EUR
+
+# Delivery Zones
+INSERT_UPDATE Zone                  ; code[unique=true]               ; countries(isocode)
+                                    ;deliverycountries; AD,AE,AF,AG,AI,AL,AM,AN,AO,AQ,AR,AS,AT,AU,AW,AZ,BA,BB,BD,BE,BF,BG,BH,BI,BJ,BM,BN,BO,BR,BS,BT,BV,BW,BY,BZ,CA,CC,CD,CF,CG,CH,CI,CK,CL,CM,CN,CO,CR,CU,CV,CW,CX,CY,CZ,DE,DJ,DK,DM,DO,DZ,EC,EE,EG,EH,ER,ES,ET,FI,FJ,FK,FM,FO,FR,GA,GB,GD,GE,GF,GG,GH,GI,GL,GM,GN,GP,GQ,GR,GS,GT,GU,GW,GY,HK,HM,HN,HR,HT,HU,ID,IE,IL,IM,IN,IO,IQ,IT,IS,IT,JE,JM,JO,JP,KE,KG,KH,KI,KM,KN,KP,KR,KW,KY,KZ,LA,LB,LC,LI,LK,LR,LS,LT,LU,LV,LY,MA,MC,MD,ME,MG,MH,MK,ML,MM,MN,MO,MP,MQ,MR,MS,MT,MU,MV,MW,MX,MY,MZ,NA,NC,NE,NF,NG,NI,NL,NO,NP,NR,NU,NZ,OM,PA,PE,PF,PG,PH,PK,PL,PM,PN,PR,PT,PW,PY,QA,RE,RO,RS,RU,RW,SA,SB,SC,SS,SE,SG,SH,SI,SJ,SK,SL,SM,SN,SO,SR,ST,SV,SX,SY,SZ,TC,TD,TF,TG,TH,TJ,TK,TL,TM,TN,TO,TP,TR,TT,TV,TW,TZ,UA,UG,UM,US,UY,UZ,VA,VC,VE,VG,VI,VN,VU,WF,WS,YE,YT,YU,ZA,ZM,ZW
+                                    
+
+# Zone Delivery Modes
+#
+
+INSERT_UPDATE ZoneDeliveryMode;active[default=true];net[default=false];code[unique=true];weightLowerLimit;weightUpperLimit;isExpeditedShipping[default=true];isAcctNumberMandatory[default=false];sapMappingCode[default='X0'];accountNumberMaxLength[default=6]
+;;;1-SPG01A;0;149;false;;;9
+;;;2-SPA11A;0;149;;;;9
+;;;3-SPA02A;0;149;;;;9
+;;;4-SPA03A;0;149;;;;9
+;;;5-SPG01B;0;149;false;true;;
+;;;6-SPA11B;0;149;;true;;
+;;;7-SPA02B;0;149;;true;;
+;;;8-SPA03B;0;149;;true;;
+#;;;LTL01I;150;;false;false;;
+
+INSERT_UPDATE ZoneDeliveryModeValue;deliveryMode(code)[unique=true];zone(code)[default='deliverycountries'][unique=true];currency(isocode)[unique=true];value;minimum[unique=true]
+;1-SPG01A;;$usCurrency;0,00;0,00
+;2-SPA11A;;$usCurrency;0,00;0,00
+;3-SPA02A;;$usCurrency;0,00;0,00
+;4-SPA03A;;$usCurrency;0,00;0,00
+;5-SPG01B;;$usCurrency;0,00;0,00
+;6-SPA11B;;$usCurrency;0,00;0,00
+;7-SPA02B;;$usCurrency;0,00;0,00
+;8-SPA03B;;$usCurrency;0,00;0,00
+#;LTL01I;;$usCurrency;0,00;0,00
+

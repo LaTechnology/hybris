@@ -1,0 +1,446 @@
+# ImpEx for Importing Category Classifications into greenlee Store
+
+# Macros / Replacement Parameter definitions
+$productCatalog=greenleeProductCatalog
+$productCatalogName=greenlee Product Catalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$classCatalogVersion=catalogversion(catalog(id[default='greenleeClassification']),version[default='1.0'])[unique=true,default='greenleeClassification:1.0']
+$classSystemVersion=systemVersion(catalog(id[default='greenleeClassification']),version[default='1.0'])[unique=true]
+$class=classificationClass(ClassificationClass.code,$classCatalogVersion)[unique=true]
+$supercategories=source(code, $classCatalogVersion)[unique=true]
+$categories=target(code, $catalogVersion)[unique=true]
+$attribute=classificationAttribute(code,$classSystemVersion)[unique=true]
+$unit=unit(code,$classSystemVersion)
+
+# Insert Classifications
+INSERT_UPDATE ClassificationClass;$classCatalogVersion;code[unique=true];allowedPrincipals(uid)[default='customergroup']
+;;1196
+;;2436
+;;1091
+;;1093
+;;1092
+;;3476
+;;1095
+;;3479
+;;1094
+;;3478
+;;39
+;;37
+;;38
+;;3480
+;;2858
+;;42
+;;41
+;;40
+;;1486
+;;26
+;;1323
+;;3856
+;;2848
+;;3910
+;;3911
+;;3912
+;;829
+;;19
+;;15
+;;21
+;;20
+;;2974
+;;1709
+;;622
+;;2973
+;;621
+;;1706
+;;1707
+;;2972
+;;624
+;;1468
+;;2590
+;;4350
+;;4759
+;;2103
+;;2102
+;;4075
+;;708
+;;706
+;;834
+;;4162
+;;57
+;;56
+;;55
+;;852
+;;44
+;;851
+;;854
+;;853
+;;1296
+;;3149
+;;1108
+;;1107
+;;2759
+;;3139
+;;2758
+;;3136
+;;3137
+;;3138
+;;3551
+;;2757
+;;877
+;;2760
+;;875
+;;1279
+;;2621
+;;2625
+;;2623
+;;2763
+;;2762
+;;2761
+;;3516
+;;3419
+;;3134
+;;696
+;;4439
+;;3021
+;;3020
+;;3527
+;;2285
+;;4007
+;;2912
+;;643
+;;2910
+;;2911
+;;637
+;;638
+;;635
+;;633
+;;634
+;;631
+;;2727
+;;3909
+;;2725
+;;3756
+;;3553
+;;2928
+;;3473
+;;3475
+;;3474
+;;3471
+;;3470
+;;3469
+;;3466
+;;3467
+;;3468
+
+# Insert Classification Attributes
+INSERT_UPDATE ClassificationAttribute;$classSystemVersion;code[unique=true]
+;;Non-operating relative hu, 621
+;;Operating relative humidi, 703
+;;Recommended operating tem, 473
+;;Operating temperature ran, 1112
+;;Storage relative humidity, 1383
+;;Recommended humidity oper, 563
+;;Storage temperature range, 757
+;;Connector s , 1496
+;;Dimensions W x D x H, 49
+;;Weight, 94
+;;Filter size, 1615
+;;Diameter, 2931
+;;Length, 2738
+;;Power consumption, 445
+;;Input voltage, 1466
+;;Battery type, 908
+;;Number of batteries suppo, 1211
+;;Battery life, 1721
+;;Power supply type, 514
+;;Twilight, 3751
+;;Spotlight, 5574
+;;Sports, 3708
+;;Height  max , 6486
+;;Still image capture resol, 1598
+;;Supported image formats, 2417
+;;Fixed focal length, 5748
+;;Focus adjustment, 1600
+;;Aperture range, 638
+;;Thread diameter, 1938
+;;Image stabilizer, 1578
+;;Maximum aperture, 5548
+;;Number of aspheric elemen, 6204
+;;Macro ratio, 5549
+;;Viewing angle, horizontal, 37
+;;Minimum aperture, 5546
+;;Lens structure  elements/, 1865
+;;Number of diaphragm blade, 5547
+;;Closest focusing distance, 2726
+;;35 mm camera lens equival, 1678
+;;Focal length, 1522
+;;Viewing angle, 1684
+;;Lens type, 472
+;;Histogram, 3779
+;;Crop, 3777
+;;Frame, 3778
+;;Thumbnails, 3775
+;;Movies, 3776
+;;Slide show, 1294
+;;Resizing, 3773
+;;Rotating, 3774
+;;Album organization, 3418
+;;Trimming, 3772
+;;Single image, 3771
+;;Digital zoom, 48
+;;Lens, 1290
+;;Combined zoom, 6571
+;;Filter, 2534
+;;Digital SLR, 3567
+;;Lens focal range, 744
+;;Optical zoom, 74
+;;Lens system, 576
+;;Playback zoom, 2396
+;;Megapixel, 63
+;;Depth, 1650
+;;Height, 1464
+;;Width, 1649
+;;Compatible operating syst, 2507
+;;Bundled software, 251
+;;Hard disk drive capacity, 7
+;;PictBridge, 2397
+;;Component video  YPbPr/YC, 3562
+;;USB 2 0 ports quantity, 2308
+;;DC-in jack, 2316
+;;Video out, 1595
+;;Microphone, line-in jack, 2314
+;;Audio output, 1786
+;;Composite video out, 3016
+;;I/O ports, 470
+;;HDMI ports quantity, 3566
+;;S-Video out, 3200
+;;Maximum internal memory, 1246
+;;Maximum internal memory, 1452
+;;Internal memory, 6
+;;Memory slots, 672
+;;Storage media capacity, 481
+;;Memory type, 642
+;;Memory upgrade, 584
+;;Compatible memory cards, 730
+;;Field of view, 6952
+;;Camera display resolution, 6205
+;;Display, 83
+;;Display diagonal, 944
+;;Maximum dimensions  W x D, 669
+;;Product weight optional  , 6120
+;;Product dimensions when o, 5721
+;;Product weight optional  , 6119
+;;AC adapter bundled, 1230
+;;Minimum processor, 67
+;;Minimum system requiremen, 861
+;;Minimum hard disk space, 66
+;;Minimum system requiremen, 493
+;;Minimum RAM, 68
+;;Mac compatibility, 853
+;;Input frequency, 2935
+;;Number of battery cells, 1226
+;;Output current, 3378
+;;Power requirements, 780
+;;Output voltage, 1467
+;;Power management, 1376
+;;Capacity, 1237
+;;Battery performance, 909
+;;AC adapter output voltage, 904
+;;Colour of product, 1766
+;;Interface type, 990
+;;Cables included, 1830
+;;Additional accessories, 1305
+;;Case or master carton qua, 777
+;;Package dimensions  W x D, 582
+;;Package weight, 762
+;;Material, 898
+;;Transfer rate, 2329
+;;Read speed, 1644
+;;Flash card type, 2305
+;;X-speed rating, 6563
+;;Write speed, 1645
+;;Recording speed, 1582
+;;Flash memory, 538
+;;Display resolution, 1585
+;;Flash, 463
+;;Built-in flash, 1289
+;;Light exposure control, 711
+;;ISO sensitivity, 2102
+;;Interface, 21
+;;Connection to PC, 1311
+;;Cable length, 1266
+;;Print technology, 78
+;;Video memory capacity, 5167
+;;Size, 1147
+;;Date imprinting, 3727
+;;Resolution, 80
+;;Safety, 607
+;;Aperture setting, 5775
+;;Source data-sheet, 6617
+;;Still image capacity  bet, 6151
+;;Still image capacity  bes, 6150
+;;Export file formats, 774
+;;Picture resolution, 5035
+;;Still image capacity, 6149
+;;Frame rate, 3496
+;;Memory per slot  maximum , 6056
+;;Type, 31
+;;Photo mode, 1817
+;;Tripod mountable, 1601
+;;Picture mode, 2030
+;;Colour control, 663
+;;Image control functions, 866
+;;Shooting capacity, 2874
+;;Direct printing, 2176
+;;Sharpness, 3258
+;;Languages support, 3113
+;;Technical features, 2143
+;;PhotoSmart compression, 1968
+;;Control panel, 2084
+;;Number of layers per pall, 1680
+;;LCD components, 6029
+;;Shot-to-shot time, 3327
+;;Number of cartons per pal, 1679
+;;Exposure type, 5998
+;;Upgrade type, 1633
+;;Normal focusing range, 3730
+;;Auto focus, 1614
+;;Manual focus, 3738
+;;Focus, 759
+;;Film speed setting  ISO , 2873
+;;Self-timer, 765
+;;Film type, 1948
+;;Camera shutter speed, 1295
+;;Compatibility, 890
+;;Battery technology, 434
+;;Battery life  CIPA standa, 6231
+;;Optical sensor resolution, 1617
+;;Effective sensor resoluti, 1616
+;;Optical sensor size, 1618
+;;Sensor type, 1574
+;;Packaging height, 3807
+;;Packaging width, 3808
+;;Built-in microphone, 1025
+;;Minimum illumination, 1581
+;;Noise reduction, 2483
+;;Special features, 86
+;;Shutter Lag, 664
+;;Data compression, 710
+;;Battery voltage, 4858
+;;Mean time between failure, 533
+;;Processor clock speed, 5
+;;Recording of audio files, 1307
+;;Warranty, 1448
+;;Camera playback, 1301
+;;Camera sensitivity, 1302
+;;Energy Star certified, 838
+;;Audio system, 442
+;;Video compression formats, 2225
+;;Recharge indicator, 4033
+;;Packaging length, 4932
+;;Mounting, 1867
+;;Quantity per box, 2055
+;;Form factor, 771
+;;Plug and Play, 775
+;;Built-in speakers, 2433
+;;Aspect ratio, 39
+;;Processor model, 47
+;;Colour, 46
+;;Camera viewfinder, 1293
+;;Camera focusing range, 1291
+;;Multi burst mode, 1297
+;;Power source, 1390
+;;Camera voice function, 1288
+;;Camera movie function, 1287
+;;Camera CCD sensor, 1283
+;;Camera resolution, 1284
+;;Camera file format, 1285
+;;Cable colour, 1272
+;;Video modes resolution, 1922
+;;Power supply, 1242
+;;Exit pupil, 2723
+;;Real field of view, 2724
+;;Water resistant, 2540
+;;Objective diameter, 2722
+;;Magnification, 1864
+;;Eye relief, 2727
+;;Prism type, 2728
+;;Apparent field of view, 2725
+;;Batteries included, 4949
+;;Write protection switch, 4321
+;;Memory adapter included, 3461
+;;Supported camera resoluti, 1748
+;;Maximum resolution, 1659
+;;Light exposure rating, 694
+;;Light exposure correction, 670
+;;Electronic shutter, 3729
+;;Mechanical shutter, 3728
+;;Light exposure type, 550
+;;Expansion voltage, 1359
+;;Data retention, 1642
+;;Colour depth, 1550
+;;Drive modes, 3341
+;;Live view, 5642
+;;Macro focusing range  tel, 3732
+;;Auto Focus  AF  illuminat, 3740
+;;Macro focusing range  wid, 3731
+;;Auto Mode focusing range , 3734
+;;Auto Mode focusing range , 3735
+;;Auto Focus  AF  assist be, 3748
+;;Auto Focus  AF  lock, 3739
+;;Auto focusing  AF  modes, 7365
+;;Digital video capture spe, 1570
+;;Video capture resolution, 1597
+;;Box weight, 3420
+;;Box dimensions  W x D x H, 3419
+;;Motion JPEG frame rate, 2413
+;;Video capability, 2079
+;;Video footnote, 2082
+;;Wind filter, 3228
+;;Voice recording, 2171
+;;Audio recorder, 85
+;;Flash exposure lock, 3343
+;;Flash range  wide , 3725
+;;Flash guide number, 3676
+;;Flash modes, 7357
+;;Flash working distance, 2002
+;;Flash range  tele , 3726
+;;Flash recharging time, 3682
+;;Compatible products, 2190
+;;Electrical viewfinder, 3274
+;;Optical viewfinder, 3273
+;;Progressive scan, 3221
+;;Soft travel pouch, 4000
+;;Tape size, 1446
+;;Coercive force, 2150
+;;Tape type, 2217
+;;Tape thickness, 2137
+;;Shots quantity, 5705
+;;AF actuator, 5611
+;;Lamp power, 1170
+;;Tripod legs, 1868
+;;Tripod head, 1869
+;;Camcorder tape type, 3265
+;;Shooting modes, 1577
+;;Night mode, 2681
+;;Metering, 476
+;;Fader, 2326
+;;On Screen Display  OSD , 3064
+;;White balance, 682
+;;Pastel, 3752
+;;Photo effects, 4279
+;;Art, 3749
+;;Indoor white balance, 5572
+;;Outdoor white balance, 5571
+;;Onepush white balance, 5573
+;;Custom colour, 3743
+;;Saturation adjustment, 3720
+;;Contrast adjustment, 3719
+;;Scene modes, 7356
+;;Spot, 3671
+;;Centre-weighted, 3670
+;;Multi-pattern, 3668
+;;Evaluative, 3669
+;;Manual exposure, 3673
+;;Aperture priority AE, 3675
+;;Shutter priority AE, 3674
+;;Auto exposure, 3672

@@ -1,0 +1,18 @@
+$lang=en
+
+INSERT_UPDATE HelpMeChooseQuestion;code[unique=true];question[lang=$lang];answers(code);levelOne[default=false]
+;L1Q1;"What is the type of your typical installation?";L1A1,L1A2,L1A3;true
+;L2Q1;"What is the size of your typical installation?";L2A1,L2A2,L2A3;
+;L2Q2;"How many Access Points?";L3A1,L3A2,L3A3;
+
+
+INSERT_UPDATE HelpMeChooseAnswer;code[unique=true];answer[lang=$lang];targetURL;nextQuestion(code)
+;L1A1;"Residential use <span>(House, condo)</span>";;L2Q1
+;L1A2;"Business <span>(office, e.g, dentist, lawyers)</span>";;L2Q2
+;L1A3;"Hospital, warehouse, school";"/enterprisecategory";
+;L2A1;"3000 sq feet or less";"/residentialcategory";
+;L2A2;"3000-10000 sq feet";"/smallbusinesscategory";
+;L2A3;"10000 sq feet or greater";"/enterprisecategory";
+;L3A1;"Only one <span>(3000 sq feet or less)</span>";"/residentialcategory";;
+;L3A2;"2 to 3 <span>(3000-10000 sq feet)</span>";"/smallbusinesscategory";
+;L3A3;"6 or more <span>(10000 sq feet or greater)</span>";"/enterprisecategory";

@@ -1,0 +1,41 @@
+#
+# Import the Solr CronJob Trigger configuration for the Product Catalog
+#
+
+UPDATE SolrIndexerCronJob;  code[unique=true];nodeID
+;full-greenleeIndex-cronJob;0
+;update-greenleeIndex-cronJob;0
+
+INSERT_UPDATE Trigger;cronJob(code)[unique=true];second;minute;hour;day;month;year;relative;active;maxAcceptableDelay
+# Run the full-greenleeIndex-cronJob at 3:05 AM every day
+;full-greenleeIndex-cronJob;0;5;3;-1;-1;-1;false;true;-1
+  
+# Run the update-greenleeIndex-cronJob every 15 minutes
+;update-greenleeIndex-cronJob;0;15;-1;-1;-1;-1;true;true;-1
+
+# Create & Import the Solr CronJob Trigger configuration for the Content Catalog
+
+INSERT_UPDATE SolrIndexerCronJob; code[unique=true];job(code);singleExecutable;sessionLanguage(isocode);facetSearchConfig(name);nodeID
+;full-greenlee-ContentIndex-cronJob;solrIndexerJob;false;en;greenlee-ContentIndex;0
+;update-greenlee-ContentIndex-cronJob;solrIndexerJob;false;en;greenlee-ContentIndex;0
+ 
+INSERT_UPDATE Trigger;cronJob(code)[unique=true];second;minute;hour;day;month;year;relative;active;maxAcceptableDelay
+# Run the full-greenleeIndex-cronJob at 4:00 AM every day
+;full-greenlee-ContentIndex-cronJob;0;0;4;-1;-1;-1;true;true;-1
+
+# Run the update-greenleeIndex-cronJob every 15 minutes
+;update-greenlee-ContentIndex-cronJob;0;15;-1;-1;-1;-1;true;true;-1
+
+# Create & Import the Solr CronJob Trigger configuration for the Artifacts  Catalog
+
+INSERT_UPDATE SolrIndexerCronJob; code[unique=true];job(code);singleExecutable;sessionLanguage(isocode);facetSearchConfig(name);nodeID
+;full-greenlee-Index-cronJob;solrIndexerJob;false;en;greenlee-Index;0
+;update-greenlee-Index-cronJob;solrIndexerJob;false;en;greenlee-Index;0
+
+INSERT_UPDATE Trigger;cronJob(code)[unique=true];second;minute;hour;day;month;year;relative;active;maxAcceptableDelay
+# Run the full-greenlee-Index-cronJob at 5:00 AM every day
+;full-greenlee-Index-cronJob;0;0;5;-1;-1;-1;false;true;-1
+
+# Run the update-greenleeIndex-cronJob every 1 minutes
+;update-greenlee-Index-cronJob;0;15;-1;-1;-1;-1;true;true;-1
+

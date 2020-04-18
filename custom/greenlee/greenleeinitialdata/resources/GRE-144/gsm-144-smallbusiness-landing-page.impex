@@ -1,0 +1,286 @@
+#------------------
+# Business Category Staged
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Business Category Landing page              #################
+#INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+#                    ;                         ; smallbusiness-category-image        ; smallbusiness-category-image        ; $siteResource/images/theme/smallbusiness-category-image.jpg                 ; image/jpg                  ; Smallbusiness Category           ;                                     ; desktop               
+#                    ;                         ; smallbusiness-category-image-mobile ; smallbusiness-category-image-mobile ; $siteResource/images/theme/smallbusiness-category-image.jpg               ; image/jpg                  ; Smallbusiness Category on Mobile ;                                     ; mobile                
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ; SmallBusinessCategoryLandingBanner ; Small Business Category Landing Page Banner ; SmallBusinessCategoryLandingBanner,SmallBusinessCategoryLandingBanner-Mobile
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name;media(qualifier, $contentCV)   ; &componentRef                       
+                                              ;                         ; SmallBusinessCategoryBannerComponent ; SmallBusiness CategoryBannerComponent;category-smallbusiness-container ; SmallBusinessCategoryBannerComponent
+INSERT_UPDATE ContentPage ; $contentCV[unique=true] ; uid[unique=true]    ; searchable[allownull=true] ; name                      ; masterTemplate(uid,$contentCV)              ; label               ; defaultPage[default='true'] ; approvalStatus(code)[default='approved'] ; homepage[default='false']
+                          ;                         ; smallbusinesscategory ; 0                          ; Small Business Category Landing Page ; ContentPage2Template ; /smallbusinesscategory
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]              		 ; active                                                                                                                              
+                          ;                         ; Section1ContentSlot-SMCatPage  ; true                                                                                                                        
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section1ContentSlot-SMCatPage  ; SmallBusiness Section1 Slot for CategoryLandingPage   ; true   ; SmallBusinessCategoryBannerComponent                                                                                                                         
+ 
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section1-smallbusinesscategory      ; Section1              ;                                                                 ; Section1ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section1-smallbusinesscategory      ; Section1              ;                                                                 ; Section1ContentSlot-SMCatPage            
+
+#---------TopHeaderSlot
+INSERT_UPDATE JspIncludeComponent;$contentCV[unique=true];uid[unique=true];name;page;actions(uid,$contentCV);&componentRef
+;;SwitchAccountComponent;Switch Account Component;/WEB-INF/views/desktop/pages/account/switchaccount.jsp;;SwitchAccountComponent
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]              		 ; active                                                                                                                              
+                          ;                         ; TopHeaderSlot-smallbusinesscategory  ; true                                                                                                                        
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;TopHeaderSlot-smallbusinesscategory;SmallBusiness Category Top Header Slot for LandingPage;true;SwitchAccountComponent
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; TopHeaderContentSlotForPage-smallbusinesscategory     ; TopHeaderSlot              ;                                                                 ; TopHeaderSlot-smallbusinesscategory           
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; TopHeaderContentSlotForPage-smallbusinesscategory      ; TopHeaderSlot              ;                                                                 ; TopHeaderSlot-smallbusinesscategory            
+
+#---------Section8ContentSlot
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;linkName;&linkRef;&componentRef;target(code)[default='sameWindow'];styleAttributes
+;;PoliciesAndTermsLink;Policies and Terms Link;"/policies-and-terms";Privacy Policy| Terms of Use;PoliciesAndTermsLink;PoliciesAndTermsLink;newWindow;
+
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]         ;  visible   ;name                           ;content    ;  &componentRef                              
+                                    ;                         ; Footertextcomponent2     ;  true      ;Footer Text Component 2        ; "<p>&nbsp;Copyright &copy; 2016 Greenlee Textron Inc., a subsidiary of Textron Inc.&nbsp;</p>" ;Footertextcomponent2    
+
+INSERT_UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;$picture[lang=$lang];urlLink
+;;FooterLogoBanner;Footer Logo Component;FooterLogoBanner;footerlogo-image;"http://www.greenleecommunications.com"
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]              		 ; active                                                                                                                              
+                          ;                         ; Section8ContentSlot-smallbusinesscategory  ; true                                                                                                                        
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;Section8ContentSlot-smallbusinesscategory; SmallBusiness Category Section8 Slot for CategoryLandingPage;true;Footertextcomponent2,PoliciesAndTermsLink,FooterLogoBanner
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section8ContentSlotForPage-smallbusinesscategory      ; Section8              ;                                                                 ; Section8ContentSlot-smallbusinesscategory           
+
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section8ContentSlotForPage-smallbusinesscategory      ; Section8              ;                                                                 ; Section8ContentSlot-smallbusinesscategory           
+
+
+
+#------------------
+# #2
+#-----------------
+							 
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name;media(qualifier, $contentCV)   ; &componentRef                       
+                                              ;                         ; SmallBusinessCategoryBannerComponent ; SmallBusiness CategoryBannerComponent;category-smallbusiness-container ; SmallBusinessCategoryBannerComponent
+
+REMOVE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]
+                               ;                         ; SmallBusinessCategoryOverviewLink     
+                               ;                         ; SmallBusinessCategoryApplicationsLink  
+                               ;                         ; SmallBusinessCategoryBenefitsLink  
+                               ;                         ; SmallBusinessCategoryTestimonialsLink
+                               ;                         ; SmallBusinessCategorySelectModelsLink  
+                               ;                         ; SmallBusinessCategoryViewAllModelsLink 
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; SmallBusinessCategoryOverviewLink      ; SmallBusiness CategoryOverview Link      ; "#overview"                     ; Overview                     ; SmallBusinessCategoryOverviewLink      ; SmallBusinessCategoryOverviewLink      ;                                    ;                                                 
+                               ;                         ; SmallBusinessCategoryApplicationsLink  ; SmallBusiness CategoryApplications Link  ; "#applications"                 ; Applications                  ; SmallBusinessCategoryApplicationsLink  ; SmallBusinessCategoryApplicationsLink  ;                                    ;                                                 
+                               ;                         ; SmallBusinessCategoryBenefitsLink      ; SmallBusiness CategoryBenefits Link      ; "#benefits"                     ; Benefits                      ; SmallBusinessCategoryBenefitsLink      ; SmallBusinessCategoryBenefitsLink      ;                                    ;                                                 
+                               ;                         ; SmallBusinessCategoryTestimonialsLink  ; SmallBusiness CategoryTestimonials Link  ; "#testimonials"                 ; Testimonials                  ; SmallBusinessCategoryTestimonialsLink  ; SmallBusinessCategoryTestimonialsLink  ;                                    ;                                                 
+                               ;                         ; SmallBusinessCategorySelectModelsLink  ; SmallBusiness CategorySelectModels Link  ; "#models"                       ; Select a Model                ; SmallBusinessCategorySelectModelsLink  ; SmallBusinessCategorySelectModelsLink  ;                                    ; class="scrollTrigger btn"                       
+                               ;                         ; SmallBusinessCategoryViewAllModelsLink ; SmallBusiness CategoryViewAllModels Link ; "/search?q=%3Arelevance%3AallCategories%3Abusiness&text=&viewAs=#" ; View all models & accessories ; SmallBusinessCategoryViewAllModelsLink ; SmallBusinessCategoryViewAllModelsLink ;                                    ; class=""                                        
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;          active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2ContentSlot-SMCatPage  ;   true   ; SmallBusinessCategoryOverviewLink,SmallBusinessCategoryApplicationsLink,SmallBusinessCategoryBenefitsLink,SmallBusinessCategoryTestimonialsLink                       
+          											  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2ContentSlot-SMCatPage  ; SmallBusiness Section2 Slot for CategoryLandingPage   ; true   ; SmallBusinessCategoryOverviewLink,SmallBusinessCategoryApplicationsLink,SmallBusinessCategoryBenefitsLink,SmallBusinessCategoryTestimonialsLink                       
+ 
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2-smallbusinesscategory      ; Section2              ;                                                                 ; Section2ContentSlot-SMCatPage            
+  
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2-smallbusinesscategory      ; Section2              ;                                                                 ; Section2ContentSlot-SMCatPage            
+
+##################
+#2b
+################
+
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; SmallBusinessCategorySelectModelsLink  ; SmallBusiness CategorySelectModels Link  ; "#models"                       ; Select a Model                ; SmallBusinessCategorySelectModelsLink  ; SmallBusinessCategorySelectModelsLink  ;                                    ; class="scrollTrigger btn"                       
+											  
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;   active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2bContentSlot-SMCatPage ; true   ; SmallBusinessCategorySelectModelsLink                                                                                                                        
+ 
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2bContentSlot-SMCatPage ; SmallBusiness Section2b Slot for CategoryLandingPage  ; true   ; SmallBusinessCategorySelectModelsLink                                                                                                                        
+ 
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2b-smallbusinesscategory     ; Section2b             ;                                                                 ; Section2bContentSlot-SMCatPage           
+  
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2b-smallbusinesscategory     ; Section2b             ;                                                                 ; Section2bContentSlot-SMCatPage           
+
+#############3          Small Business Category Landing page              #################
+							 
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                               ; name                                    ;content    ; &componentRef                              
+                                    ;                         ; SmallBusinessCategoryOverviewTextComponent     ; SmallBusiness Category Overview Text    ; "<p style=""text-align: justify;""> The AirScout&reg; system provides rapid and largely automated means of surveying an entire residence for effective Wi-Fi&reg; service. AirScout&reg; testing works in parallel with existing workflows. Installer can get on with other preparatory tasks while the AirScout&reg; system surveys the premises automatically. During the testing phase the AirScout&reg; system optimizes settings and location of the Access Points, identifies and helps resolve issues affecting network performance (such as signal quality, congestion and interference) and validates services (such as streaming video, streaming audio, and more).</p><p style=""text-align: justify;"">Upon test completion, the AirScout&reg; solution produces a series of the heatmaps visually representing whether the WLAN requirements are being met. &nbsp;Based on the results the installer may proceed with deploying Wi-Fi&reg; based on AirScout&reg; recommendations.</p>"  ; SmallBusinessCategoryOverviewTextComponent    
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;  active ; cmsComponents(&componentRef)                                                                                                                              
+                           ;                         ; Section3ContentSlot-SMCatPage  ;  true   ; SmallBusinessCategoryOverviewTextComponent                                                                                                                   
+											  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                           ;                         ; Section3ContentSlot-SMCatPage  ; SmallBusiness Section3 Slot for CategoryLandingPage   ; true   ; SmallBusinessCategoryOverviewTextComponent                                                                                                                   
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                   ;                         ; Section3-smallbusinesscategory      ; Section3              ;                                                                 ; Section3ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section3-smallbusinesscategory      ; Section3              ;                                                                 ; Section3ContentSlot-SMCatPage            
+
+#############4         Small Business Category Landing page              #################
+							 
+INSERT_UPDATE FlashComponent ; $contentCV[unique=true] ; uid[unique=true]                        ; name                                                         ; &componentRef                           ; urlLink                                    
+                             ;                         ; SmallBusinessCategoryLandingVideoComponent ; Greenlee Video Component for SmallBusinessCategory Landing page ; SmallBusinessCategoryLandingVideoComponent ; "https://www.youtube.com/embed/wnVFSl-CB4Y"
+
+				 
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                            ; name                                  ;content; &componentRef                              
+                                    ;                         ; SmallBusinessCategoryApplicationsTextComponent ; SmallBusiness Category Applications Text ;"<h2>APPLICATIONS</h2> <p style=""text-align: justify;"">AirScout Cloud provides a rapid and largely automated means of surveying a small business for effective Wi-Fi service. Key AirScout applications are, maintenance of existing Wi-Fi services including Upgrades e.g. from 11n to 11ac, new installations of Wi-Fi services, and up-sell of additional services or hardware to enhance or extend coverage and capacity</p> <p style=""text-align: justify;"">For both new and existing deployments the best practices call for conducting the site surveys to guide deployments of the Access Points assuring that Wi-Fi networks meet business requirements while costs of maintaining Wi-Fi are minimized.</p>"  ;SmallBusinessCategoryApplicationsTextComponent
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;          active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section4ContentSlot-SMCatPage  ;   true   ; SmallBusinessCategoryLandingVideoComponent,SmallBusinessCategoryApplicationsTextComponent                                                                       
+        
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section4ContentSlot-SMCatPage  ; SmallBusiness Section4 Slot for CategoryLandingPage   ; true   ; SmallBusinessCategoryLandingVideoComponent,SmallBusinessCategoryApplicationsTextComponent                                                                       
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section4-smallbusinesscategory      ; Section4              ;                                                                 ; Section4ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section4-smallbusinesscategory      ; Section4              ;                                                                 ; Section4ContentSlot-SMCatPage            
+
+#############5         Small Business Category Landing page              #################
+							 
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                                 ; name                                          ; &componentRef                                    ; headline ; $picture[lang=$lang]  ; urlLink        
+                              ;                         ; SmallBusinessCloudTestingComponent               ; SmallBusiness Cloud Testing Banner            ; SmallBusinessCloudTestingComponent               ;          ; cloud-testing.png     ; "/"            
+                              ;                         ; SmallBusinessHelpMeChooseTextOnlyBannerComponent ; SmallBusiness Help Me Choose Text Only Banner ; SmallBusinessHelpMeChooseTextOnlyBannerComponent ;          ;                       ; "/helpmechoose"
+                              ;                         ; SmallBusinessWifiBannerComponent                 ; SmallBusiness Wifi Banner                     ; SmallBusinessWifiBannerComponent                 ;          ; wifi.png              ; "/"            
+                              ;                         ; SmallBusinessUnlockBannerComponent               ; SmallBusiness Unlock Banner                   ; SmallBusinessUnlockBannerComponent               ;          ; unlock.png            ; "/"            
+                              ;                         ; SmallBusinessTickBannerComponent                 ; SmallBusiness Tick Banner                     ; SmallBusinessTickBannerComponent                 ;          ; tick.png              ; "/"            
+                              ;                         ; SmallBusinessCloudBannerComponent                ; SmallBusiness Cloud Banner                    ; SmallBusinessCloudBannerComponent                ;          ; cloud.png             ; "/"            
+                              ;                         ; SmallBusinessApplicationsComponent               ; SmallBusiness Applications Banner             ; SmallBusinessApplicationsComponent               ;          ; application-video.jpg ; "/"            
+
+UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                                 ;content[lang=$lang]
+                              ;                         ; SmallBusinessCloudTestingComponent               ;"<h2>AIRSCOUT CLOUD</h2> <p class=""MsoNormal"">The AirScout&reg; &trade; Enterprise WLAN Test System works with Greenlee&rsquo;s Cloud Services, providing an automated, secure environment that links all of your AirScout&reg; test results together and centralizes captured data for easy access anywhere. AirScout&reg; results are automatically sent to Greenlee&rsquo;s Cloud Service or a coordinated independent cloud service when a Wi-Fi&reg; &nbsp;or cellular connection from the device to the Internet is available. You can obtain updates, store results, and retrieve information from the cloud using any device, at any time.<o:p></o:p></p>"
+                              ;                         ; SmallBusinessWifiBannerComponent                 ;"<p style=""text-align: left;"">No Wi-Fi&reg; Experience. No Problem. The AirScout&reg; Enterprise Wi-Fi&reg; Test System delivers in-depth testing combined with an easy-to-use interface. No expensive training classes or time out of the field required.</p>"
+                              ;                         ; SmallBusinessUnlockBannerComponent               ;"<p style=""text-align: left;"">Stop Drawing Walls and Guessing Building Materials. Real distributed clients eliminate the need to spend tedious hours manually drawing in the walls, windows, and doors on a floor map. Simultaneous multi-point testing and the removal of the floor plan drawing phase accelerate the time to test.</p>"
+                              ;                         ; SmallBusinessTickBannerComponent                 ;"<p style=""text-align: left;"">Get the job done right, the first time. Real measurements mean real results. Stop spending more time troubleshooting Wi-Fi&reg; just to have to go back at a later time. Installs, validation, and troubleshooting should be done right the first time.</p>"
+                              ;                         ; SmallBusinessCloudBannerComponent                ;"<p style=""text-align: left;"">Customized reporting. Customize and export full reports, conveniently accessible from Greenlee&rsquo;s Cloud Services anywhere, at any time.&nbsp;</p><p style=""text-align: left;"">Accelerated time to results. - Simultaneous multi-point testing and the removal of the floor plan drawing phase accelerate the time to test.</p>"
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;       active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section5ContentSlot-SMCatPage  ;   true   ; SmallBusinessWifiBannerComponent,SmallBusinessUnlockBannerComponent,SmallBusinessCloudBannerComponent,SmallBusinessTickBannerComponent,SmallBusinessCloudTestingComponent
+   
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section5ContentSlot-SMCatPage  ; SmallBusiness Section5 Slot for CategoryLandingPage   ; true   ; SmallBusinessWifiBannerComponent,SmallBusinessUnlockBannerComponent,SmallBusinessCloudBannerComponent,SmallBusinessTickBannerComponent,SmallBusinessCloudTestingComponent
+
+REMOVE ContentSlotForPage 		 ; $contentCV[unique=true] ; uid[unique=true]                    ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section5-smallbusinesscategory      ; Section5              ;                                                                    ; Section5ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section5-smallbusinesscategory      ; Section5              ;                                                                 ; Section5ContentSlot-SMCatPage            
+
+############# 6        Small Business Category Landing page              #################
+
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]             ; name                            ; media(code, $productCV)[forceWrite=true] ; content                                                                                                                                                                                                                                                                                                                                      ; &componentRef                      ; urlLink                                                               
+                              ;                         ; SmallBusinessTestimonialBanner1 ; SmallBusiness Testimonial Banner 1 ; ASK306_Airscout-CartPage ; "<blockquote> <p style=""text-align: justify; ""><font size=""3"">The explosive growth in wireless communications is fueled by the rapid increase in connected devices, Wi-Fi&reg; calling, and the emergence of IoT technology. This increase is creating a strain on the existing wireless infrastructure and causing quality of service issues. Unplanned Wi-Fi&reg; deployments are resulting in high hidden costs, poor performance and sub-par functionality of connected devices. These issues can be addressed with the AirScout&reg; Enterprise WLAN system for pre-deployment planning, verification, and troubleshooting. Greenlee Communication&rsquo;s AirScout&reg; Wi-Fi&reg; &nbsp;test solution simplifies the process of ensuring Wi-Fi&reg; &nbsp;installations are ready for the delivery of high-performance services.</font></p></blockquote>" ; SmallBusinessTestimonialBanner1 ; "/"
+
+INSERT_UPDATE RotatingImagesComponent ; $contentCV[unique=true] ; uid[unique=true]                       ; name                                                      ; banners(&componentRef)                                                                   ; &componentRef                         
+                                      ;                         ; SmallBusinessTestimonialRotatingComponent ; SmallBusiness Homepage Testimonial Rotating Images Component ; SmallBusinessTestimonialBanner1; SmallBusinessTestimonialRotatingComponent
+
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                        ; name                                       ; content              ; &componentRef                          
+                                    ;                         ; SmallBusinessTestimonialParagraphComponent ; SmallBusiness Testimonial Paragraph Home Page ; <h3>ARE YOU PREPARED?</h3> ; SmallBusinessTestimonialParagraphComponent
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;          active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section6ContentSlot-SMCatPage  ;  true   ; SmallBusinessTestimonialParagraphComponent,SmallBusinessTestimonialRotatingComponent                                                                            
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section6ContentSlot-SMCatPage  ; SmallBusiness Section 6 Slot for CategoryLandingpage  ; true   ; SmallBusinessTestimonialParagraphComponent,SmallBusinessTestimonialRotatingComponent                                                                            
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section6-smallbusinesscategory      ; Section6              ;                                                                 ; Section6ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section6-smallbusinesscategory      ; Section6              ;                                                                 ; Section6ContentSlot-SMCatPage            
+
+#############7         Small Business Category Landing page              #################
+
+INSERT_UPDATE ProductListComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                ; productsFromContext[default=false] ; pagination[default=false] ; layout(code)[default='thumbViewLayout'] ; categoryCode ; &componentRef                      
+                                   ;                         ; CategoryLandingProductListComponent ; Category Landing ProductList Component ;                                    ;                           ;                                         ; business     ; CategoryLandingProductListComponent
+
+												  
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;         active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7ContentSlot-SMCatPage  ;   true   ; CategoryLandingProductListComponent                                                                                                             
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7ContentSlot-SMCatPage  ; SmallBusiness Section7 Slot for CategoryLandingPage   ; true   ; CategoryLandingProductListComponent                                                                                                             
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7-smallbusinesscategory      ; Section7              ;                                                                 ; Section7ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7-smallbusinesscategory      ; Section7              ;                                                                 ; Section7ContentSlot-SMCatPage            
+		 
+############# 7-a        Small Business Category Landing page              #################
+
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; SmallBusinessCategoryViewAllModelsLink ; SmallBusiness CategoryViewAllModels Link ; "/search?q=%3Arelevance&text=#" ; View all models & accessories ; SmallBusinessCategoryViewAllModelsLink ; SmallBusinessCategoryViewAllModelsLink ;                                    ; class=""                                        
+
+
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                               ; content		 ; name                                  ; &componentRef                              
+                                    ;                         ; SmallBusinessModelsTitleComponent              ; <h2>Models</h2> ; SmallBusiness Models Title               ; SmallBusinessModelsTitleComponent             
+
+INSERT_UPDATE ProductComparisonComponent ; &componentRef                       ; $contentCV[unique=true] ; uid[unique=true]                    ; name                         				; openPopup ; showCheckbox[default=true] 				 ; showCompareButton[default=true] ; closePopupAfterAddToCart[default=true]
+                                         ; DefaultProductComparePageComponent  ;                         ; DefaultProductComparePageComponent  ; SmallBusiness Product Compare Page Button  ; false     ; false                      				 ;                                 ;                                       
+
+								  
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;   active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7aContentSlot-SMCatPage ;   true   ; SmallBusinessModelsTitleComponent,DefaultProductComparePageComponent,SmallBusinessCategoryViewAllModelsLink                                                     
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7aContentSlot-SMCatPage ; SmallBusiness Section7a Slot for CategoryLandingPage  ; true   ; SmallBusinessModelsTitleComponent,DefaultProductComparePageComponent,SmallBusinessCategoryViewAllModelsLink                                                     
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7a-smallbusinesscategory     ; Section7a             ;                                                                 ; Section7aContentSlot-SMCatPage           
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7a-smallbusinesscategory     ; Section7a             ;                                                                 ; Section7aContentSlot-SMCatPage           
+
+#############7-b         Small Business Category Landing page              #################
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                              ; name                                       ; &componentRef                                 ; headline ; $picture[lang=$lang]  ; content ; urlLink        
+                              ;                         ; SmallBusinessHelpMeChooseTextOnlyBannerComponent ; SmallBusiness Help Me Choose Text Only Banner ; SmallBusinessHelpMeChooseTextOnlyBannerComponent ;          ;                       ; "<h2>MAKE THE RIGHT CHOICE</h2><p><input name=""help"" type=""button"" value=""Help Me Choose"" /></p><p>Use this selector to choose the best AirScout<span style=""text-align: justify;"">&reg;</span>&nbsp;solution for your needs based on size and type of your Wi-Fi<span style=""text-align: justify;"">&reg;</span>&nbsp;installations.</p>"; "/helpmechoose"
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;   active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7bContentSlot-SMCatPage ; true   ; SmallBusinessHelpMeChooseTextOnlyBannerComponent                                                                                                             
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7bContentSlot-SMCatPage ; SmallBusiness Section7b Slot for CategoryLandingPage  ; true   ; SmallBusinessHelpMeChooseTextOnlyBannerComponent                                                                                                             
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7b-smallbusinesscategory     ; Section7b             ;                                                                 ; Section7bContentSlot-SMCatPage           
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7b-smallbusinesscategory     ; Section7b             ;                                                                 ; Section7bContentSlot-SMCatPage           
+
+

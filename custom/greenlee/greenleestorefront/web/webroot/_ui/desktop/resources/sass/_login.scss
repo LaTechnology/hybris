@@ -1,0 +1,63 @@
+.login {
+    label {
+        letter-spacing: 0.05em;
+    }
+    .checkbox-group {
+        margin-top: 8px;
+        label {
+            text-transform: none;
+            color: $base-color;
+            &:before {
+                border: 1px solid $light-grey;
+            }
+        }
+    }
+    .form-actions,
+    .form-password {
+        text-align: center;
+        @media (min-width: $screen-md-min) {
+            width: 50%;
+            display: inline-block;
+            text-align: right;
+        }
+    }
+    .form-actions {
+        @media (min-width: $screen-md-min) {
+            margin-right: -4px;
+            text-align: left;
+        }
+    }
+    .form-password {
+        padding: 20px 0;
+        a {
+            @include font-size(12px);
+            border-bottom: 2px solid $light-grey;
+            pointer-events: none;
+            letter-spacing: 0.050em;
+        }
+    }
+}
+.reset {
+    .form-actions {
+        text-align: center;
+        margin: 20px 0;
+        @media (min-width: $screen-md-min) {
+            width: 175px;
+            display: inline-block;
+            text-align: right;
+        }
+    }
+}
+.login-section {
+    .greenlee-account {
+        padding: 8px 0 10px;
+        @media (min-width: $screen-md-min) {
+            padding: 8px 0 50px;
+        }
+    }
+}
+.cot-offset-2 {
+    @media (min-width: $screen-md-min) {
+        margin-left: 13.2%;
+    }
+}

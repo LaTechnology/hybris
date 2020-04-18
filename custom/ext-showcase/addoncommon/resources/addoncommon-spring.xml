@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+           http://www.springframework.org/schema/util
+		   http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+		   
+	<!-- Enable the @AspectJ support -->
+	<aop:aspectj-autoproxy proxy-target-class="true"
+	                       expose-proxy="true"/>
+
+ 	<bean id="x" class="com.hybris.addon.common.config.X" />
+ 
+	<alias alias="mediaAbsoluteUrlResolver" name="defaultMediaAbsoluteUrlResolver" />
+	<bean id="defaultMediaAbsoluteUrlResolver" class="com.hybris.addon.common.url.impl.DefaultMediaAbsoluteUrlResolver" >
+		<property name="configurationService" ref="configurationService" />
+	</bean>		
+	
+	<!--  Add UI Experience Configuration for all Stores -->
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="selectedContentCatalogImpexMacroParametersPopulators"/>
+		<property name="add" ref="supportedUiExperienceImpexMacroParameterPopulator"/>
+	</bean>
+
+
+	<alias name="addonCommonConfigDataImportService" alias="addonConfigDataImportService" />
+	<bean id="addonCommonConfigDataImportService" parent="defaultAddonConfigDataImportService"
+		class="com.hybris.addon.common.setup.impl.AddOnCommonConfigDataImportService" />
+
+	<bean id="abstractJavaScriptMessageResourceAccessor" abstract="true" class="de.hybris.platform.addonsupport.config.bundlesources.DefaultJavaScriptMessageResourcesAccessor">
+		<property name="cacheSeconds" value="#{configurationService.configuration.getProperty('storefront.resourceBundle.cacheSeconds')}"/>
+		<property name="resourceLoader">
+			<bean class="org.springframework.core.io.FileSystemResourceLoader"/>
+		</property>
+		<property name="fallbackToSystemLocale" value="false"/>
+	</bean>
+	
+	<bean id="categoryFrontendUrlAntPathPattern" class="java.lang.String">
+		<constructor-arg><value><![CDATA[/**/c/{code}]]></value></constructor-arg>
+	</bean>
+	
+	<bean id="productFrontendUrlAntPathPattern" class="java.lang.String">
+		<constructor-arg><value><![CDATA[/**/p/{code}]]></value></constructor-arg>
+	</bean>
+	
+	<bean id="categoryFrontendUrlRegexPattern" class="java.lang.String">
+		<constructor-arg><value><![CDATA[(?<=/c/)[\.\:\,\*\(\!\'\)\/\\\$\%\+\-\_\#\’A-z0-9]{0,}[^(\?|\&|\;|$)]]]></value></constructor-arg>
+	</bean>
+	
+	<bean id="productFrontendUrlRegexPattern" class="java.lang.String">
+		<constructor-arg><value><![CDATA[(?<=/p/)[\.\:\,\*\(\!\'\)\/\\\$\%\+\-\_\#\’A-z0-9]{0,}[^(\?|\&|\;|$)]]]></value></constructor-arg>
+	</bean>
+	
+	<bean id="abstractConfigurablePopulatingConverter" class="com.hybris.addon.common.converters.impl.AbstractConfigurablePopulatingConverter" abstract="true"/>
+	<bean id="configurablePopulatorAdapter" class="com.hybris.addon.common.converters.impl.ConfigurablePopulatorAdapter" abstract="true"/>
+
+	<alias name="legacyModeSwitchableSetupImpexService" alias="setupImpexService"/>
+	<bean id="legacyModeSwitchableSetupImpexService" class="com.hybris.addon.common.setup.impl.LegacyModeSwitchableSetupImpexService" parent="defaultSetupImpexService" >
+		<property name="configurationService" ref="configurationService"/>
+	</bean>
+	
+	<alias name="legacyModeSwitchableSetupImpexAddonService" alias="setupImpexAddonService" />
+	<bean id="legacyModeSwitchableSetupImpexAddonService" class="com.hybris.addon.common.setup.impl.LegacyModeSwitchableSetupImpexAddOnService" parent="defaultSetupImpexAddonService" >
+		<property name="configurationService" ref="configurationService"/>
+ 	</bean>
+			
+	<!-- List of tag data attribute providers -->
+	<util:list id="tagDataAttributesProviders" value-type="com.hybris.addon.common.config.cms.dataattributeproviders.TagDataAttributesProvider"/>
+	
+	<alias name="addonSiteImpexMacroParametersPopulator" alias="defaultBaseSiteImpexMacroParametersPopulator" />
+	<bean id="addonSiteImpexMacroParametersPopulator" scope="tenant"
+		class="com.hybris.addon.common.setup.impl.BaseSiteImpexMacroParametersPopulator" />
+	
+	<bean id="previewDataPrepareInterceptor" class="com.hybris.addon.common.interceptors.PreviewDataPrepareInterceptor"/>
+	
+	<bean id="previewDataPrepareInterceptorMapping" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="previewDataPrepareInterceptor"/>
+		<property name="typeCode" value="PreviewData"/>
+	</bean>
+	
+	<!-- load sample data -->
+	<alias name="defaultAddOnCommonSampleDataImportService" alias="addOnCommonSampleDataImportService" />	
+	<bean id="defaultAddOnCommonSampleDataImportService" parent="addonSampleDataImportService" 
+		   class="com.hybris.addon.common.setup.impl.AddOnCommonSampleDataImportService" />
+</beans>

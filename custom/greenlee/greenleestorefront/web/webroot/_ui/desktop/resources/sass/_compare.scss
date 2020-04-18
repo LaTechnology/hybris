@@ -1,0 +1,197 @@
+.product-compare {
+    .simple-responsive-banner-component {
+        img {
+            width: 100%;
+        }
+    }
+    .product-compare-list {
+        margin-bottom: 45px;
+        .gl {
+            position: absolute;
+            top: 50%;
+            cursor: pointer;
+            &.gl-remove {
+                position: absolute;
+                margin-top: -13px;
+                font-size: 16px;
+                top: 14px;
+                right: 5px;
+                color: $gray-lighter;
+            }
+            &.gl-remove {
+                @media (min-width: $screen-md-min) {
+                    font-size: 24px;
+                    top: 25px;
+                    right: 20px;
+                }
+            }
+            &.gl-left {
+                @media (min-width: $screen-md-min) {
+                    left: -5px;
+                }
+                @media (min-width: $screen-lg-min) {
+                    left: -20px;
+                }
+            }
+            &.gl-right {
+                @media (min-width: $screen-md-min) {
+                    right: -5px;
+                }
+                @media (min-width: $screen-lg-min) {
+                    right: -20px;
+                }
+            }
+        }
+    }
+    .product {
+        .item {
+            @media (min-width: $screen-md-min) {
+                padding: 0;
+            }
+        }
+    }
+    .compare-heading {
+        position: relative;
+        h1 {
+            @include font-size(36px);
+            font-family: 'robotothin';
+            text-align: center;
+            padding: 10px 0;
+            margin: 0;
+            @media (min-width: $screen-md-min) {
+                padding: 30px 0 62px;
+            }
+        }
+        a {
+            margin: 9px 0;
+            float: right;
+            @media (min-width: $screen-md-min) {
+                position: absolute;
+                right: 0;
+                margin: 0;
+                top: 40px;
+                text-decoration: underline;
+            }
+        }
+    }
+    .prd {
+        padding: 0 5px;
+        h3 {
+            height: 53px;
+        }
+        .compare-prd {
+		height:auto !important;
+            @media (min-width: $screen-md-min) {
+                padding: 0 13.468013468013468% 35px;
+                border: 1px solid $maintain-prd;
+                border-radius: 3px;
+            }
+            &:hover {
+                .gl-remove {
+                    display: block;
+                }
+            }
+            .gl-remove {
+                @media (min-width: $screen-md-min) {
+                    display: none;
+                }
+            }
+        }
+        .js-add-to-cart {
+            width: 100%;
+        }
+    }
+    .feature-list--title {
+        padding: 25px 10px 0;
+        margin: 0;
+        font-family: 'robotomedium';
+        text-transform: capitalize;
+        font-weight: normal;
+    }
+    .feature-compare-title {
+        padding: 0 10px 25px;
+        margin: 0;
+        font-family: 'robotomedium';
+        text-transform: uppercase;
+        border-bottom: 1px solid $gray-lighter;
+    }
+    .feature-compare-list {
+        padding-bottom: 35px;
+    }
+}
+.compare-table {
+    td,
+    th {
+        width: 50%;
+        @media (min-width: $screen-md-min) {
+            width: 25%;
+        }
+        float: left;
+        text-align: center;
+    }
+    td {
+        padding: 25px 10px 0;
+    }
+    th {
+        text-align: left;
+    }
+    .inactive {
+        display: none;
+    }
+    .active {
+        display: none;
+        @media (min-width: $screen-md-min) {
+            display: block;
+        }
+    }
+    .mactive {
+        display: block;
+    }
+}
+
+@media(max-width:991px){
+
+        .owl-carousel .owl-nav.disabled {
+            display: block;
+        }
+
+        .product-compare .product-compare-list .gl {
+            top: 30%;
+        }
+        i.gl.gl-right {
+            left: 100%;
+        }
+       
+		button#pcClearBtnId {
+            padding: 5px;
+        }
+       
+        .product-compare .owl-carousel .owl-item {
+        .compare-prd {
+            height: auto !important;
+        }
+        }
+       .product-compare-list .col-md-offset-3.col-xs-offset-6 {
+         margin-left: 14%;
+        }
+       
+		.product-compare button#addToCartButton {
+		   width: 50% !important;
+        }
+		.product-compare .prd .summary {
+            height: auto;
+        }
+
+}
+
+@media(max-width:600px){
+       .product-compare-list .col-md-offset-3.col-xs-offset-6 {
+         margin-left: 9%;
+        }
+		
+		 .product-compare button#addToCartButton {
+		   width: 70% !important;
+        }
+		
+}
+

@@ -1,0 +1,353 @@
+#------------------
+# Enterprise Staged
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+
+#-----------------------------------------------------------------------------------------#
+#PageTemplate:ContentPage3Template
+#ContentSlotName:
+#ContentSlotForTemplate: 
+#-----------------------------------------------------------------------------------------#	
+
+INSERT_UPDATE PageTemplate;$contentCV[unique=true];uid[unique=true];name;frontendTemplateName;restrictedPageTypes(code);active[default=true]
+;;ContentPage5Template;Content Page 5 Template;layout/contentLayout5Page;ContentPage
+
+# Add Velocity templates that are in the CMS Cockpit. These give a better layout for editing pages
+# The FileLoaderValueTranslator loads a File into a String property. The templates could also be inserted in-line in this file.
+UPDATE PageTemplate;$contentCV[unique=true];uid[unique=true];velocityTemplate[translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+;;ContentPage5Template      ;$jarResourceCms/structure_contentPage5Template.vm
+
+# Content page 5 template
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='ContentPage5Template'];validComponentTypes(code);compTypeGroup(code)
+;SiteLogo;;;logo
+;HeaderLinks;;;headerlinks
+;SearchBox;;;searchbox
+;MiniCart;;;minicart
+;NavigationBar;;;navigation
+;BreadCrumbSlot;;;wide
+;Section1;;;wide
+;Section2;;;wide
+;Section2b;;;wide
+;Section3;;;narrow
+;Section4;;;narrow
+;Section5;;;narrow
+;Section5a;;;narrow
+;Section6;;;narrow
+;Section7a;;;narrow
+;Section7;;;narrow
+;Section7b;;;narrow
+;Footer;;;footer
+;TopHeaderSlot;;;wide
+;BottomHeaderSlot;;;wide
+;PlaceholderContentSlot;;;
+;Section8;;;wide
+;socialslot;;;wide
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='ContentPage5Template'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-enterprise;SiteLogo;;SiteLogoSlot;true
+;;HomepageLink-enterprise;HomepageNavLink;;HomepageNavLinkSlot;true
+;;MiniCart-enterprise;MiniCart;;MiniCartSlot;true
+;;NavigationBar-enterprise;NavigationBar;;NavigationBarSlot;true
+;;Footer-enterprise;Footer;;FooterSlot;true
+;;HeaderLinks-enterprise;HeaderLinks;;HeaderLinksSlot;true
+;;SearchBox-enterprise;SearchBox;;SearchBoxSlot;true
+;;TopHeaderSlot-enterprise;TopHeaderSlot;;TopHeaderSlot;true
+;;BottomHeaderSlot-enterprise;BottomHeaderSlot;;BottomHeaderSlot;true
+;;PlaceholderContentSlot-enterprise;PlaceholderContentSlot;;PlaceholderContentSlot;true
+;;BreadCrumb-enterprise;BreadCrumbSlot;;BreadCrumbCompSlot;true
+;;BottomFooter-enterprise;Section8;;BottomFooterSlot;true
+;;SocialContent-enterprise;socialslot;;SocialContentSlot;true
+
+
+#-----------------------------------------------------------------------------------------#
+#Component: enterprisebusinesscategoryBannerComponent
+#Position: Section1
+#Content Page: enterprisebusinesscategory
+#Content Slot: Section1ContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section1-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; section-1-enterprise-banner-lg-png        ; enterprise-banner-lg.png      ; $siteResource/images/theme/enterprise-banner-lg.png                 ; image/jpg                  ; Enterprise Category           ;                                     ; desktop               
+                    ;                         ; enterprise-banner-sm-png ; enterprise-banner-sm.png ; $siteResource/images/theme/enterprise-banner-sm.png               ; image/jpg                  ; Enterprise Category on Mobile ;                                     ; mobile                
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ; EnterpriseBusinessCategoryLandingBanner ; Enterprise business Category Landing Page Banner ; section-1-enterprise-banner-lg-png, enterprise-banner-sm-png 
+
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name;media(qualifier, $contentCV)   ; &componentRef                       
+                                              ;                         ; EnterpriseBusinessCategoryBannerComponent ; Enterprise business  CategoryBannerComponent;EnterpriseBusinessCategoryLandingBanner ; EnterpriseBusinessCategoryBannerComponent
+INSERT_UPDATE ContentPage ; $contentCV[unique=true] ; uid[unique=true]    ; searchable[allownull=true] ; name                      ; masterTemplate(uid,$contentCV)              ; label               ; defaultPage[default='true'] ; approvalStatus(code)[default='approved'] ; homepage[default='false']
+                          ;                         ; enterprisebusinesscategory ; 0                          ; Enterprise business  Category Landing Page ; ContentPage5Template ; /enterprisecategory
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section1ContentSlot-enterprisebusinesscategory  ; Enterprise business  Section1 Slot for CategoryLandingPage   ; true   ; EnterpriseBusinessCategoryBannerComponent                                                                                                                         
+ 
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section1-enterprisebusinesscategory      ; Section1              ;                                                                 ; Section1ContentSlot-enterprisebusinesscategory            
+
+#-----------------------------------------------------------------------------------------#
+#Component: SwitchAccountComponent
+#Position: TopHeaderSlot
+#Content Slot: TopHeaderContentSlotForPage-enterprisebusinesscategory 
+#ContentSlotForPage: TopHeaderContentSlotForPage-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE JspIncludeComponent;$contentCV[unique=true];uid[unique=true];name;page;actions(uid,$contentCV);&componentRef
+;;SwitchAccountComponent;Switch Account Component;/WEB-INF/views/desktop/pages/account/switchaccount.jsp;;SwitchAccountComponent
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]              		 ; active                                                                                                                              
+                          ;                         ; TopHeaderSlot-enterprisebusinesscategory  ; true                                                                                                                        
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;TopHeaderSlot-enterprisebusinesscategory;Enterprise Category Top Header Slot for LandingPage;true;SwitchAccountComponent
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; TopHeaderContentSlotForPage-enterprisebusinesscategory     ; TopHeaderSlot              ;                                                                 ; TopHeaderSlot-enterprisebusinesscategory           
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; TopHeaderContentSlotForPage-enterprisebusinesscategory      ; TopHeaderSlot              ;                                                                 ; TopHeaderSlot-enterprisebusinesscategory            
+
+#-----------------------------------------------------------------------------------------#
+#Component: EnterpriseBusinessCategoryOverviewLink,EnterpriseBusinessCategoryFeaturesLink
+#Position: Section2
+#Content Slot: Section2ContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section2-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+							 
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; EnterpriseBusinessCategoryOverviewLink      ; Enterprise business  CategoryOverview Link  ; "#overview"                     ; Overview                      ; EnterpriseBusinessCategoryOverviewLink      ; EnterpriseBusinessCategoryOverviewLink      ;                                    ;                                                 
+                               ;                         ; EnterpriseBusinessCategoryFeaturesLink  ; Enterprise business  CategoryFeatures Link  ; "#features"                     ; Features                      ; EnterpriseBusinessCategoryFeaturesLink  ; EnterpriseBusinessCategoryFeaturesLink  ;                                    ;                                                 
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2ContentSlot-enterprisebusinesscategory  ; Enterprise business  Section2 Slot for CategoryLandingPage   ; true   ; EnterpriseBusinessCategoryOverviewLink,EnterpriseBusinessCategoryFeaturesLink                       
+ 
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2-enterprisebusinesscategory      ; Section2              ;                                                                 ; Section2ContentSlot-enterprisebusinesscategory            
+
+#-----------------------------------------------------------------------------------------#
+#Component: enterprisebusinesscategorySelectModelsLink
+#Position: Section2b
+#Content Slot: Section2bContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section2b-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; EnterpriseBusinessCategorySelectModelsLink  ; Enterprise business  CategorySelectModels Link  ; "#models"                       ; Select a Model                ; EnterpriseBusinessCategorySelectModelsLink  ; EnterpriseBusinessCategorySelectModelsLink  ;                                    ; class="scrollTrigger btn"                       
+											  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section2bContentSlot-enterprisebusinesscategory ; Enterprise business  Section2b Slot for CategoryLandingPage  ; true   ; EnterpriseBusinessCategorySelectModelsLink                                                                                                                        
+ 
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section2b-enterprisebusinesscategory     ; Section2b             ;                                                                 ; Section2bContentSlot-enterprisebusinesscategory           
+
+#-----------------------------------------------------------------------------------------#
+#Component: enterprisebusinesscategoryOverviewTextComponent
+#Position: Section3
+#Content Slot: Section3ContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section3-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#							 
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                               ; name                                    ;content    ; &componentRef                              
+                                    ;                         ; EnterpriseBusinessCategoryOverviewTextComponent     ; Enterprise business  Category Overview Text    ; "<p style=""text-align: justify; font-weight:700;font-family: robotomedium,sans-serif;""> AirScout Enterprise stresses and analyzes Wi-Fi&reg; environments enabling technicians to install and troubleshoot accurately the first time, eliminating repeat visits.</p><p style=""text-align: justify;"">The AirScout Enterprise WLAN test system is the most accurate tool used to design, verify and troubleshoot enterprise-grade wireless networks. It is the first system to utilize distributed clients to collect real-time data for real-time results.</p>"  ; EnterpriseBusinessCategoryOverviewTextComponent    
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                           ;                         ; Section3ContentSlot-enterprisebusinesscategory  ; Enterprise business  Section3 Slot for CategoryLandingPage   ; true   ; EnterpriseBusinessCategoryOverviewTextComponent                                                                                                                   
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section3-enterprisebusinesscategory      ; Section3              ;                                                                 ; Section3ContentSlot-enterprisebusinesscategory            
+
+#-----------------------------------------------------------------------------------------#
+#Media: enterprise-category-banner-section4a
+#MediaContainer: enterprise-category-banner-section4-container
+#Component: EnterpriseBusinessCategoryApplicationPointsBannerComponent
+#Position: Section4
+#Content Slot: Section4ContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section4-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+ 							 
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; section-4-enterprise-png        ;airscout-product-enterprise.png       ; $siteResource/images/theme/airscout-product-enterprise.png                 ; image/jpg                  ; Enterprise Category           ;                                     ; desktop               
+                    ;                         ; section-4r-enterprise-velocity-bar        ; enterprise-velocity-bar.png        ; $siteResource/images/theme/enterprise-velocity-bar.png                 ; image/jpg                  ; Enterprise Category           ;                                     ; desktop               
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ; section4-enterprise-category-container; Category-Enterprise-Container ; section-4-enterprise-png
+                             ;                         ; section4-enterprise-category-container-vbar; Category-Enterprise-Container ;section-4r-enterprise-velocity-bar
+							 
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     ; name								;media(qualifier, $contentCV)   ; &componentRef                       
+                                              ;                         ; EnterpriseBusinessCategoryAirscoutProductComponent ; Enterprise business Airscout Product Image Component;section4-enterprise-category-container; EnterpriseBusinessCategoryAirscoutProductComponent
+                                              ;                         ; EnterpriseBusinessCategoryVelocityBarComponent ; Enterprise business Airscout Product Image Component;section4-enterprise-category-container-vbar; EnterpriseBusinessCategoryVelocityBarComponent
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                            ; name                                  ;content; &componentRef                              
+								    ; 						  ; EnterpriseBusinessApplicationMessageComponent ; Enterprise Business Application Message Component ; "<p style=""text-align: justify; font-weight:700;font-family: robotomedium,sans-serif;font-size:1.2rem""> Stop Drawing Walls & Windows</p><p style=""text-align: justify;"">Don't spend hours defining every portion of your building. Just import floor plans, place the clients, and go.</p><hr> <p style=""text-align: justify; font-weight:700;font-family: robotomedium,sans-serif;font-size:1.2rem"">New & Existing Networks </p><p style=""text-align: justify;"">Plan, test and troubleshoot new or existing Wi-Fi networks.</p> <hr> <p style=""text-align: justify; font-weight:700;font-family: robotomedium,sans-serif;font-size:1.2rem"">Meet Expectations, the First Time</p><p style=""text-align: justify;"">Define APs, optimal placement and corresponding channel plans for the best customer experience.</p><hr>  <p style=""text-align: justify; font-weight:700;font-family: robotomedium,sans-serif;font-size:1.2rem""> Ease of Use </p><p style=""text-align: justify;"">Technicians of all experience levels can operate the system effectively without expensive training or time out of the field.</p>"  ;EnterpriseBusinessApplicationMessageComponent
+        
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section4ContentSlot-enterprisebusinesscategory  ; Enterprise Section4 Slot for CategoryLandingPage   ; true   ; EnterpriseBusinessCategoryAirscoutProductComponent,EnterpriseBusinessCategoryVelocityBarComponent, EnterpriseBusinessApplicationMessageComponent                                                                       
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section4-enterprisebusinesscategory      ; Section4              ;                                                                 ; Section4ContentSlot-enterprisebusinesscategory            
+ 
+#-----------------------------------------------------------------------------------------#
+#Component: LiveBusinessInstantActivationComponent,LiveBusinessSmartSetUpBannerComponent,LiveBusinessEasytoUseBannerComponent,LiveBusinessMultipleViewOptionsBannerComponent,LiveBusinessOptimizationBannerComponent,LiveBusinessDesigned4YouBannerComponent       
+#Position: Section5
+#Content Slot: Section5ContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section5-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                            ; name                                  ;content; &componentRef                              
+                                    ;                         ; EnterpriseBusinessCategoryAirScoutFeaturesTextComponent ; AirScout Features for Business & Enterprises ;"<h2 style=""color:#000000;"">AirScout Features for Business & Enterprises</h2>"  ;EnterpriseBusinessCategoryAirScoutFeaturesTextComponent
+	
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section5ContentSlot-enterprisebusinesscategory  ; Enterprise Section5 Slot for CategoryLandingPage   ; true   ;EnterpriseBusinessCategoryAirScoutFeaturesTextComponent
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section5-enterprisebusinesscategory      ; Section5              ;                                                                 ; Section5ContentSlot-enterprisebusinesscategory            
+
+#-----------------------------------------------------------------------------------------#
+#Component: LiveBusinessInstantActivationComponent,LiveBusinessSmartSetUpBannerComponent,LiveBusinessEasytoUseBannerComponent,LiveBusinessMultipleViewOptionsBannerComponent,LiveBusinessOptimizationBannerComponent,LiveBusinessDesigned4YouBannerComponent       
+#Position: Section5a
+#Content Slot: Section5ContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section5a-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]               ; realfilename       ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; icon-optimizations.png        		; icon-optimizations.png       ; $siteResource/images/theme/icon-optimizations.png                 					 ; image/jpg                  ; icon-optimization             ;                                     ; desktop               
+                    ;                         ; icon-floor-plan.png					; icon-floor-plan.png  		 ; $siteResource/images/theme/icon-floor-plan.png               			 			 ; image/jpg                  ; icon-floor-plan ;                                     ; desktop                
+                    ;                         ; icon-scalable.png        		; icon-scalable.png     ; $siteResource/images/theme/icon-scalable.png                 				 ; image/jpg                  ; icon-scalable         ;                                     ; desktop               
+                    ;                         ; icon-reporting.png 				; icon-reporting.png		 ; $siteResource/images/theme/icon-reporting.png               				 	 ; image/jpg                  ; icon-reporting ;                                     ; desktop  								 
+                    ;                         ; icon-heat-map.png 			; icon-heat-map.png	 ; $siteResource/images/theme/icon-heat-map.png               				 ; image/jpg                  ; icon-heat-map ;                                     ; desktop  								 
+                    ;                         ; icon-cloud-enterprise.png 				; icon-cloud-enterprise.png		 ; $siteResource/images/theme/icon-cloud-enterprise.png               				 	 ; image/jpg                  ; icon-cloud-enterprise	;                                     ; desktop  								 
+
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                                 ; name                                   ; &componentRef                                 	; headline ; $picture[lang=$lang]  ; urlLink   ;content[lang=$lang]
+                              ;                         ; EnterpriseBusinessCategoryNetworkOptimizationComponent           ; Enterprise business  Network Optimization Banner ; EnterpriseBusinessCategoryNetworkOptimizationComponent            ;          ; icon-optimizations.png     	   ; "/"       ;"<h6>Network Optimization</h6> <p class=""MsoNormal"">Design a wireless network based on your coverage and capacity requirements. Automated AP placement & channel plans.</p>"
+                              ;                         ; EnterpriseBusinessCategoryFloorPlanImportBannerComponent 		   ; Enterprise business  Floor Plan Import Banner 		; EnterpriseBusinessCategoryFloorPlanImportBannerComponent 			;          ; icon-floor-plan.png              ; "/"   	   ;"<h6>Floor Plan Import</h6> <p class=""MsoNormal"">Import a floor plan or use a Greenlee template. Simply define the boundaries, set the scale, and test!</p>"
+                              ;                         ; EnterpriseBusinessCategoryScalableCompatibleBannerComponent             ; Enterprise business  Scalable and Compatible Banner          ; EnterpriseBusinessCategoryScalableCompatibleBannerComponent              ;          ; icon-scalable.png              ; "/"       ;"<h6>Scalable and Compatible</h6> <p class=""MsoNormal"">Survey small, medium, or large areas with ease. Compatible with any other AirScout variation, on multiple platforms ranging from Android phones, to iOS, to Windows.</p>"
+                              ;                         ; EnterpriseBusinessCategoryReportingBannerComponent   ; Enterprise business  Reporting Banner       ; EnterpriseBusinessCategoryReportingBannerComponent    ;          ; icon-reporting.png            ; "/"       ;"<h6>Reporting</h6> <p class=""MsoNormal"">Create project reports and customize them to your needs.</p>"
+                              ;                         ; EnterpriseBusinessCategoryHeatMapsBannerComponent          ; Enterprise business  Heat Maps Banner       ; EnterpriseBusinessCategoryHeatMapsBannerComponent           ;          ; icon-heat-map.png              ; "/"       ;"<h6>Heat Maps</h6> <p class=""MsoNormal"">Easy to read heat maps allow for trouble-free planning and troubleshooting.</p>"
+                              ;                         ; EnterpriseBusinessCategoryCloudAccessBannerComponent          ; Enterprise business  Cloud Access Banner       ; EnterpriseBusinessCategoryCloudAccessBannerComponent           ;          ; icon-cloud-enterprise.png             ; "/"       ;"<h6>Cloud Access</h6> <p class=""MsoNormal"">Results are automatically uploaded to the cloud for a seamless transition.</p>"
+   
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section5aContentSlot-enterprisebusinesscategory  ; Enterprise business  Section5 Slot for CategoryLandingPage   ; true   ;EnterpriseBusinessCategoryNetworkOptimizationComponent,EnterpriseBusinessCategoryFloorPlanImportBannerComponent,EnterpriseBusinessCategoryScalableCompatibleBannerComponent ,EnterpriseBusinessCategoryReportingBannerComponent,EnterpriseBusinessCategoryHeatMapsBannerComponent,EnterpriseBusinessCategoryCloudAccessBannerComponent
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section5a-enterprisebusinesscategory      ; Section5a              ;                                                                 ; Section5aContentSlot-enterprisebusinesscategory            
+
+#-----------------------------------------------------------------------------------------#
+#Media: live-category-banner-section6-1,live-category-banner-section6-2
+#MediaContainer: live-category-banner-section6-container
+#Component: LiveCategoryAirscoutCommunicationGraphBannerComponent,enterprisebusinesscategoryTheBigPictureTextComponent
+#Position: Section6
+#Content Slot: Section6ContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section6-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+#INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+#                    ;                         ; section-6-enterprise-jpg        ; section-6-enterprise.png        ; $siteResource/images/theme/section-6-enterprise.png                 ; image/jpg                  ; Enterprise Category           ;                                     ; desktop               
+#                    ;                         ; m-section-6-enterprise-jpg        ; m-section-6-enterprise.png        ; $siteResource/images/theme/m-section-6-enterprise.png                 ; image/jpg                  ; Enterprise Category Mobile          ;                                     ; mobile               
+#INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+#                             ;                         ;section6-enterprise-category-container; Category-enterprise-Container ; section-6-enterprise-jpg,m-section-6-enterprise-jpg
+INSERT_UPDATE Media ; $contentCV[unique=true] ; code[unique=true]                ; realfilename                     ; @media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator] ; mime[default='image/jpeg'] ; altText                       ; folder(qualifier)[default='images'] ; mediaFormat(qualifier)
+                    ;                         ; section-6-enterprise-png        ;section-6-enterprise.png       ; $siteResource/images/theme/section-6-enterprise.png                 ; image/jpg                  ; Enterprise Category           ;                                     ; desktop               
+                    ;                         ; m-section-6-enterprise-png        ;  m-section-6-enterprise.png        ; $siteResource/images/theme/m-section-6-enterprise.png                 ; image/jpg                  ; Enterprise Category  Mobile         ;                                     ; mobile               
+INSERT_UPDATE MediaContainer ; $contentCV[unique=true] ; qualifier[unique=true]        ; name                          ; medias(code, $contentCV)                                  
+                             ;                         ;section6-enterprise-category-container; Category-enterprise-Container ; section-6-enterprise-png,m-section-6-enterprise-png
+
+INSERT_UPDATE SimpleResponsiveBannerComponent ; $contentCV[unique=true] ; uid[unique=true]                     				; name									;media(qualifier, $contentCV)   		; &componentRef                       
+                                              ;                         ; EnterpriseCategoryAirscoutCloudReportingComponent ; Enterprise CategoryBanner Component	;section6-enterprise-category-container	; EnterpriseCategoryAirscoutCloudReportingComponent
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section6ContentSlot-enterprisebusinesscategory  ; Enterprise Section 6 Slot for CategoryLandingpage  ; true   ; EnterpriseCategoryAirscoutCloudReportingComponent                                                                            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section6-enterprisebusinesscategory      ; Section6              ;                                                                 ; Section6ContentSlot-enterprisebusinesscategory           
+
+
+#-----------------------------------------------------------------------------------------#
+#Component: CategoryLandingProductListComponent
+#Position: Section7
+#Content Slot: Section7ContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section7-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE CMSLinkComponent        ; $contentCV[unique=true]        ; uid[unique=true]                           ; url                                                                    ;  &linkRef                            ; &componentRef                       
+                               ;                                ; CategoryViewAllModelsLink                  ; "/en/USD/search?q=%3Arelevance&text=#"  ; CategoryViewAllModelsLink            ; CategoryViewAllModelsLink                                    
+
+INSERT_UPDATE ProductListComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                ; productsFromContext[default=false] ; pagination[default=false] ; layout(code)[default='thumbViewLayout'] ; categoryCode ; &componentRef                      
+                                   ;                         ; EnterpriseCategoryLandingProductListComponent ; Enterprise Category Landing ProductList Component ;                                    ;                           ;                                         ;     ; EnterpriseCategoryLandingProductListComponent
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7ContentSlot-enterprisebusinesscategory  ; Enterprise business  Section7 Slot for CategoryLandingPage   ; true   ; EnterpriseCategoryLandingProductListComponent                                                                                                             
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7-enterprisebusinesscategory      ; Section7              ;                                                                 ; Section7ContentSlot-enterprisebusinesscategory            
+		 
+#-----------------------------------------------------------------------------------------#
+#Component: SmallBusinessModelsTitleComponent
+#Position: Section7a
+#Content Slot: Section7aContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section7a-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+
+INSERT_UPDATE CMSLinkComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                  ; url                             ; linkName                      ; &linkRef                            ; &componentRef                       ; target(code)[default='sameWindow'] ; styleAttributes[default='class="scrollTrigger"']
+                               ;                         ; SmallBusinessCategoryViewAllModelsLink ; Enterprise CategoryViewAllModels Link ; "/search?q=%3Arelevance&text=#" ; View all models & accessories ; SmallBusinessCategoryViewAllModelsLink ; SmallBusinessCategoryViewAllModelsLink ;                                    ; class=""                                        
+
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]                               ; content		 ; name                                  ; &componentRef                              
+                                    ;                         ; SmallBusinessModelsTitleComponent              ; <h2>Models</h2> ; SmallBusiness Models Title               ; SmallBusinessModelsTitleComponent             
+
+INSERT_UPDATE ProductComparisonComponent ; &componentRef                       ; $contentCV[unique=true] ; uid[unique=true]                    ; name                         				; openPopup ;  visible[default=true]  ;showCheckbox[default=false] 				 ; showCompareButton[default=true] ; closePopupAfterAddToCart[default=true]
+                                         ; EnterpriseProductComparePageComponent  ;                         ; EnterpriseProductComparePageComponent  ; SmallBusiness Product Compare Page Button  ; false     ; true					  ;false                      				 ;                                 ;                                       
+								  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7aContentSlot-enterprisebusinesscategory ; Enterprise Section7a Slot for CategoryLandingPage  ; true   ; SmallBusinessModelsTitleComponent,EnterpriseProductComparePageComponent,SmallBusinessCategoryViewAllModelsLink                                                     
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7a-enterprisebusinesscategory     ; Section7a             ;                                                                 ; Section7aContentSlot-enterprisebusinesscategory           
+
+		 
+#-----------------------------------------------------------------------------------------#
+#Component: SmallBusinessModelsTitleComponent
+#Position: Section7b
+#Content Slot: Section7bContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section7b-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                              ; name                                       ; &componentRef                                 ; headline ; $picture[lang=$lang]  ; content ; urlLink        
+                              ;                         ; SmallBusinessHelpMeChooseTextOnlyBannerComponent ; Enterprise Help Me Choose Text Only Banner ; SmallBusinessHelpMeChooseTextOnlyBannerComponent ;          ;                       ; "<h2>MAKE THE RIGHT CHOICE</h2><p><input name=""help"" type=""button"" value=""Help Me Choose"" /></p><p>Use this selector to choose the best AirScout<span style=""text-align: justify;"">&reg;</span>&nbsp;solution for your needs based on size and type of your Wi-Fi<span style=""text-align: justify;"">&reg;</span>&nbsp;installations.</p>"; "/helpmechoose"
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7bContentSlot-enterprisebusinesscategory ; Enterprise Section7b Slot for CategoryLandingPage  ; true   ; SmallBusinessHelpMeChooseTextOnlyBannerComponent                                                                                                             
+
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7b-enterprisebusinesscategory     ; Section7b             ;                                                                 ; Section7bContentSlot-enterprisebusinesscategory           
+
+#-----------------------------------------------------------------------------------------#
+#Component:PoliciesAndTermsLink, Footertextcomponent2
+#Position: Section8
+#Content Slot: Section8ContentSlot-enterprisebusinesscategory 
+#ContentSlotForPage: Section8-enterprisebusinesscategory
+#-----------------------------------------------------------------------------------------#	
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;linkName;&linkRef;&componentRef;target(code)[default='sameWindow'];styleAttributes
+;;PoliciesAndTermsLink;Policies and Terms Link;"/policies-and-terms";Privacy Policy| Terms of Use;PoliciesAndTermsLink;PoliciesAndTermsLink;newWindow;
+
+INSERT_UPDATE CMSParagraphComponent ; $contentCV[unique=true] ; uid[unique=true]         ;  visible   ;name                           ;content    ;  &componentRef                              
+                                    ;                         ; Footertextcomponent2     ;  true      ;Footer Text Component 2        ; "<p>&nbsp;Copyright &copy; 2016 Greenlee Textron Inc., a subsidiary of Textron Inc.&nbsp;</p>" ;Footertextcomponent2    
+
+INSERT_UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;$picture[lang=$lang];urlLink
+;;FooterLogoBanner;Footer Logo Component;FooterLogoBanner;footerlogo-image;"http://www.greenleecommunications.com"
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;Section8ContentSlot-enterprisebusinesscategory; SmallBusiness Category Section8 Slot for CategoryLandingPage;true;Footertextcomponent2,PoliciesAndTermsLink,FooterLogoBanner
+
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisebusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section8-enterprisebusinesscategory      ; Section8              ;                                                                 ; Section8ContentSlot-enterprisebusinesscategory           

@@ -1,0 +1,162 @@
+.helpme-popup {
+	padding: 13px 0;
+	text-align: left;
+	@media (min-width: $screen-sm-min) {
+		text-align: center;
+	}
+	@media (min-width: $screen-md-min) {
+		padding: 50px 0;
+		text-align: center;
+	}
+	h2 {
+		color: $banner-heading;
+		@include font-size(18px);
+		@media (min-width: $screen-md-min) {
+			 @include font-size(30px);
+		}
+		text-transform: uppercase;
+		font-family: 'robotolight';
+		text-align: center;
+		margin: 0;
+	}
+	#helpmechooseform {
+		padding: 0 15px;
+		@media (min-width: $screen-md-min) {
+			padding: 0;
+		}
+	}
+	p {
+		@include font-size(16px);
+		text-align: center;
+	}
+	.help-btn-group.other {
+		margin: 0 auto;
+		@media (min-width: $screen-sm-min) {
+			width: 321px;
+		}
+	}
+	.form-group {
+		margin: 10px auto 40px;
+		padding: 0 30px;
+		width: 100%;
+		@media (min-width: $screen-sm-min) {
+			display: inline-block;
+			width: auto;
+		}
+		@media (min-width: $screen-md-min) {
+			width: 100%;
+			margin: 10px auto 40px;
+			overflow: hidden;
+			padding: 0 30px;
+		}
+		.radio-group {
+			text-align: left;
+			margin-bottom: 10px;
+			@media (min-width: $screen-md-min) {
+				display: inline-block;
+				padding-right: 30px;
+				vertical-align: top;
+			}
+			.radio {
+				label {
+					font-family: 'robotomedium';
+					text-transform: capitalize;
+					@include font-size(16px);
+					&.last,
+					span {
+						display: block;
+						@include font-size(16px);
+						font-family: 'robotolight';
+					}
+					&::before {
+						top: 3px;
+					}
+					&::after {
+						top: 6px;
+						background-color: $horgange;
+					}
+				}
+			}
+		}
+	}
+	.other {
+		.btn {
+			float: right;
+			padding: 14px 20px;
+			@media (min-width: $screen-md-min) {
+				padding: 14px 30px;
+			}
+			&.btn-popup {
+				margin-right: 15px;
+				@media (min-width: $screen-md-min) {
+					margin-right: 17px;
+				}
+				width: 115px;
+				float: left;
+			}
+		}
+	}
+	.first {
+		&.help-btn-group {
+			text-align: center;
+		}
+	}
+}
+#progressbar {
+	overflow: hidden;
+	width: 130px;
+	margin: 25px auto;
+	@media (min-width: $screen-md-min) {
+		margin: 30px auto 55px;
+	}
+	li {
+		list-style-type: none;
+		color: white;
+		text-transform: uppercase;
+		font-size: 9px;
+		width: 33.33%;
+		float: left;
+		position: relative;
+		.before {
+			width: 11px;
+			height: 11px;
+			background: $gray-lighter;
+			border-radius: 50%;
+			display: block;
+			margin: 0 auto;
+		}
+		&.active .before {
+			background: $horgange;
+		}
+		.after {
+			width: 100%;
+			height: 1px;
+			background: $gray-lighter;
+			position: absolute;
+			left: -38%;
+			top: 5px;
+		}
+		&.active .after {
+			background: $horgange;
+		}
+	}
+}
+.helpremove {
+	&#cboxClose {
+		@media (max-width: $screen-sm-min) {
+			left: 19px;
+			width: auto;
+			height: auto;
+			right: auto;
+			padding: 0;
+			bottom: auto;
+			line-height: 18px;
+			.gl-remove {
+				font: normal normal normal 18px/1 FontAwesome;
+				&:before {
+					content: "\f104";
+				}
+			}
+		}
+	}
+}

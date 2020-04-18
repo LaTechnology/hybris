@@ -1,0 +1,91 @@
+#------------------------------------------------------------------------------------------------------------------------------------------------
+# Residential
+# version ='Staged'
+#------------------------------------------------------------------------------------------------------------------------------------------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Residential Category Landing page              #################
+UPDATE CMSLinkComponent        ; $contentCV[unique=true]        ; uid[unique=true]                           ; url                                                                    ;  &linkRef                            ; &componentRef                       
+                               ;                                ; CategoryViewAllModelsLink                  ; "/en/USD/search?q=%3Arelevance&text=#"  ; CategoryViewAllModelsLink            ; CategoryViewAllModelsLink                                    
+
+
+INSERT_UPDATE ProductListComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                ; productsFromContext[default=false] ; pagination[default=false] ; layout(code)[default='thumbViewLayout'] ; categoryCode ; &componentRef                      
+                                   ;                         ; CategoryLandingProductListComponent ; Category Landing ProductList Component ;                                    ;                           ;                                         ;      ; CategoryLandingProductListComponent
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;  active                                                                                                                    
+                          ;                         ; Section7ContentSlot-CatPage ;true                                                                                                           
+												  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7ContentSlot-CatPage ; Residential Section7 Slot for CategoryLandingPage   ; true   ; CategoryLandingProductListComponent                                                                                                             
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7-category      ; Section7              ;                                                                 ; Section7ContentSlot-CatPage          
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7-category      ; Section7              ;                                                                 ; Section7ContentSlot-CatPage           
+#------------------------------------------------------------------------------------------------------------------------------------------------
+# Residential
+# version ='Online'
+#------------------------------------------------------------------------------------------------------------------------------------------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Online'])[default=$contentCatalog:Online]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Residential Category Landing page              #################
+UPDATE CMSLinkComponent        ; $contentCV[unique=true]        ; uid[unique=true]                           ; url                                                                    ;  &linkRef                            ; &componentRef                       
+                               ;                                ; CategoryViewAllModelsLink                  ; "/en/USD/search?q=%3Arelevance&text=#"  ; CategoryViewAllModelsLink            ; CategoryViewAllModelsLink                                    
+
+
+INSERT_UPDATE ProductListComponent ; $contentCV[unique=true] ; uid[unique=true]                    ; name                                ; productsFromContext[default=false] ; pagination[default=false] ; layout(code)[default='thumbViewLayout'] ; categoryCode ; &componentRef                      
+                                   ;                         ; ResidentialCategoryLandingProductListComponent ; ResidentialCategory LandingProduct ListComponent ;                                    ;                           ;                                         ; Residential     ; ResidentialCategoryLandingProductListComponent
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;  active                                                                                                                    
+                          ;                         ; Section7ContentSlot-CatPage ;true                                                                                                           
+												  
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7ContentSlot-CatPage ; Residential Section7 Slot for CategoryLandingPage   ; true   ; ResidentialCategoryLandingProductListComponent                                                                                                             
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7-category      ; Section7              ;                                                                 ; Section7ContentSlot-CatPage          
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7-category      ; Section7              ;                                                                 ; Section7ContentSlot-CatPage           
+  

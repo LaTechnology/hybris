@@ -1,0 +1,50 @@
+# ImpEx for Importing greenlee Store Prices
+#% impex.setLocale( Locale.GERMAN ); 
+
+$productCatalog=greenleeProductCatalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default='$productCatalog:Staged']
+$prices=Europe1prices[translator=de.hybris.platform.europe1.jalo.impex.Europe1PricesTranslator]
+$taxGroup=Europe1PriceFactory_PTG(code)[default=us-sales-tax-full]
+
+# Set product approval status to Approved only for those products that have prices.
+$approved=approvalstatus(code)[default='approved']
+
+INSERT_UPDATE GreenleeProduct;code[unique=true];$prices;$approved;$catalogVersion;$taxGroup
+;637227;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;693923;1 pieces = 23 USD N,1 pieces = 29 CAD N
+;1101690;1 pieces = 29 USD N,1 pieces = 36 CAD N
+;1101695;1 pieces = 45 USD N,1 pieces = 57 CAD N
+;1128762;1 pieces = 63 USD N,1 pieces = 79 CAD N
+;20001;1 pieces = 50 USD N,1 pieces = 63 CAD N
+
+
+###########sample data#########################
+
+INSERT_UPDATE GreenleeProduct;code[unique=true];$prices;$approved;$catalogVersion;$taxGroup
+;000000000001111;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001113;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001112;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001114;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001115;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001116;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001117;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001118;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001119;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001120;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001121;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001122;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001123;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001124;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001125;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001126;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001127;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001128;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001129;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001130;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001131;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001132;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001133;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001134;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001135;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001136;1 pieces = 18 USD N,1 pieces = 23 CAD N
+;000000000001137;1 pieces = 18 USD N,1 pieces = 23 CAD N

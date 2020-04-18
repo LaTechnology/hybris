@@ -1,0 +1,105 @@
+#------------------
+# Business Category Staged
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Small Business Category Landing page              #################
+							 
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                                 ; name                                          ; &componentRef                                    ; headline ; $picture[lang=$lang]  ; urlLink        
+                              ;                         ; SmallBusinessCloudTestingComponent               ; SmallBusiness Cloud Testing Banner            ; SmallBusinessCloudTestingComponent               ;          ; cloud-testing.png     ; "/"            
+                              ;                         ; SmallBusinessHelpMeChooseTextOnlyBannerComponent ; SmallBusiness Help Me Choose Text Only Banner ; SmallBusinessHelpMeChooseTextOnlyBannerComponent ;          ;                       ; "/helpmechoose"
+                              ;                         ; SmallBusinessWifiBannerComponent                 ; SmallBusiness Wifi Banner                     ; SmallBusinessWifiBannerComponent                 ;          ; wifi.png              ; "/"            
+                              ;                         ; SmallBusinessUnlockBannerComponent               ; SmallBusiness Unlock Banner                   ; SmallBusinessUnlockBannerComponent               ;          ; unlock.png            ; "/"            
+                              ;                         ; SmallBusinessTickBannerComponent                 ; SmallBusiness Tick Banner                     ; SmallBusinessTickBannerComponent                 ;          ; tick.png              ; "/"            
+                              ;                         ; SmallBusinessCloudBannerComponent                ; SmallBusiness Cloud Banner                    ; SmallBusinessCloudBannerComponent                ;          ; cloud.png             ; "/"            
+                              ;                         ; SmallBusinessApplicationsComponent               ; SmallBusiness Applications Banner             ; SmallBusinessApplicationsComponent               ;          ; application-video.jpg ; "/"            
+
+UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                                 ;content[lang=$lang]
+                              ;                         ; SmallBusinessCloudTestingComponent               ;"<h2>AIRSCOUT CLOUD</h2> <p class=""MsoNormal"">The AirScout&reg; &trade; Enterprise WLAN Test System works with Greenlee&rsquo;s Cloud Services, providing an automated, secure environment that links all of your AirScout&reg; test results together and centralizes captured data for easy access anywhere. AirScout&reg; results are automatically sent to Greenlee&rsquo;s Cloud Service or a coordinated independent cloud service when a Wi-Fi&reg; &nbsp;or cellular connection from the device to the Internet is available. You can obtain updates, store results, and retrieve information from the cloud using any device, at any time.<o:p></o:p></p>"
+                              ;                         ; SmallBusinessWifiBannerComponent                 ;"<p style=""text-align: left;"">No Wi-Fi&reg; Experience. No Problem. The AirScout&reg; Enterprise Wi-Fi&reg; Test System delivers in-depth testing combined with an easy-to-use interface. No expensive training classes or time out of the field required.</p>"
+                              ;                         ; SmallBusinessUnlockBannerComponent               ;"<p style=""text-align: left;"">Stop Drawing Walls and Guessing Building Materials. Real distributed clients eliminate the need to spend tedious hours manually drawing in the walls, windows, and doors on a floor map. Simultaneous multi-point testing and the removal of the floor plan drawing phase accelerate the time to test.</p>"
+                              ;                         ; SmallBusinessTickBannerComponent                 ;"<p style=""text-align: left;"">Get the job done right, the first time. Real measurements mean real results. Stop spending more time troubleshooting Wi-Fi&reg; just to have to go back at a later time. Installs, validation, and troubleshooting should be done right the first time.</p>"
+                              ;                         ; SmallBusinessCloudBannerComponent                ;"<p style=""text-align: left;"">Customized reporting. Customize and export full reports, conveniently accessible from Greenlee&rsquo;s Cloud Services anywhere, at any time.&nbsp;</p><p style=""text-align: left;"">Accelerated time to results. - Simultaneous multi-point testing and the removal of the floor plan drawing phase accelerate the time to test.</p>"
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;       active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section5ContentSlot-SMCatPage  ;   true   ; SmallBusinessWifiBannerComponent,SmallBusinessUnlockBannerComponent,SmallBusinessCloudBannerComponent,SmallBusinessTickBannerComponent,SmallBusinessCloudTestingComponent
+   
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section5ContentSlot-SMCatPage  ; SmallBusiness Section5 Slot for CategoryLandingPage   ; true   ; SmallBusinessWifiBannerComponent,SmallBusinessUnlockBannerComponent,SmallBusinessCloudBannerComponent,SmallBusinessTickBannerComponent,SmallBusinessCloudTestingComponent
+
+REMOVE ContentSlotForPage 		 ; $contentCV[unique=true] ; uid[unique=true]                    ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section5-smallbusinesscategory      ; Section5              ;                                                                    ; Section5ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section5-smallbusinesscategory      ; Section5              ;                                                                 ; Section5ContentSlot-SMCatPage            
+
+#------------------
+# Business Category Online
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Online'])[default=$contentCatalog:Online]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Small Business Category Landing page              #################
+							 
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                                 ; name                                          ; &componentRef                                    ; headline ; $picture[lang=$lang]  ; urlLink        
+                              ;                         ; SmallBusinessCloudTestingComponent               ; SmallBusiness Cloud Testing Banner            ; SmallBusinessCloudTestingComponent               ;          ; cloud-testing.png     ; "/"            
+                              ;                         ; SmallBusinessHelpMeChooseTextOnlyBannerComponent ; SmallBusiness Help Me Choose Text Only Banner ; SmallBusinessHelpMeChooseTextOnlyBannerComponent ;          ;                       ; "/helpmechoose"
+                              ;                         ; SmallBusinessWifiBannerComponent                 ; SmallBusiness Wifi Banner                     ; SmallBusinessWifiBannerComponent                 ;          ; wifi.png              ; "/"            
+                              ;                         ; SmallBusinessUnlockBannerComponent               ; SmallBusiness Unlock Banner                   ; SmallBusinessUnlockBannerComponent               ;          ; unlock.png            ; "/"            
+                              ;                         ; SmallBusinessTickBannerComponent                 ; SmallBusiness Tick Banner                     ; SmallBusinessTickBannerComponent                 ;          ; tick.png              ; "/"            
+                              ;                         ; SmallBusinessCloudBannerComponent                ; SmallBusiness Cloud Banner                    ; SmallBusinessCloudBannerComponent                ;          ; cloud.png             ; "/"            
+                              ;                         ; SmallBusinessApplicationsComponent               ; SmallBusiness Applications Banner             ; SmallBusinessApplicationsComponent               ;          ; application-video.jpg ; "/"            
+
+UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                                 ;content[lang=$lang]
+                              ;                         ; SmallBusinessCloudTestingComponent               ;"<h2>AIRSCOUT CLOUD</h2> <p class=""MsoNormal"">The AirScout&reg; &trade; Enterprise WLAN Test System works with Greenlee&rsquo;s Cloud Services, providing an automated, secure environment that links all of your AirScout&reg; test results together and centralizes captured data for easy access anywhere. AirScout&reg; results are automatically sent to Greenlee&rsquo;s Cloud Service or a coordinated independent cloud service when a Wi-Fi&reg; &nbsp;or cellular connection from the device to the Internet is available. You can obtain updates, store results, and retrieve information from the cloud using any device, at any time.<o:p></o:p></p>"
+                              ;                         ; SmallBusinessWifiBannerComponent                 ;"<p style=""text-align: left;"">No Wi-Fi&reg; Experience. No Problem. The AirScout&reg; Enterprise Wi-Fi&reg; Test System delivers in-depth testing combined with an easy-to-use interface. No expensive training classes or time out of the field required.</p>"
+                              ;                         ; SmallBusinessUnlockBannerComponent               ;"<p style=""text-align: left;"">Stop Drawing Walls and Guessing Building Materials. Real distributed clients eliminate the need to spend tedious hours manually drawing in the walls, windows, and doors on a floor map. Simultaneous multi-point testing and the removal of the floor plan drawing phase accelerate the time to test.</p>"
+                              ;                         ; SmallBusinessTickBannerComponent                 ;"<p style=""text-align: left;"">Get the job done right, the first time. Real measurements mean real results. Stop spending more time troubleshooting Wi-Fi&reg; just to have to go back at a later time. Installs, validation, and troubleshooting should be done right the first time.</p>"
+                              ;                         ; SmallBusinessCloudBannerComponent                ;"<p style=""text-align: left;"">Customized reporting. Customize and export full reports, conveniently accessible from Greenlee&rsquo;s Cloud Services anywhere, at any time.&nbsp;</p><p style=""text-align: left;"">Accelerated time to results. - Simultaneous multi-point testing and the removal of the floor plan drawing phase accelerate the time to test.</p>"
+   
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section5ContentSlot-SMCatPage  ; SmallBusiness Section5 Slot for CategoryLandingPage   ; true   ; SmallBusinessWifiBannerComponent,SmallBusinessUnlockBannerComponent,SmallBusinessCloudBannerComponent,SmallBusinessTickBannerComponent,SmallBusinessCloudTestingComponent
+
+REMOVE ContentSlotForPage 		 ; $contentCV[unique=true] ; uid[unique=true]                    ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section5-smallbusinesscategory      ; Section5              ;                                                                    ; Section5ContentSlot-SMCatPage            
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='smallbusinesscategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section5-smallbusinesscategory      ; Section5              ;                                                                 ; Section5ContentSlot-SMCatPage            

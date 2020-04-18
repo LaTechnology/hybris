@@ -1,0 +1,130 @@
+.greenlee-account {
+    padding: 8px 0 50px;
+    .headline {
+        font: 18px/24px 'robotomedium';
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        @media (min-width: $screen-md-min) {
+            margin-top: 25px;
+        }
+    }
+    .account-wpr {
+        position: relative;
+    }
+    .account-sider {
+        width: 100%;
+        padding: 0 10px;
+        @media (min-width: $screen-md-min) {
+            position: absolute;
+            left: 55%;
+            margin: 0;
+            padding: 0;
+            width: 41.66667%;
+            margin: 10px 0;
+        }
+        @media (min-width: $screen-lg-min) {
+            left: 50%;
+        }
+    }
+    .distributor-fields,
+    .online-fields,
+    .password-fields {
+        display: none;
+    }
+    .distributor-fields {
+        .checkbox label {
+            padding-left: 34px;
+            &::after,
+            &::before {
+                margin-left: 0;
+                top: 8px;
+            }
+        }
+        .checkbox input[type="checkbox"]:checked ~ label::after {
+            top: 10px;
+        }
+        .existing-checkbox {
+            display: none;
+        }
+    }
+    .register {
+        .form-adjust {
+            @media (min-width: $screen-md-min) {
+                width: 50%;
+            }
+            padding: 0 10px 0 0;
+        }
+        .holder,
+        select {
+            text-transform: uppercase;
+        }
+        .form-actions {
+            margin-bottom: 20px;
+            @media (min-width: $screen-md-min) {
+                margin-bottom: 0;
+            }
+        }
+        .online-fields {
+            width: 100%;
+            .headline {
+                margin: 25px 0 -7px;
+            }
+        }
+        .btn-white {
+            margin-top: 20px;
+            @media (min-width: $screen-md-min) {
+                width: 140px;
+            }
+        }
+    }
+    .btn-sign {
+        @media (min-width: $screen-md-min) {
+            width: 202px;
+            padding: 14px 21px;
+        }
+    }
+}
+.isBorder .select-wrapper {
+    border: 1px solid $light-grey;
+    border-radius: 3px;
+    &:after {
+        top: 2px;
+        right: 10px;
+    }
+    .holder {
+        padding: 8.5px 0;
+    }
+}
+.title-select .select-wrapper {
+    width: 131px;
+    height: 42px;
+}
+
+/** Password reset check box styles **/
+
+.pwdreset-main .pwdreset {
+	label {
+		padding-left: 30px;
+
+		&::before {
+			margin-left: 0;
+		}
+	}
+	
+	input[type=checkbox]:checked~label::after {
+		left: 14px
+	}
+	
+	a {
+		color: $about-span;
+		text-decoration: underline;
+	}
+}
+
+@media (min-width: 992px) {
+	.pwdreset-main  {
+		input[type=password], input[type=text] {
+		 width: 60%;
+		}
+	}
+}

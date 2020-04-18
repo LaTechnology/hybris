@@ -1,0 +1,181 @@
+.col-as-3 {
+    width: 100%;
+    @media (min-width: $screen-md-min) {
+        padding: 0 10px;
+        width: 25.40322580645161%;
+        text-align: right;
+        float: right;
+    }
+}
+.switch-page {
+    @media (min-width: $screen-md-min) {
+        margin-bottom: 25px;
+    }
+}
+.switch-body {
+    margin: 10px 0;
+    @media (min-width: $screen-md-min) {
+        padding: 0 59px 0 30px;
+        margin: 52px 0 0;
+    }
+    h1 {
+        font-family: 'robotomedium';
+        @include font-size(18px);
+        margin: 0;
+        padding: 0 0 11px;
+    }
+    .col-as-3 {
+        padding: 0;
+        @media (min-width: $screen-md-min) {
+            width: 75%;
+            float: left;
+            margin: 0;
+        }
+    }
+}
+.account-switch {
+    margin: 20px 0;
+    width: auto;
+    word-break: break-all;
+    /*min-height:558px;*/
+    .dropdown {
+        position: relative;
+        .dd-body {
+            /*position: absolute;
+		    width: 100%;
+		    display: none;
+		    z-index:9;*/
+        }
+    }
+    .dd-head {
+        font-family: 'robotomedium';
+        text-transform: capitalize;
+        margin-bottom: 3px;
+        padding: 0 10px;
+        @media (min-width: $screen-md-min) {
+            padding: 0 20px 0 0;
+        }
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        position: relative;
+        span {
+            font-family: 'robotolight';
+            padding: 0 2px 0 7px;
+        }
+    }
+    .dd-body {
+        border-top: 3px solid $switch-border;
+        background: $switch-bg;
+        .switchSubmit {
+            background: transparent;
+            outline: none;
+            border: 0;
+            position: absolute;
+            right: 22px;
+            top: 13px;
+            width: 14px;
+        }
+    }
+    .dd-search {
+        padding: 4px 5px 5px;
+        position: relative;
+        input[type="text"] {
+            font-size: 12px;
+            text-transform: uppercase;
+            padding: 11px;
+        }
+    }
+    .list {
+        padding: 0;
+        margin: 0;
+        text-align: left;
+        li {
+            padding: 12px 30px 8px 10px;
+            border-top: 1px solid $light-grey;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.2s linear;
+            .fa {
+                position: absolute;
+                right: 11px;
+                top: 50%;
+                margin-top: -4px;
+            }
+            &.active {
+                background: $white;
+            }
+            &:hover {
+                background: $help-bg;
+            }
+            .list-details {
+                display: inline-block;
+                width: 52%;
+                margin-right: -4px;
+                vertical-align: middle;
+                padding-right: 10px;
+                .name {
+                    text-transform: capitalize;
+                }
+                address {
+                    font-style: normal;
+                    font-size: 12px;
+                }
+            }
+            .list-code {
+                display: inline-block;
+                width: 48%;
+                vertical-align: middle;
+                padding-left: 10px;
+                label {
+                    word-break: break-all;
+                }
+            }
+        }
+    }
+}
+.cart-switch {
+    margin: 0 -10px;
+    padding: 0;
+    @media (min-width: $screen-md-min) {
+        margin: 0;
+        padding: 0;
+    }
+    .dropdown {
+        .fa {
+            -webkit-transition: all 300ms ease-in-out;
+            -moz-transition: all 300ms ease-in-out;
+            transition: all 300ms ease-in-out;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            @media (min-width: $screen-md-min) {
+                right: 0;
+            }
+        }
+        .dd-head.active {
+            .fa {
+                transform: rotate(180deg);
+                -webkit-transition: all 300ms ease-in-out;
+                -moz-transition: all 300ms ease-in-out;
+                transition: all 300ms ease-in-out;
+            }
+        }
+        .dd-body {
+            position: absolute;
+            width: 100%;
+            display: none;
+            z-index: 100;
+            box-shadow: 0 10px 6px -6px #777;
+            @media (min-width: $screen-md-min) {
+                width: 450px;
+                right: 0;
+            }
+        }
+    }
+}

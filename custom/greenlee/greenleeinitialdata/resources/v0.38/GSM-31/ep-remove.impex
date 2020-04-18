@@ -1,0 +1,53 @@
+#----------------------------------------------------------------------------------
+# Enterprise Category page
+#---------------------------------------------------------------------------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Enterprise Category Landing page              #################
+
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]              		; active                                                                                                                              
+                          ;                         ; Section1ContentSlot-ECatPage  ; true                                                                                                                         
+                          ;                         ; Section2ContentSlot-ECatPage  ; true                      
+                          ;                         ; Section2bContentSlot-ECatPage ; true                                                                                                                      
+                          ;                         ; Section3ContentSlot-ECatPage  ; true                                                                                                                
+                          ;                         ; Section4ContentSlot-ECatPage  ; true                                                                      
+                          ;                         ; Section5ContentSlot-ECatPage  ; true
+                          ;                         ; Section6ContentSlot-ECatPage  ; true                                                                          
+                          ;                         ; Section7aContentSlot-ECatPage ; true                                                     
+                          ;                         ; Section7ContentSlot-ECatPage  ; true                                                                                                        
+                          ;                         ; Section7bContentSlot-ECatPage ; true                                                                                                             
+ 			
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='enterprisecategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section1-enterprisecategory      ; Section1              ;                                                                 ; Section1ContentSlot-ECatPage            
+                                 ;                         ; Section2-enterprisecategory      ; Section2              ;                                                                 ; Section2ContentSlot-ECatPage            
+                                 ;                         ; Section2b-enterprisecategory     ; Section2b             ;                                                                 ; Section2bContentSlot-ECatPage           
+                                 ;                         ; Section3-enterprisecategory      ; Section3              ;                                                                 ; Section3ContentSlot-ECatPage            
+                                 ;                         ; Section4-enterprisecategory      ; Section4              ;                                                                 ; Section4ContentSlot-ECatPage            
+                                 ;                         ; Section5-enterprisecategory      ; Section5              ;                                                                 ; Section5ContentSlot-ECatPage            
+                                 ;                         ; Section6-enterprisecategory      ; Section6              ;                                                                 ; Section6ContentSlot-ECatPage            
+                                 ;                         ; Section7a-enterprisecategory     ; Section7a             ;                                                                 ; Section7aContentSlot-ECatPage           
+                                 ;                         ; Section7-enterprisecategory      ; Section7              ;                                                                 ; Section7ContentSlot-ECatPage            
+                                 ;                         ; Section7b-enterprisecategory     ; Section7b             ;                                                                 ; Section7bContentSlot-ECatPage           
+ 

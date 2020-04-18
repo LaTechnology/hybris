@@ -1,0 +1,606 @@
+.oldPrice {
+	font-size: 0.7em;
+	color: #e21414;
+}
+
+/*
+Store finder page - platform bug from 5.7
+************************/
+#storeFinder .simple_disp-img img {
+	width: auto;
+	height: auto;
+}
+
+/*
+Navigation
+************************/
+.navigationbarcollectioncomponent {
+	border: none;
+	background-color: #3c3c3c;
+}
+
+/*
+Navigation Level
+************************/
+.navigationbarcollectioncomponent li.La > a {
+	color: #ffffff;
+	text-transform: uppercase;
+	padding: 0 9px;
+}
+
+.navigationbarcollectioncomponent li.La:hover {
+	background-color: #0068b3;
+	color: black;
+}
+
+.navigationbarcollectioncomponent li.parent:hover > a {
+	color: #3c3c3c;
+}
+
+.navigationbarcollectioncomponent li.La:hover ul.Lb,
+.navigationbarcollectioncomponent li.La a:focus + ul.Lb {
+	background-color: #ffffff;
+}
+
+.navigationbarcollectioncomponent li.La,
+.scroller ul li,
+.prod_cat {
+	-o-transition: .2s;
+	-ms-transition: .2s;
+	-moz-transition: .2s;
+	-webkit-transition: .2s;
+	transition: .2s;
+}
+
+/*
+Facet Nav Fixes
+************************/
+.nav_column {
+	top: 0;
+	margin-top: 5px;
+}
+
+.yCmsContentSlot > .scroller .jcarousel-container {
+	padding: 24px 19.5px;
+}
+
+/*
+SHOW-1704
+************************/
+.siteSearch .ui-menu .ui-menu-item > a,
+.siteSearch .ui-menu .ui-menu-item > a.ui-state-hover {
+	padding: 0 !important;
+}
+
+/*
+SHOW-1707
+************************/
+.span-20 > .scroller,
+.span-18 > .scroller,
+.span-10 > .scroller {
+	padding: 20px 0;
+}
+
+.scroller {
+	overflow-x: visible !important;
+	overflow-y: visible !important;
+}
+
+.scroller:before {
+	clear: both;
+	content: " ";
+	display: block;
+}
+
+.span-24 .scroller > .title {
+	text-align: center;
+	color: white;
+	text-transform: uppercase;
+	background: #3c3c3c;
+	margin: 10px 0;
+	padding: 0 0 5px 0;
+	font-weight: normal;
+	font-size: 1.167em;
+}
+
+.scroller ul.carousel li {
+	float: none;
+	min-height: 100%;
+	margin-right: 23px;
+	width: 140px;
+	text-align: center;
+	border: 4px solid white;
+}
+
+.scroller ul.carousel li:hover {
+	border-color: #0068b3;
+}
+
+.scrollerProduct .priceContainer {
+	margin-left: 0;
+	font-size: 150%;
+	float: none;
+}
+
+.scrollerProduct .thumb {
+	overflow: hidden;
+}
+
+.scrollerProduct .details {
+	clear: both;
+	padding: 0;
+}
+
+.scroller .jcarousel-container {
+	box-shadow: 0px 0px 4px 0px #ccc;
+}
+
+.jcarousel-skin .jcarousel-prev-horizontal,
+.jcarousel-skin .jcarousel-next-horizontal {
+	top: 25%;
+}
+
+.terms form .control-group label {
+	margin: 1px 0 2px 0;
+}
+
+/*
+SHOW-1711
+************************/
+form .control-group label {
+	width: inherit;
+	margin: 0;
+}
+
+.control-group input[type="radio"] {
+	margin: 5px;
+}
+
+.advancedSearch .searchInput #js-add-product-ids {
+	position: relative;
+	margin: 10px 10px 10px 0;
+	top: inherit;
+}
+
+.selected_product_ids {
+	clear: both;
+}
+
+/* SHOW-1709 Checkout page
+*************************/
+.promo_top {
+	clear: both;
+}
+
+.item_container_holder.promo_top .title_holder .headline {
+	font-size: 2em;
+	margin-bottom: 0.75em;
+	padding-top: 0.25em;
+	font-weight: normal;
+	color: #111;
+	border-bottom: none;
+	line-height: normal;
+	text-transform: none;
+}
+
+#checkoutOrderDetails .deliveryCartItems .name {
+	overflow: inherit;
+}
+
+#checkoutOrderDetails .deliveryCartItems .thumb {
+	padding: 20px 10px 20px 20px;
+	border-bottom: 1px dotted #a5a5a5;
+}
+
+.quote_pos {
+	position: inherit;
+	top: -90px;
+}
+
+/* SHOW-1698 Category Landing Page
+*************************/
+.cms_disp-img_slot .prod_cat .thumb img {
+	width: auto;
+}
+
+/*
+Product Category Component
+************************/
+.prod_cat .action img {
+	display: none;
+}
+
+.prod_cat .title h2 {
+	background-color: #3c3c3c;
+	font-size: 1.167em;
+	margin: 0 15px 0 0;
+	padding: 10px 0 10px 0;
+}
+
+.prod_cat .title h2:hover {
+	background-color: #0068b3;
+}
+
+.prod_cat .title h2 a {
+	color: #ffffff;
+	text-transform: uppercase;
+	padding-left: 20px;
+}
+
+.prod_cat {
+	position: relative;
+	background: #e1e1e1;
+	border: 5px solid #ffffff;
+	box-shadow: 0px 0px 4px 0px #ccc;
+	margin-bottom: 10px;
+	margin-top: 20px;
+	min-height: 225px;
+	padding: 10px;
+}
+
+.prod_cat .title h2 {
+	font-size: 1.4em;
+	margin-right: 0;
+	padding: 5px;
+}
+
+.prod_cat .title h2 a {
+	padding-left: 0;
+}
+
+.prod_cat .title,
+.prod_cat .thumb {
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.prod_cat .thumb {
+	background: #ffffff;
+	padding: 0;
+	overflow: hidden;
+	border: 1px solid #ffffff;
+}
+
+.pageStyle-canon .prod_cat .thumb a img,
+.pageStyle-sony .prod_cat .thumb a img {
+	width: auto;
+}
+
+.prod_cat .action {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+
+.prod_cat:hover {
+	cursor: pointer;
+	border-color: #0068b3;
+}
+
+.prod_cat:hover .title h2 {
+	background-color: #0068b3;
+}
+
+.prod_cat:hover .details a {
+	color: #0068b3;
+}
+
+.prod_cat .title h2,
+.prod_cat .details {
+	max-width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: #ffffff;
+}
+
+.prod_cat .title h2 a {
+
+}
+
+/* SHOW-1698 Sell Sheets
+*************************/
+table#sell_sheets {
+	width: 100%;
+}
+
+table#sell_sheets #resultsBody td {
+	padding: 10px;
+}
+
+.sell_sheet_search .search1 input,
+.sub_menu .search input {
+	height: 16px;
+}
+
+.facetNavigation .facet .facetHead {
+	border-width: 4px;
+	border-color: #3c3c3c;
+}
+
+.facet_block li:hover a {
+	color: #0068b3 !important;
+}
+
+.facetNavigation .facetValues {
+	margin-top: 12px;
+}
+
+.facetNavigation .facetValues .more a {
+	border: none;
+}
+
+.facetNavigation .facetValues .more a:hover {
+	color: #0068b3 !important;
+}
+
+/* SHOW-1698 Facets
+*************************/
+.facetNavigation .headline {
+	height: auto;
+}
+
+/* SHOW-1698 Category Pages
+*************************/
+.page-PowerDrillsCategoryPage {
+	background: #062d4a;
+}
+
+.page-AngleGrindersCategoryPage {
+	background: #aabebf;
+}
+
+.page-ScrewdriversCategoryPage {
+	background: #d58629;
+}
+
+.page-SandersCategoryPage {
+	background: #286e90;
+}
+
+.page-MeasuringAndLayoutToolsCategoryPage {
+	background: #1b1b1b;
+}
+
+.page-HandToolsCategoryPage {
+	background: #dbdbdb;
+}
+
+.page-PowerDrillsCategoryPage #page,
+.page-AngleGrindersCategoryPage #page,
+.page-ScrewdriversCategoryPage #page,
+.page-SandersCategoryPage #page,
+.page-MeasuringAndLayoutToolsCategoryPage #page,
+.page-HandToolsCategoryPage #page {
+	background: #ffffff;
+}
+
+.jcarousel-skin .jcarousel-prev[disabled],
+.jcarousel-skin .jcarousel-next[disabled] {
+	opacity: 0 !important;
+}
+
+.page-PowerDrillsCategoryPage .jcarousel-skin .jcarousel-prev-horizontal,
+.page-PowerDrillsCategoryPage .jcarousel-skin .jcarousel-next-horizontal,
+.page-AngleGrindersCategoryPage .jcarousel-skin .jcarousel-prev-horizontal,
+.page-AngleGrindersCategoryPage .jcarousel-skin .jcarousel-next-horizontal,
+.page-ScrewdriversCategoryPage .jcarousel-skin .jcarousel-prev-horizontal,
+.page-ScrewdriversCategoryPage .jcarousel-skin .jcarousel-next-horizontal,
+.page-SandersCategoryPage .jcarousel-skin .jcarousel-prev-horizontal,
+.page-SandersCategoryPage .jcarousel-skin .jcarousel-next-horizontal,
+.page-MeasuringAndLayoutToolsCategoryPage .jcarousel-skin .jcarousel-prev-horizontal,
+.page-MeasuringAndLayoutToolsCategoryPage .jcarousel-skin .jcarousel-next-horizontal,
+.page-HandToolsCategoryPage .jcarousel-skin .jcarousel-prev-horizontal,
+.page-HandToolsCategoryPage .jcarousel-skin .jcarousel-next-horizontal {
+	top: 33% !important;
+}
+
+.page-PowerDrillsCategoryPage .jcarousel-skin .jcarousel-next-horizontal,
+.page-AngleGrindersCategoryPage .jcarousel-skin .jcarousel-next-horizontal,
+.page-ScrewdriversCategoryPage .jcarousel-skin .jcarousel-next-horizontal,
+.page-SandersCategoryPage .jcarousel-skin .jcarousel-next-horizontal,
+.page-MeasuringAndLayoutToolsCategoryPage .jcarousel-skin .jcarousel-next-horizontal,
+.page-HandToolsCategoryPage .jcarousel-skin .jcarousel-next-horizontal {
+	right: 0 !important;
+}
+
+.page-PowerDrillsCategoryPage .jcarousel-skin .jcarousel-prev-horizontal,
+.page-AngleGrindersCategoryPage .jcarousel-skin .jcarousel-prev-horizontal,
+.page-ScrewdriversCategoryPage .jcarousel-skin .jcarousel-prev-horizontal,
+.page-SandersCategoryPage .jcarousel-skin .jcarousel-prev-horizontal,
+.page-MeasuringAndLayoutToolsCategoryPage .jcarousel-skin .jcarousel-prev-horizontal,
+.page-HandToolsCategoryPage .jcarousel-skin .jcarousel-prev-horizontal {
+	left: 0 !important;
+}
+
+ul.jcarousel-list {
+	background-color: #fff;
+	padding: 20px !important;
+	margin-bottom: 20px !important;
+}
+
+.helpBanner,
+.userLogin,
+.jcarousel-clip,
+.productDetailsPanel,
+.login-info .content,
+#checkoutOrderDetails .deliveryCartItems,
+.vouchers-tag-container,
+#storeFinder .searchPane,
+.productListItem,
+div.componentBox .bottom,
+.scroller.vertical.quick_order_container {
+	background: white;
+}
+
+.productDetailsPanel {
+	float: left;
+	margin-bottom: 20px;
+	padding: 20px 0;
+}
+
+.productDetailsPanel .productDescription.span-10 {
+	padding-right: 20px;
+}
+
+.productDetailsPanel .productDescription.span-10, .productDetailsPanel .productDescription.span-10 .span-10 {
+	width: 370px;
+}
+
+.productDetailsPanel .productDescription .login-to-get-prices {
+	margin-top: 10px;
+}
+
+.productListItem {
+	padding: 20px;
+}
+
+.productList .productListItem .cart {
+	clear: both;
+}
+
+.productImage .productImageGallery {
+	width: 140px;
+}
+
+.productImage .productImagePrimary a.productImagePrimaryLink img {
+	max-height: 390px;
+	max-width: 390px;
+}
+
+.productDetailsPanel .jcarousel-clip {
+	white: #FFFFFF;
+}
+
+#productTabs ul.tabs-list li a:hover,
+#productTabs ul.tabs-list li a:active,
+#productTabs ul.tabs-list li.current a {
+	background-color: #0068b3;
+	color: #fff;
+}
+
+.sectionReports {
+	margin-top: 20px;
+}
+
+.sectionReports .b2bdashboard-component {
+	margin-bottom: 20px;
+}
+
+.vouchers-tag-container h2,
+.vouchers-tag-container .item_container {
+	/*padding-left: 20px;*/
+}
+
+.spotlight_holder {
+	border-color: #b2b2b2 !important;
+	background-color: #fff;
+}
+
+.spotlight .title_holder h2 {
+	background-color: #0068b3 !important;
+	text-shadow: none !important;
+}
+
+.spotlight .details .cart {
+	position: relative !important;
+	width: inherit !important;
+}
+
+#nav_main li.parent:hover > a {
+	color: #3c3c3c;
+}
+
+.footer {
+	padding-bottom: 25px;
+	padding-left: 40px;
+}
+
+.footer .links .title {
+	font-size: 125%;
+	text-transform: uppercase;
+	padding-bottom: 15px;
+}
+
+.footer .links a:hover {
+	font-weight: bold;
+}
+
+.footer .links a:hover:before {
+	content: '[';
+}
+
+.footer .links a:hover:after {
+	content: ']';
+}
+
+/*SHOW-2649*/
+
+.productDescription .detailpanelsection .qty {
+	padding: 0px;
+	margin: 0px;
+}
+
+.productDetailsPanel .productDescription .qty label {
+	padding: 0;
+}
+
+/*SHOW 2650*/
+
+.orderHead {
+	display: block;
+	overflow: hidden;
+	width: 100%;
+}
+
+#cartItems .cartItem td {
+	vertical-align: top;
+	border-bottom: 1px dotted #a5a5a5;
+	padding: 20px 5px;
+}
+
+#cartItems .cartItem td.thumb {
+	width: 96px;
+	padding: 20px 5px;
+	border-bottom: 1px dotted #a5a5a5;
+}
+
+.stripTransmitter {
+	height: 47px;
+	margin-top: -47px;
+	background-color: transparent;
+	border: none;
+	padding: 0;
+	width: auto !important;
+}
+
+.stripTransmitter ul li {
+	width: 41px;
+}
+
+.stripTransmitter a {
+	background-color: #3c3c3c;
+	color: #ffffff;
+}
+
+.stripTransmitter a:hover, a.current {
+	background-color: #0068b3;
+	font-weight: normal;
+}
+
+.pdfExport .button {
+	display: none;
+}
+
+.pdfExport .orderBox .headline,
+.pdfExport .orderBox ul {
+	padding-left: 5px;
+}
+
+.pdfExport .orderList {
+	padding: 0;
+}
+
+.pdfExport .orderList tr th:first-child,
+.pdfExport .orderList tr td:first-child {
+	padding-left: 5px;
+}

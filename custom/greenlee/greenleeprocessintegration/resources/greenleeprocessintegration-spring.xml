@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2013 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!--
+	The hybris platform provides one single Spring application context for beans located at the jalo layer.
+	Each extension can add beans to this context by specifying them at this configuration file.
+	 
+	You can use and/or redefine beans defined at configuration files of other extensions as well as
+	adding new one.
+		
+	If you want to locate this file at a different location or want to use several files for better,
+	structuring, please use the '<yourextension>.application-context' property at your project.properties file.
+	There you can specify a comma separated list of files where first is tried to find a file per classpath and
+	then per file system.
+
+	
+	If you want to configure beans for your web module please have a look at
+	your web/webroot/WEB-INF/<extname>-web-spring.xml.
+	-->
+	
+	<!--  Example how to override a manager -->
+	<!--
+	<bean id="core.productManager"   class="com.greenlee.pi.jalo.GreenleeprocessintegrationProductManager" 	init-method="init"	destroy-method="destroy" />
+	-->
+	
+	
+ 	<!--  Example how to configure the class to use for jalo session creation -->
+	<!--
+	<bean id="jalosession"   class="de.hybris.platform.jalo.JaloSessionFactory">
+		<property name="targetClassName" value="com.greenlee.pi.jalo.GreenleeprocessintegrationJaloSession"/>
+	</bean>
+	-->
+
+	
+	<!--  Example how to override an item  -->
+	<!-- 
+	<bean id="de.hybris.platform.jalo.product.Product" class="com.greenlee.pi.jalo.GreenleeprocessintegrationProduct" scope="prototype" />		
+ 	-->
+
+	<!--  
+	 Example how to register and use an AOP aspect 
+     Also see http://static.springframework.org/spring/docs/2.5.x/reference/aop.html	
+     -->
+	
+	<!-- 
+	<bean id="greenleeprocessintegrationProfBean" class="com.greenlee.pi.aop.GreenleeprocessintegrationProfilingAspect"/>
+	<aop:config proxy-target-class="true">
+  		<aop:aspect id="greenleeprocessintegrationProfAspect" ref="greenleeprocessintegrationProfBean" >
+    	  <aop:pointcut id="profiledMethods" 
+	      	expression="execution(* getModificationTime(..))" />  	            
+	   		<aop:around pointcut-ref="profiledMethods" method="profile" />
+  		</aop:aspect>
+	</aop:config>
+	 -->
+
+	
+	<!-- some other examples of a pointcut that matches everything:
+
+    	  <aop:pointcut id="profiledMethods" 
+	      	expression="bean(de.hybris.platform.jalo.user.Customer) &amp;&amp; 
+	      	            !execution(* getPK(..))" />  	            
+	       <aop:pointcut id="profiledMethods" expression="execution(* *(..))" />	
+	  -->
+	  
+	<bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
+
+    <bean id="piMessageSender" class="org.springframework.ws.transport.http.CommonsHttpMessageSender">
+     		<property name="connectionTimeout" value="90000" />
+            <property name="readTimeout" value="90000" />  <!-- 1.5 min = 90000 ms -->
+            <property name="credentials">
+                <bean class="org.apache.commons.httpclient.UsernamePasswordCredentials">
+                    <constructor-arg value="${pi.sap.userid}"/>
+                    <constructor-arg value="${pi.sap.password}"/>
+                </bean>
+            </property>         
+    </bean>
+    
+    <bean id="piJaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+   	 <property name="contextPath" value="com.hybris.urn.xi.order_history_header:com.hybris.urn.xi.order_history_item:com.hybris.urn.xi.pricing_enquiry:com.hybris.urn.xi.ecc_real_time_customer_creation:com.hybris.urn.xi.hybris_delivery_block_remove"></property>
+    </bean> 
+    
+	<bean id="webServiceTemplateOrderItem" class="org.springframework.ws.client.core.WebServiceTemplate"
+	 	 p:marshaller-ref="piJaxbMarshaller" 
+          p:unmarshaller-ref="piJaxbMarshaller" 
+          p:messageSender-ref="piMessageSender">
+        <constructor-arg ref="messageFactory"/>
+        <property name="defaultUri" value="${pi.order.item.uri}"/>
+    </bean>	
+
+	<bean id="webServiceTemplateOrderHeader" class="org.springframework.ws.client.core.WebServiceTemplate"
+		  p:marshaller-ref="piJaxbMarshaller" 
+          p:unmarshaller-ref="piJaxbMarshaller" 
+          p:messageSender-ref="piMessageSender">
+        <constructor-arg ref="messageFactory"/>
+        <property name="defaultUri" value="${pi.order.header.uri}"/>
+    </bean>	
+    
+    <bean id="webServiceTemplateOrderPrice" class="org.springframework.ws.client.core.WebServiceTemplate" 
+    	  p:marshaller-ref="piJaxbMarshaller" 
+          p:unmarshaller-ref="piJaxbMarshaller" 
+          p:messageSender-ref="piMessageSender">
+        <constructor-arg ref="messageFactory"/>
+        <property name="defaultUri" value="${pi.order.price.uri}"/>
+    </bean>
+    
+    <bean id="webServiceTemplateCustomer" class="org.springframework.ws.client.core.WebServiceTemplate" 
+    	  p:marshaller-ref="piJaxbMarshaller" 
+          p:unmarshaller-ref="piJaxbMarshaller" 
+          p:messageSender-ref="piMessageSender">
+        <constructor-arg ref="messageFactory"/>
+        <property name="defaultUri" value="${pi.customer.creation.uri}"/>
+    </bean>  
+    
+    <bean id="webServiceTemplateDelivery" class="org.springframework.ws.client.core.WebServiceTemplate" 
+    	  p:marshaller-ref="piJaxbMarshaller" 
+          p:unmarshaller-ref="piJaxbMarshaller" 
+          p:messageSender-ref="piMessageSender">
+        <constructor-arg ref="messageFactory"/>
+        <property name="defaultUri" value="${pi.deliveryblock.release.uri}"/>
+    </bean>  	 
+ 
+	<bean id="pricingRequestConverter" class="com.greenlee.pi.converter.DTHybrisPricingRequestConverter">
+		<property name="targetClass" value="com.hybris.urn.xi.pricing_enquiry.DTHybrisPricingRequest"/>
+		<property name="orderWeight" value="${pi.pricing.orderweight}"/>
+		<property name="userService" ref="userService" />
+	</bean>
+
+	<alias name="defaultGreenleePIRequestBuilder" alias="greenleePIRequestBuilder" />	  
+	<bean id="defaultGreenleePIRequestBuilder" class="com.greenlee.pi.builder.impl.DefaultGreenleePIRequestBuilder">
+		<property name="converter" ref="pricingRequestConverter"/>
+	</bean> 
+
+	<alias name="defaultGreenleePIClientService" alias="greenleePIClientService" />	 
+	<bean id="defaultGreenleePIClientService" class="com.greenlee.pi.service.impl.DefaultGreenleePIClientService">
+		<property name="greenleePIRequestBuilder" ref="greenleePIRequestBuilder" />
+		<property name="soapAction" value="${pi.pricing.soapaction}"/>
+		<property name="webServiceTemplate" ref="webServiceTemplateOrderPrice" />
+	</bean>
+
+		
+	
+	<bean id="orderItemResponseConverter" class="com.greenlee.pi.converter.DTHybrisToPIOrderItemResponseConverter">
+		<property name="targetClass" value="com.greenlee.orderhistory.data.PIOrderItem"/>
+	</bean>			
+			
+	<bean id="orderItemRequestConverter" class="com.greenlee.pi.converter.DTHybrisToPIOrderItemRequestConverter">
+		<property name="targetClass" value="com.hybris.urn.xi.order_history_item.DTHybrisToPIOrderItemRequest"/>
+	</bean>
+	
+	<alias name="defaultGreenleePIOrderItemRequestBuilder" alias="greenleePIOrderItemRequestBuilder" />	  
+	<bean id="defaultGreenleePIOrderItemRequestBuilder" class="com.greenlee.pi.builder.impl.DefaultGreenleePIOrderItemRequestBuilder">
+		<property name="orderItemRequestConverter" ref="orderItemRequestConverter"/>
+	</bean>
+
+	<alias name="defaultGreenleePIOrderItemService" alias="greenleePIOrderItemService" />	 
+	<bean id="defaultGreenleePIOrderItemService" class="com.greenlee.pi.service.impl.DefaultGreenleePIOrderItemService">
+		<property name="greenleePIOrderItemRequestBuilder" ref="greenleePIOrderItemRequestBuilder" />
+		<property name="soapAction" value="${pi.pricing.soapaction}"/>
+		<property name="webServiceTemplate" ref="webServiceTemplateOrderItem" />
+		<property name="orderItemResponseConverter" ref="orderItemResponseConverter" />
+	</bean>
+
+	<bean id="orderHeaderResponseConverter" class="com.greenlee.pi.converter.DTHybrisToPIOrderHeaderResponseConverter">
+		<property name="targetClass" value="com.greenlee.orderhistory.data.PIHeaderDetails"/>
+	</bean>
+
+	<bean id="orderHeaderRequestConverter" class="com.greenlee.pi.converter.DTHybrisToPIOrderHeaderRequestConverter">
+		<property name="targetClass" value="com.hybris.urn.xi.order_history_header.DTHybrisToPIOrderHeaderRequest"/>
+	</bean>
+	
+	<alias name="defaultGreenleePIOrderHeaderRequestBuilder" alias="greenleePIOrderHeaderRequestBuilder" />	  
+	<bean id="defaultGreenleePIOrderHeaderRequestBuilder" class="com.greenlee.pi.builder.impl.DefaultGreenleePIOrderHeaderRequestBuilder">
+		<property name="orderHeaderRequestConverter" ref="orderHeaderRequestConverter"/>
+	</bean>
+
+	<alias name="defaultGreenleePIOrderHeaderService" alias="greenleePIOrderHeaderService" />	 
+	<bean id="defaultGreenleePIOrderHeaderService" class="com.greenlee.pi.service.impl.DefaultGreenleePIOrderHeaderService">
+		<property name="greenleePIOrderHeaderRequestBuilder" ref="greenleePIOrderHeaderRequestBuilder" />
+		<property name="soapAction" value="${pi.pricing.soapaction}"/>
+		<property name="webServiceTemplate" ref="webServiceTemplateOrderHeader" />
+		<property name="orderHeaderResponseConverter" ref="orderHeaderResponseConverter" />
+	</bean>
+
+
+
+	<bean id="customerDataResponseConverter" class="com.greenlee.pi.converter.DTHybrisToPICustomerDataResponseConverter">
+		<property name="targetClass" value="com.greenlee.pi.data.PICustomerData"/>
+	</bean>
+
+	<bean id="customerDataRequestConverter" class="com.greenlee.pi.converter.DTHybrisToPICustomerDataRequestConverter">
+		<property name="targetClass" value="com.hybris.urn.xi.ecc_real_time_customer_creation.DTHybrisToPICustomerDataRequest"/>
+	</bean>
+	
+	<alias name="defaultGreenleePICustomerRequestBuilder" alias="greenleePICustomerRequestBuilder" />	  
+	<bean id="defaultGreenleePICustomerRequestBuilder" class="com.greenlee.pi.builder.impl.DefaultGreenleePICustomerRequestBuilder">
+		<property name="customerDataRequestConverter" ref="customerDataRequestConverter"/>
+	</bean>
+
+	<alias name="defaultGreenleePICustomerService" alias="greenleePICustomerService" />	 
+	<bean id="defaultGreenleePICustomerService" class="com.greenlee.pi.service.impl.DefaultGreenleePICustomerService">
+		<property name="greenleePICustomerRequestBuilder" ref="greenleePICustomerRequestBuilder" />
+		<property name="customerDataResponseConverter" ref="customerDataResponseConverter" />
+		<property name="soapAction" value="${pi.pricing.soapaction}"/>
+		<property name="webServiceTemplate" ref="webServiceTemplateCustomer" />
+	</bean>	
+	
+	
+	<bean id="deliveryDataResponseConverter" class="com.greenlee.pi.converter.DTHybrisToPIDeliveryDataResponseConverter">
+		<property name="targetClass" value="com.greenlee.pi.data.PIDeliveryData"/>
+	</bean>
+
+	<bean id="deliveryDataRequestConverter" class="com.greenlee.pi.converter.DTHybrisToPIDeliveryDataRequestConverter">
+		<property name="targetClass" value="com.hybris.urn.xi.hybris_delivery_block_remove.DTHybrisToPIDeliveryNoRequest"/>
+	</bean>
+	
+	<alias name="defaultGreenleePIDeliveryRequestBuilder" alias="greenleePIDeliveryRequestBuilder" />	  
+	<bean id="defaultGreenleePIDeliveryRequestBuilder" class="com.greenlee.pi.builder.impl.DefaultGreenleePIDeliveryRequestBuilder">
+		<property name="deliveryDataRequestConverter" ref="deliveryDataRequestConverter"/>
+	</bean>
+		
+	<alias name="defaultGreenleePIDeliveryService" alias="greenleePIDeliveryService" />	 
+	<bean id="defaultGreenleePIDeliveryService" class="com.greenlee.pi.service.impl.DefaultGreenleePIDeliveryService">
+		<property name="greenleePIDeliveryRequestBuilder" ref="greenleePIDeliveryRequestBuilder" />
+		<property name="deliveryDataResponseConverter" ref="deliveryDataResponseConverter" />
+		<property name="soapAction" value="${pi.pricing.soapaction}"/>
+		<property name="webServiceTemplate" ref="webServiceTemplateDelivery" />
+	</bean>	
+		
+</beans>

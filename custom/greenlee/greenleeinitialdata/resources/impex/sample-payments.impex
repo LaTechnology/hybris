@@ -1,0 +1,12 @@
+
+# Customer addresses
+INSERT_UPDATE Address;&addId;owner(User.uid)[unique=true];streetname[unique=true];postalcode[unique=true];duplicate[unique=true];town;country(isocode);billingAddress;contactAddress;shippingAddress;unloadingAddress;firstname;lastname;email;gender(code);middlename;phone1;title(code);url;company;fax;department
+;address1;test1@test1.com;express Street;10019;false;New York;US;true;true;true;true;Enterprise;User;test1@test1.com;MALE;;+001 1234567;;Hybris;;
+
+INSERT_UPDATE CreditCardPaymentInfo;code[unique=true];&payId[unique=true];user(uid)[unique=true];ccOwner;number;type(code);billingAddress(&addId);validFromMonth;validFromYear;validToMonth;validToYear;subscriptionId;duplicate[default=false];saved[default=true];subscriptionValidated[default=true];
+;mastercard1;mastercard1;test1@test1.com;Master Card;5555555555554444;master;address1;1;2016;12;2025;MockedSubscriptionID
+;visacard1;visacard1;test1@test1.com;Visa Card;4111111111111111;visa;address1;1;2016;12;2022;MockedSubscriptionID
+
+#Set default address and payment info
+UPDATE Customer;uid[unique=true];defaultPaymentAddress(&addId);defaultShipmentAddress(&addId);defaultPaymentInfo(code);
+;test1@test1.com;address1;address1;visacard1;

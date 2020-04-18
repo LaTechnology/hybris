@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2011 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:util="http://www.springframework.org/schema/util"
+           xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/util
+						http://www.springframework.org/schema/util/spring-util-3.1.xsd"
+           default-autowire="byName">
+
+        <alias name="defaultMediaFormatsMap" alias="mediaFormatsMap" />
+    <util:map id="defaultMediaFormatsMap" map-class="java.util.Hashtable">
+        <entry key="superZoom" value="1200Wx1200H" />
+        <entry key="zoom" value="515Wx515H" />
+        <entry key="product" value="300Wx300H" />
+        <entry key="thumbnail" value="96Wx96H" />
+        <entry key="cartIcon" value="65Wx65H" />
+        <entry key="styleSwatch" value="30Wx30H" />
+    </util:map>
+    
+    <alias alias="UICockpitSession" name="AddonCmsCockpitSession" />
+	<bean id="AddonCmsCockpitSession" class="de.hybris.platform.cockpit.session.impl.UISessionImpl" init-method="registerAdditionalPerspectives"
+		scope="session">
+		<property name="initialSessionListeners">
+			<list></list>
+		</property>
+		<property name="availablePerspectives">
+			<list>
+				<ref bean="CatalogPerspective" />
+				<ref bean="LiveEditPerspective" />
+				<ref bean="NavigationNodePerspective"/>
+				<ref bean="BtgcockpitPerspective" />
+			</list>
+		</property>				
+		<property name="cachePerspectivesEnabled" value="true" />
+		<property name="requestHandler" ref="CMSRequestHandler" />
+		<property name="dragOverPerspectivesEnabled" value="true" />
+		<property name="cockpitTypeService" ref="cockpitTypeService" />
+		<property name="sendEventsImmediately" value="false" />
+		<property name="pushContainers">
+			<list value-type="de.hybris.platform.cockpit.session.impl.PushCreationContainer">
+				<ref bean="WorkflowPushContainer" />
+			</list>
+		</property>
+	</bean>
+
+	<alias alias="liveEditRefreshContentHandlersList" name="addonLiveEditRefreshContentHandlersList" />
+    <util:list id="addonLiveEditRefreshContentHandlersList">
+        <ref bean="desktopRefreshContentHandler"/>
+        <ref bean="mobileRefreshContentHandler" />
+    </util:list>
+    
+    <alias alias="mobileRefreshContentHandler" name="defaultMobileRefreshContentHandler" />
+    <bean id="defaultMobileRefreshContentHandler" class="com.hybris.addon.cockpits.components.liveedit.AddOnLiveEditView$MobileRefreshContentHandler" />
+    
+    <alias name="defaultItemSyncStrategy" alias="itemSyncStrategy" />
+	<bean id="defaultItemSyncStrategy"
+		class="com.hybris.addon.cockpits.liveedit.generic.strategy.impl.DefaultItemSyncStrategy">
+		<property name="synchronizationService" ref="synchronizationService" />
+	</bean>
+</beans>
+	

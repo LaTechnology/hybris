@@ -1,0 +1,127 @@
+.aboutuspage {
+    .breadcrumb {
+        padding: 17px 0 10px;
+    }
+    h1 {
+        margin: 0 0 30px;
+        padding: 0;
+        text-align: center;
+        text-transform: uppercase;
+    }
+    h5 {
+        @include font-size(24px);
+        font-family: 'robotomedium';
+        margin: 25px 0;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        @media (min-width: $screen-md-min) {
+            margin: 0 0 15px;
+        }
+    }     
+}
+.text--middle-wrp {
+    position: relative;
+    .text-middle {
+        bottom: 0;
+        height: 70%;
+        left: 0;
+        margin: auto;
+        max-width: 245px;
+        min-width: 200px;
+        position: absolute;
+        right: 0;
+        text-align: center;
+        top: 0;
+        @media (min-width: $screen-sm-min) {
+            max-width: 70%;
+            height: 19%;
+        }
+        h3 {
+            margin: 0;
+            padding: 0;
+            text-transform: uppercase;
+            color: $white;
+            @include font-size(30px);
+            @media (min-width: $screen-md-min) {
+                 @include font-size(36px);
+            }
+        }
+    }
+}
+.story-wrp {
+    padding-top: 10px;
+    @media (min-width: $screen-md-min) {
+        padding: 52px 0 22px;
+    }
+    .story-cnt {
+        margin: 0 auto;
+        @media (min-width: $screen-md-min) {
+            width: 64.66667%;
+        }
+    }
+    h5 {
+        text-align: center;
+    }
+    p {
+        line-height: 30px;
+        margin: 0;
+        padding-bottom: 29px;
+        letter-spacing: 0.05em;
+        color: $gray-lighter;
+        text-align: center;
+        @include font-size(18px);
+    }
+}
+.store-wrp {
+    padding-bottom: 25px;
+    background: $poppdp-bg;
+    @media (min-width: $screen-md-min) {
+        padding-bottom: 0;
+    }
+    .thumb {
+        @media (min-width: $screen-md-min) {
+            display: inline-block;
+            width: 50%;
+            vertical-align: middle;
+        }
+    }
+    .details {
+        text-align: center;
+        @media (min-width: $screen-md-min) {
+            display: inline-block;
+            width: 50%;
+            margin-left: -4px;
+            padding: 0 61px 0 54px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        span {
+            font: 14px/18px 'robotomedium', sans-serif;
+            display: inline-block;
+            padding: 14px 30px;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+            text-transform: uppercase;
+            color: $btn-white-text;
+            border-radius: 3px;
+            background: rgba(206, 203, 203, 1);
+            background: -moz-linear-gradient(left, rgba(206, 203, 203, 1) 0%, rgba(230, 228, 228, 1) 100%);
+            background: -webkit-gradient(left top, right top, color-stop(0%, rgba(206, 203, 203, 1)), color-stop(100%, rgba(230, 228, 228, 1)));
+            background: -webkit-linear-gradient(left, rgba(206, 203, 203, 1) 0%, rgba(230, 228, 228, 1) 100%);
+            background: -o-linear-gradient(left, rgba(206, 203, 203, 1) 0%, rgba(230, 228, 228, 1) 100%);
+            background: -ms-linear-gradient(left, rgba(206, 203, 203, 1) 0%, rgba(230, 228, 228, 1) 100%);
+            background: linear-gradient(to right, rgba(206, 203, 203, 1) 0%, rgba(230, 228, 228, 1) 100%);
+        }
+    }
+    i {
+        font-family: 'robotothin';
+        font-style: normal;
+        @include font-size(24px);
+    }
+}

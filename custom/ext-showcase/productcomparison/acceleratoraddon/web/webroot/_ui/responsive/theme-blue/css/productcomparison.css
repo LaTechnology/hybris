@@ -1,0 +1,41 @@
+/*
+
+	Product Compare
+*****************/
+.product_compare table td.headline {
+	color: #354153;
+}
+
+.product_compare .costs .price {
+	color: #354153;
+	font-size: 1.4em;
+	font-weight: bold;
+}
+
+.product_compare tr.middle:nth-child(odd) {
+	background-color: #f2f2f2;
+}
+
+/* Compare Action
+**************************/
+.AddToCart-CompareAction {
+	margin-top: 20px;
+}
+
+.SearchResultsList-CompareAction, .ProductListComponent-CompareAction {
+	padding-left: 10px;
+	padding-right: 10px;
+	float: left;
+	width: 33.33333333%;
+	margin-right: -33.33333333%;
+}
+
+.SearchResultsGrid-CompareAction,
+.ProductGridComponent-CompareAction {
+	margin-bottom: 10px;
+}
+
+.SearchResultsGrid-CompareAction .btn,
+.ProductGridComponent-CompareAction .btn {
+	font-size: .9em;
+}

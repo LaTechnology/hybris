@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="/platform"/>
+	<classpathentry exported="true" kind="src" path="/hmc"/>
+	<classpathentry exported="true" kind="lib" path="resources"/>
+	<classpathentry kind="src" output="eclipsebin/classes" path="src"/>
+	<classpathentry kind="src" path="gensrc"/>
+	<classpathentry kind="src" output="eclipsebin/hmc/classes" path="hmc/src"/>
+	<classpathentry kind="src" output="eclipsebin/classes" path="testsrc"/>
+	<classpathentry kind="src" path="/cockpit"/>
+	<classpathentry exported="true" kind="lib" path="/cms2/bin/cms2server.jar" sourcepath="E:/platforms/hybris-sourcezip-5.0.1.0-20130618-0813.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="https://download.hybris.com/api/5.0.1.0-SNAPSHOT"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="/cmscockpit"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/mediaconversion"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_71">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="eclipsebin/notused"/>
+</classpath>

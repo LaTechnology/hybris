@@ -1,0 +1,5 @@
+.span-20 > .scroller ul li, 
+.span-18 > .scroller ul li, 
+.span-10 > .scroller ul li {
+	width:150px;
+}

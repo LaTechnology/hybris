@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2015 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:file="http://www.springframework.org/schema/integration/file"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd 
+		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	
+	<context:annotation-config />
+ 
+	<bean id="baseDirectoryForGreenleeImages" class="java.lang.String">
+		<constructor-arg value="#{baseDirectory}/${tenantId}/greenlee" />
+	</bean>
+
+	<!-- 1) Scan for files -->
+	<file:inbound-channel-adapter id="batchFilesGreenlee"
+		directory="#{baseDirectoryForGreenleeImages}" filename-regex="(.*)-(\d+)\.csv"
+		comparator="fileOrderComparator">
+		<int:poller fixed-rate="2000" />
+	</file:inbound-channel-adapter>
+
+	
+	<!-- 2) move the file to processing and create header -->
+	<file:outbound-gateway request-channel="batchFilesGreenlee"
+		reply-channel="batchFilesGreenleeProc" directory="#{baseDirectoryForGreenleeImages}/processing"
+		delete-source-files="true" />
+	<int:service-activator input-channel="batchFilesGreenleeProc"
+		output-channel="batchFilesHeaderInitImage" method="execute" ref="greenleeHeaderSetupTask" />
+	<bean id="greenleeHeaderSetupTask"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.task.HeaderSetupTask">
+		<property name="catalog" value="greenleeProductCatalog" /> 
+		<property name="net" value="false" />
+		<property name="storeBaseDirectory" ref="baseDirectoryForGreenleeImages" />
+	</bean>
+	
+	<!-- 3) transform csv to impex file -->
+	<int:service-activator input-channel="batchFilesHeaderInitImage" 
+		output-channel="batchFilesHeader" method="execute" ref="imageBatchTransformerTask" />
+	<bean id="imageBatchTransformerTask"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.task.ImpexTransformerTask"
+		init-method="initConvertersMap">
+		<property name="fieldSeparator" value="," />
+		<property name="encoding" value="UTF-8" />
+		<property name="linesToSkip" value="1" />
+		<property name="cleanupHelper" ref="cleanupHelper" />
+	</bean>
+	
+	<!-- 4) run impex import -->
+<!-- 	<int:service-activator input-channel="batchFilesHeader" output-channel="batchFilesImp" ref="batchRunnerTask"
+		method="execute" />
+	<bean id="batchRunnerTask" class="de.hybris.platform.acceleratorservices.dataimport.batch.task.AbstractImpexRunnerTask">
+		<property name="sessionService" ref="sessionService" />
+		<property name="importService" ref="importService" />
+		<lookup-method name="getImportConfig" bean="importConfig" /> 
+	</bean>
+	<bean id="importConfig" class="de.hybris.platform.servicelayer.impex.ImportConfig" scope="prototype">
+		<property name="removeOnSuccess" value="true" />
+		<property name="failOnError" value="false" />
+		<property name="synchronous" value="true" />
+		<property name="legacyMode" value="false" />
+		 <property name="locale" value="en"/>
+		 <property name="maxThreads" value="1" />
+		 
+	</bean> -->
+
+	<!-- 5) Cleanup --> <!-- 
+	<int:service-activator input-channel="batchFilesImp" ref="batchCleanupTask" method="execute" />
+	<bean id="batchCleanupTask" class="de.hybris.platform.acceleratorservices.dataimport.batch.task.CleanupTask">
+		<property name="cleanupHelper" ref="cleanupHelper" />
+	</bean> -->
+	
+	<!-- 4) Transformer converters mappings -->
+	<bean id="batchMediaConverterMapping"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+		p:mapping="media-01" p:converter-ref="batchMediaConverter" />
+
+	<bean id="batchMediaContainerConverterMapping"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+		p:mapping="media-02" p:converter-ref="batchMediaContainerConverter" depends-on="batchMediaConverterMapping"/>
+
+	<bean id="batchMediaProductConverterMapping"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+		p:mapping="media-03" p:converter-ref="batchMediaProductConverter" depends-on="batchMediaContainerConverterMapping"/>
+
+	<!-- Converters -->
+	<bean id="batchMediaConverter"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+		<property name="header">
+			<value>#{defaultImpexProductHeader}
+				# Import media from filesystem
+				$productCatalog=greenleeProductCatalog
+				$catalogVersion=catalogVersion(catalog(id[default='greenleeProductCatalog']),version[default='Staged'])[unique=true,default='greenleeProductCatalog':Staged]
+				$thumbnail=thumbnail(code, $catalogVersion)
+				$picture=picture(code, $catalogVersion)
+				$thumbnails=thumbnails(code, $catalogVersion)
+				$detail=detail(code, $catalogVersion)
+				$normal=normal(code, $catalogVersion)
+				$others=others(code, $catalogVersion)
+				$data_sheet=data_sheet(code, $catalogVersion)
+				$medias=medias(code, $catalogVersion)
+				$galleryImages=galleryImages(qualifier, $catalogVersion)
+
+				$importFolder=file:$BASE_SOURCE_DIR$/images
+
+				INSERT_UPDATE Media; mediaFormat(qualifier); \
+					code[unique=true];\
+					mime[default='image/jpeg'];\
+					$catalogVersion;\
+					folder(qualifier)[default=images];\
+					realfilename;\
+					@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator]
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>
+				;1200Wx1200H;/1200Wx1200H/{+0};;;;{+0};$importFolder/1200Wx1200H/{+0}.jpg
+				;515Wx515H;/515Wx515H/{+0};;;;{+0};$importFolder/515Wx515H/{+0}.jpg
+				;300Wx300H;/300Wx300H/{+0};;;;{+0};$importFolder/300Wx300H/{+0}.jpg
+				;96Wx96H;/96Wx96H/{+0};;;;{+0};$importFolder/96Wx96H/{+0}.jpg
+				;65Wx65H;/65Wx65H/{+0};;;;{+0};$importFolder/65Wx65H/{+0}.jpg
+				;30Wx30H;/30Wx30H/{+0};;;;{+0};$importFolder/30Wx30H/{+0}.jpg
+			</value>
+
+		</property>
+	 
+	</bean>
+	<bean id="batchMediaContainerConverter"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+		<property name="header">
+			<value>#{defaultImpexProductHeader}
+				# Import media container
+				$productCatalog=greenleeProductCatalog
+				$catalogVersion=catalogVersion(catalog(id[default='greenleeProductCatalog']),version[default='Staged'])[unique=true,default='greenleeProductCatalog':Staged]
+				$medias=medias(code, $catalogVersion)
+
+				INSERT_UPDATE MediaContainer; \
+					qualifier[unique=true]; \
+					$medias; \
+					$catalogVersion
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>;{+0};/1200Wx1200H/{+0},/515Wx515H/{+0},/300Wx300H/{+0},/96Wx96H/{+0},/65Wx65H/{+0},/30Wx30H/{+0};
+			</value>
+		</property>
+		<!-- <property name="rowFilter">
+			<bean
+				class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexRowFilter">
+				<property name="expression" value="!row[1]" />
+			</bean>
+		</property> -->
+	</bean>
+
+	<bean id="batchMediaProductConverter"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+		<property name="header">
+			<value>#{defaultImpexProductHeader}
+
+				# Import product media
+				
+				$productCatalog=greenleeProductCatalog
+				$staged=Staged
+				$catalogVersion=catalogVersion(catalog(id[default='greenleeProductCatalog']),version[default='$staged'])[unique=true,default='greenleeProductCatalog':$staged]
+				$picture=picture(code,$catalogVersion)
+				$thumbnail=thumbnail(code, $catalogVersion)
+				$detail=detail(code, $catalogVersion)
+				$others=others(code, $catalogVersion)
+				$normal=normal(code, $catalogVersion)
+				$thumbnails=thumbnails(code, $catalogVersion)
+				$galleryImages=galleryImages(qualifier, $catalogVersion)
+
+				INSERT_UPDATE GreenleeProduct; \
+				$catalogVersion; \
+				code[unique=true]; \
+				$picture; \
+				$thumbnail; \
+				$detail; \
+				$others; \
+				$normal; \
+				$thumbnails; \
+				$galleryImages
+				
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>;;{+0};/300Wx300H/{+1};/96Wx96H/{1};/1200Wx1200H/{1};/515Wx515H/{1},/96Wx96H/{1},/30Wx30H/{1};/300Wx300H/{1};/96Wx96H/{1};{1}
+			</value>
+		</property>
+		<!-- <property name="rowFilter">
+			<bean
+				class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexRowFilter">
+				<property name="expression" value="!row[1]" />
+			</bean>
+		</property> -->
+		
+		
+	</bean>
+	
+	<!-- 4) File Order Processing -->
+	<alias name="greenleeFileOrderComparator" alias="fileOrderComparator" />
+	<bean id="greenleeFileOrderComparator"
+		class="de.hybris.platform.acceleratorservices.dataimport.batch.FileOrderComparator">
+		<property name="prefixPriority">
+			<map>
+				<!-- default priority is 0 -->
+				<entry key="media-01" value="1" /> 
+				<entry key="media-02" value="2" /> 
+				<entry key="media-03" value="3" /> 
+			</map>
+		</property>
+	</bean>
+</beans>

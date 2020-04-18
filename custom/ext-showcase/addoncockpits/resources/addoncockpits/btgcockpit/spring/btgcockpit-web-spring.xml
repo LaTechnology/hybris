@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2013 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris. -->
+
+
+<!-- WARNING: This is the Spring WEB configuration file. If you want to replace 
+	items or managers you have to do this from the extensions core configuration 
+	file (cmscockpit/resources/cmscockpit-application-context.xml) -->
+
+<!-- WARNING: This file is imported in cmscockpit-web-spring.xml therefore you don't need
+	to list it in your deployment descriptor -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/util 
+						http://www.springframework.org/schema/util/spring-util-3.1.xsd"
+	default-autowire="byName">
+	
+	<!--  util:map of action uris -->
+	<alias name="defaultBtgRuleIconMap" alias="btgRuleIconMap"/>
+	<util:map id="defaultBtgRuleIconMap" key-type="de.hybris.platform.btg.enums.BTGRuleType" value-type="java.lang.String">
+		<entry key="CART" value="/btgcockpit/images/btg_rule_cart.png" />
+		<entry key="ORDER" value="/btgcockpit/images/btg_rule_order.png" />	
+		<entry key="USER" value="/btgcockpit/images/btg_rule_user.png" />
+		<entry key="WCMS" value="/btgcockpit/images/btg_rule_wcms.png" />
+	</util:map>
+	
+		
+	<alias alias="BTGRuleIconAction" name="addonBTGRuleIconAction" />
+	<bean id="addonBTGRuleIconAction" class="com.hybris.addon.cockpits.components.btg.listview.ConfigurableBtgRuleIconAction"
+		scope="prototype" >
+		<property name="imageUriMap" ref="btgRuleIconMap" />		
+		<property name="defaultUri" value="/cmscockpit/images/ContentElementOtherSmall.gif" />
+	</bean>
+</beans>
+	

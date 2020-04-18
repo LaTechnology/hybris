@@ -1,0 +1,36 @@
+.order-confirmation {
+	.thankYou-msg {
+		color: $gray-lighter;
+		padding-bottom: 30px;
+		text-align: center;
+		@media (min-width: $screen-md-min) {
+			text-align: left;
+		}
+		h2 {
+			@include font-size(24px);
+			line-height: 1.2;
+			p {
+				font-family: $robo-medium;
+				span{
+					@media (min-width: $screen-md-min) {
+						display:block;
+					}
+				}
+			}
+		}
+		a {
+			color: $gray-lighter;
+			text-decoration: underline;
+		}
+	}
+	.po {
+		padding-bottom: 15px;
+	}
+	.order-items {
+		.product-item {
+			.qty {
+				width: auto;
+			}
+		}
+	}
+}

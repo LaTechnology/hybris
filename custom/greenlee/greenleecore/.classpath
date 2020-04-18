@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="/platform"/>
+	<classpathentry exported="true" kind="src" path="/acceleratorservices"/>
+	<classpathentry exported="true" kind="src" path="/acceleratorcms"/>
+	<classpathentry exported="true" kind="src" path="/hmc"/>
+	<classpathentry exported="true" kind="lib" path="resources"/>
+	<classpathentry kind="src" output="eclipsebin/classes" path="src"/>
+	<classpathentry kind="src" output="eclipsebin/hmc/classes" path="hmc/src"/>
+	<classpathentry kind="src" output="eclipsebin/classes" path="testsrc"/>
+	<classpathentry kind="src" output="eclipsebin/classes" path="gensrc"/>
+	<classpathentry kind="lib" path="lib/jsoup-1.8.3.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/b2bcommerce"/>
+	<classpathentry kind="lib" path="lib/json-20160212.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/paymentechintegration"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/b2bacceleratorservices"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/sapcustomerb2c"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_71">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="eclipsebin/notused"/>
+</classpath>

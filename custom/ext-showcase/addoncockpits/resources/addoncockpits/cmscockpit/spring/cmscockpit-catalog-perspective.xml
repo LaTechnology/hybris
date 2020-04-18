@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2013 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris. -->
+
+
+<!-- WARNING: This is the Spring WEB configuration file. If you want to replace 
+	items or managers you have to do this from the extensions core configuration 
+	file (cmscockpit/resources/cmscockpit-application-context.xml) -->
+
+<!-- WARNING: This file is imported in cmscockpit-web-spring.xml therfore you don't need 
+	to list it in your deployment descriptor -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop-3.1.xsd"
+	default-autowire="byName">
+
+	
+	
+	<alias alias="CatalogPerspective" name="AddOnCatalogPerspective" />
+	<bean id="AddOnCatalogPerspective"
+		class="de.hybris.platform.yacceleratorcockpits.cmscockpit.session.impl.DefaultWCMSPerspective"
+		scope="session" parent="BasePerspective" autowire="byName">
+		<property name="uid" value="cmscockpit.perspective.catalog" />
+		<property name="label" value="cmscockpit.perspective.catalog" />
+		<property name="customCsaURI" value="/cmscockpit/dynamicLiveEditCSA.zul" />
+		<!-- default site to be activated -->
+		<!-- <property name="activeSiteCode" value="site"/> -->
+		<property name="navigationArea">
+			<ref bean="AddOnCatalogNavigationArea" />
+		</property>
+		<property name="browserArea">
+			<ref bean="CatalogPerspectiveBrowserArea" />
+		</property>
+		<property name="editorArea">
+			<bean id="CatalogEditorAreaModel" parent="BaseEditorAreaModel">
+				<property name="editorAreaController">
+					<ref bean="CatalogViewEditorAreaController" />
+				</property>
+			</bean>
+		</property>
+		<property name="popupEditorArea">
+			<bean id="CmsCatalogPopupEditor" parent="BasePopupEditor">
+				<property name="editorAreaController">
+					<ref bean="CmsPopupEditorAreaController" />
+				</property>
+			</bean>
+		</property>
+		<property name="cockpitTypeService" ref="cockpitTypeService" />
+	</bean>
+	
+	
+	
+	<alias alias="CatalogPerspectiveBrowserArea" name="AddOnCatalogPerspectiveBrowserArea" />
+	<bean id="AddOnCatalogPerspectiveBrowserArea" scope="session"
+		class="de.hybris.platform.yacceleratorcockpits.cmscockpit.session.impl.DefaultCatalogBrowserArea">
+		<property name="cmsCatalogBrowserModelFactory" ref="cmsCatalogBrowserModelFactory" />
+		<property name="rootSearchTypeCode" value="AbstractPage" />
+		<property name="viewURI" value="/cmscockpit/catalogBrowser.zul" />
+		<property name="welcomeBrowserModel" ref="CatalogWelcomeBrowserModel" />
+		<property name="defaultBrowserViewMapping">
+			<map>
+				<entry key="cockpitgroup" value="GRID" />
+				<entry key="cmsmanagergroup" value="GRID" />
+			</map>
+		</property>
+		<property name="multiSelectActions">
+			<ref bean="PageContentBrowserActionColumn" />
+		</property>
+		<property name="additionalToolbarActions">
+			<ref bean="PageContentAdditionalToolbarActionColumn" />
+		</property>
+		<property name="inspectorRenderer" ref="coverageInspectorRenderer"/>
+		<property name="openInspectorOnSelect" value="true"/>	
+	</bean>
+	
+	<bean id="CMSWorkflowSection" class="de.hybris.platform.cockpit.components.navigationarea.NavigationPanelSection"
+		scope="prototype"> 
+		<property name="localizedLabel" value="navigationarea.workflow" />
+		<property name="visible" value="true" />
+		<property name="renderer">
+			<bean class="de.hybris.platform.cockpit.components.navigationarea.renderer.WorkflowSectionRenderer">
+
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="AddOnCatalogNavigationArea"
+		class="de.hybris.platform.cmscockpit.session.impl.CatalogNavigationArea"
+		scope="session" parent="CatalogNavigationArea">
+		<property name="sections">
+			<list merge="true">
+				<ref bean="CMSWorkflowSection" />
+			</list>
+		</property>
+	</bean>
+	
+	
+</beans>

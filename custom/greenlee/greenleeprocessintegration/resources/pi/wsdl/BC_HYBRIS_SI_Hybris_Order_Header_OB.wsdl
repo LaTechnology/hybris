@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="SI_Hybris_Order_Header_OB"
+	targetNamespace="urn.Hybris.com:xi:Order_History_Header" xmlns:p1="urn.Hybris.com:xi:Order_History_Header"
+	xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+	xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+	<wsdl:documentation />
+	<wsp:UsingPolicy wsdl:required="true" />
+	<wsp:Policy wsu:Id="OP_SI_Hybris_Order_Header_OB" />
+	<wsdl:types>
+		<xsd:schema targetNamespace="urn.Hybris.com:xi:Order_History_Header"
+			xmlns="urn.Hybris.com:xi:Order_History_Header" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:element name="MT_Hybris_To_PI_Order_Header_Request"
+				type="DT_Hybris_To_PI_Order_Header_Request" />
+			<xsd:element name="MT_PI_To_Hybris_Order_Header_Response"
+				type="DT_SAP_To_PI_Order_Header_Response" />
+			<xsd:complexType name="DT_Hybris_To_PI_Order_Header_Request">
+				<xsd:annotation>
+					<xsd:appinfo source="http://sap.com/xi/VersionID">dd46dfcce1ef11e5823800000024fafe
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="Order_History_Heder_Input"
+						minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="Sales_Organization" type="xsd:string"
+									minOccurs="0" />
+								<xsd:element name="Distribution_Channel" type="xsd:string"
+									minOccurs="0" />
+								<xsd:element name="Division" type="xsd:string"
+									minOccurs="0" />
+								<xsd:element name="From_Date" type="xsd:string"
+									minOccurs="0" />
+								<xsd:element name="To_Date" type="xsd:string"
+									minOccurs="0" />
+								<xsd:element name="Order_Status" type="xsd:string"
+									minOccurs="0" />
+								<xsd:element name="Document_Type" type="xsd:string"
+									minOccurs="0" />
+								<xsd:element name="Customer_PurchaseOrder_No" type="xsd:string"
+									minOccurs="0" />
+								<xsd:element name="Region" type="xsd:string"
+									minOccurs="0" />
+								<xsd:element name="City" type="xsd:string"
+									minOccurs="0" />
+								<xsd:element name="Name1" type="xsd:string"
+									minOccurs="0" />
+								<xsd:element name="Sales_Order_No" type="xsd:string"
+									minOccurs="0" />
+								<xsd:element name="Hybris_Reference_No" type="xsd:string"
+									minOccurs="0" />
+								<xsd:element name="Customer_No" type="xsd:string"
+									minOccurs="0" />
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="DT_SAP_To_PI_Order_Header_Response">
+				<xsd:annotation>
+					<xsd:appinfo source="http://sap.com/xi/VersionID">b37628dfe1f111e5bfd900000024fafe
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="Order_History_Header_Result"
+						minOccurs="0">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="Header_Details" minOccurs="0"
+									maxOccurs="unbounded">
+									<xsd:complexType>
+										<xsd:sequence>
+											<xsd:element name="Customer_Number" type="xsd:string"
+												minOccurs="0" />
+											<xsd:element name="Name1" type="xsd:string"
+												minOccurs="0" />
+											<xsd:element name="Sales_Order_No" type="xsd:string"
+												minOccurs="0" />
+											<xsd:element name="Status" type="xsd:string"
+												minOccurs="0" />
+											<xsd:element name="Description" type="xsd:string"
+												minOccurs="0" />
+											<xsd:element name="Customer_PurchaseOrder_No"
+												type="xsd:string" minOccurs="0" />
+											<xsd:element name="Record_Created_Date" type="xsd:string"
+												minOccurs="0" />
+											<xsd:element name="Requested_Delivery_Date_Of_Document"
+												type="xsd:string" minOccurs="0" />
+											<xsd:element name="Hybris_Reference_No" type="xsd:string"
+												minOccurs="0" />
+											<xsd:element name="Document_Currency" type="xsd:string"
+												minOccurs="0" />
+											<xsd:element name="Net_Value_In_Document_Currency"
+												type="xsd:string" minOccurs="0" />
+										</xsd:sequence>
+									</xsd:complexType>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="MT_Hybris_To_PI_Order_Header_Request">
+		<wsdl:documentation />
+		<wsdl:part name="MT_Hybris_To_PI_Order_Header_Request"
+			element="p1:MT_Hybris_To_PI_Order_Header_Request" />
+	</wsdl:message>
+	<wsdl:message name="MT_PI_To_Hybris_Order_Header_Response">
+		<wsdl:documentation />
+		<wsdl:part name="MT_PI_To_Hybris_Order_Header_Response"
+			element="p1:MT_PI_To_Hybris_Order_Header_Response" />
+	</wsdl:message>
+	<wsdl:portType name="SI_Hybris_Order_Header_OB">
+		<wsdl:documentation />
+		<wsdl:operation name="SI_Hybris_Order_Header_OB">
+			<wsdl:documentation />
+			<wsp:Policy>
+				<wsp:PolicyReference URI="#OP_SI_Hybris_Order_Header_OB" />
+			</wsp:Policy>
+			<wsdl:input message="p1:MT_Hybris_To_PI_Order_Header_Request" />
+			<wsdl:output message="p1:MT_PI_To_Hybris_Order_Header_Response" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="SI_Hybris_Order_Header_OBBinding"
+		type="p1:SI_Hybris_Order_Header_OB">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+		<wsdl:operation name="SI_Hybris_Order_Header_OB">
+			<soap:operation soapAction="http://sap.com/xi/WebService/soap1.1"
+				xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+			<wsdl:input>
+				<soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="BC_HYBRIS_SI_Hybris_Order_Header_OB">
+		<wsdl:port name="HTTP_Port" binding="p1:SI_Hybris_Order_Header_OBBinding">
+			<soap:address
+				location="http://txeappnwh801v.txt.textron.com:50000/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BC_HYBRIS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_Hybris_Order_Header_OB&amp;interfaceNamespace=urn.Hybris.com%3Axi%3AOrder_History_Header"
+				xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+		</wsdl:port>
+		<wsdl:port name="HTTPS_Port" binding="p1:SI_Hybris_Order_Header_OBBinding">
+			<soap:address
+				location="https://txeappnwh801v.txt.textron.com:50001/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BC_HYBRIS&amp;receiverParty=&amp;receiverService=&amp;interface=SI_Hybris_Order_Header_OB&amp;interfaceNamespace=urn.Hybris.com%3Axi%3AOrder_History_Header"
+				xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

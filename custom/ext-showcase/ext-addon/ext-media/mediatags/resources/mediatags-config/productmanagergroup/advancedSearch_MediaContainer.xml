@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<advanced-search xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="advanced-search.xsd">
+	
+	<group name="root" type="unit">
+		<label key="config.general.searchfor" />
+		<property qualifier="MediaContainer.qualifier"/>
+	    <property qualifier="MediaContainer.name"/>
+	    <property qualifier="MediaContainer.catalogVersion"/>
+	    <property qualifier="MediaContainer.medias" />
+		<property qualifier="MediaContainer.mediaTags"/>
+		<group name="admin" visible="false">
+			<label key="config.general.administration" />
+			<property qualifier="item.pk" visible="false" sort-enabled="false"/>
+			<property qualifier="item.modifiedtime" visible="false" sort-enabled="false"/>
+		</group>
+	</group>
+	
+</advanced-search>

@@ -1,0 +1,77 @@
+#------------------
+# Business Staged
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Staged'])[default=$contentCatalog:Staged]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Small Business Category Landing page              #################
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                              ; name                                       ; &componentRef                                 ; headline ; $picture[lang=$lang]  ; content ; urlLink        
+                              ;                         ; ResidentialHelpMeChooseTextOnlyBannerComponent ; Residential Help Me Choose Text Only Banner ; ResidentialHelpMeChooseTextOnlyBannerComponent ;          ;                       ; "<h2>MAKE THE RIGHT CHOICE</h2><p><input name=""help"" type=""button"" value=""Help Me Choose"" /></p><p>Use this selector to choose the best AirScout<span style=""text-align: justify;"">&reg;</span>&nbsp;solution for your needs based on size and type of your Wi-Fi<span style=""text-align: justify;"">&reg;</span>&nbsp;installations.</p>"; "/helpmechoose"
+
+REMOVE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ;       active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7bContentSlot-RESCatPage ;  true   ; ResidentialHelpMeChooseTextOnlyBannerComponent                                                                                                             
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7bContentSlot-RESCatPage ; Residential Section7b Slot for CategoryLandingPage  ; true   ; ResidentialHelpMeChooseTextOnlyBannerComponent                                                                                                             
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7b-residentialcategory     ; Section7b             ;                                                                 ; Section7bContentSlot-RESCatPage           
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7b-residentialcategory     ; Section7b             ;                                                                 ; Section7bContentSlot-RESCatPage           
+
+#------------------
+# Business Online
+#-----------------
+
+$contentCatalog=greenleeContentCatalog
+$contentCatalogName=Greenlee Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default='Online'])[default=$contentCatalog:Online]
+$productCatalog=greenleeProductCatalog
+$productCatalogName=Greenlee Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$picture=media(code, $contentCV)                   ;
+$image=image(code, $contentCV)                     ;
+$media=media(code, $contentCV)                     ;
+$page=page(uid, $contentCV)                        ;
+$contentPage=contentPage(uid, $contentCV)          ;
+$product=product(code, $productCV)
+$category=category(code, $productCV)
+$siteResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$productResource=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/productCatalogs/$productCatalog
+$jarResourceCms=jar:com.greenlee.initialdata.constants.GreenleeInitialDataConstants&/greenleeinitialdata/import/sampledata/cockpits/cmscockpit
+$addonExtensionName=b2bacceleratoraddon
+
+# Language
+$lang=en
+$picture=media(code, $contentCV)
+#############         Small Business Category Landing page              #################
+INSERT_UPDATE BannerComponent ; $contentCV[unique=true] ; uid[unique=true]                              ; name                                       ; &componentRef                                 ; headline ; $picture[lang=$lang]  ; content ; urlLink        
+                              ;                         ; ResidentialHelpMeChooseTextOnlyBannerComponent ; Residential Help Me Choose Text Only Banner ; ResidentialHelpMeChooseTextOnlyBannerComponent ;          ;                       ; "<h2>MAKE THE RIGHT CHOICE</h2><p><input name=""help"" type=""button"" value=""Help Me Choose"" /></p><p>Use this selector to choose the best AirScout<span style=""text-align: justify;"">&reg;</span>&nbsp;solution for your needs based on size and type of your Wi-Fi<span style=""text-align: justify;"">&reg;</span>&nbsp;installations.</p>"; "/helpmechoose"
+
+INSERT_UPDATE ContentSlot ; $contentCV[unique=true] ; uid[unique=true]               ; name                                                  ; active ; cmsComponents(&componentRef)                                                                                                                              
+                          ;                         ; Section7bContentSlot-RESCatPage ; Residential Section7b Slot for CategoryLandingPage  ; true   ; ResidentialHelpMeChooseTextOnlyBannerComponent                                                                                                             
+
+REMOVE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7b-residentialcategory     ; Section7b             ;                                                                 ; Section7bContentSlot-RESCatPage           
+
+INSERT_UPDATE ContentSlotForPage ; $contentCV[unique=true] ; uid[unique=true]                 ; position[unique=true] ; page(uid,$contentCV)[unique=true][default='residentialcategory'] ; contentSlot(uid,$contentCV)[unique=true]
+                                 ;                         ; Section7b-residentialcategory     ; Section7b             ;                                                                 ; Section7bContentSlot-RESCatPage           

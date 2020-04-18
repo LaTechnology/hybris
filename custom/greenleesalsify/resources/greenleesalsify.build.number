@@ -1,0 +1,9 @@
+#Ant properties
+#Mon Mar 14 14:33:21 CET 2016
+builddate=20160314 1432
+description=greenleesalsify
+name=greenleesalsify
+releasedate=20150915 1445
+vendor=hybris
+version=5.7.0.9
+version.api=5.7.0

@@ -1,0 +1,18 @@
+#colorbox {
+	&.frgt-pwd-popup {
+		@media (max-width: $screen-sm-min) {
+			top: 0 !important;
+		}
+	}
+}
+.forgotten-password {
+	padding: 50px 20px 0;
+	@media (min-width: $screen-md-min) {
+		padding: 60px 50px 0;
+	}
+	#forgottenPwdForm {
+		.btn {
+			margin: 20px 0 15px;
+		}
+	}
+}
