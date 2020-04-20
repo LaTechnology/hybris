@@ -1,0 +1,79 @@
+<hybrisconfig xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='../bin/platform/resources/schemas/extensions.xsd'>
+  <extensions>
+  	<path dir='${HYBRIS_BIN_DIR}'/>
+  	
+    <path dir='${HYBRIS_BIN_DIR}/ext-integration/sap/core' autoload='true' />
+    <path dir='${HYBRIS_BIN_DIR}/ext-integration/sap/masterdata' autoload='true' />
+    <path dir='${HYBRIS_BIN_DIR}/ext-integration/sap/synchronousPricing' autoload='true' />
+	<path dir='${HYBRIS_BIN_DIR}/ext-integration/sap/asynchronousOM' autoload='true' />
+    <path dir='${HYBRIS_BIN_DIR}/ext-integration/sap/availability' autoload='true' />
+    <path dir='${HYBRIS_BIN_DIR}/ext-integration/sap/testsupport' autoload='true' />
+    <path dir='${HYBRIS_BIN_DIR}/ext-integration/sap/productconfig' autoload='false' />
+    <path dir='${HYBRIS_BIN_DIR}/ext-integration/sap/creditCheck' autoload='false' />
+    
+    <extension name='sapproductconfigruntimeinterface' />
+    <extension name='sapproductconfigfacades' />
+    <extension name='sapproductconfigservices' />
+    <extension name='sapcreditcheck' />
+    <extension name='commerceorgaddon' />
+    <extension name='mcc' />
+    <extension name='btgcockpit' />
+    <extension name='commercesearchhmc' />
+    <extension name='oci' />
+    <extension name='wishlist' />
+    <extension name='b2badmincockpit' />
+    <extension name='b2bacceleratorservices' />
+    <extension name='b2bapprovalprocess' />
+    <extension name='b2bcommerce' />
+    <extension name='bmecathmc' />
+    <extension name='importcockpit' />
+    <extension name='classificationsystemshmc' />
+    <extension name='mobileoptionals' />
+    <extension name='solrserver' />
+    
+    <!-- <extension name='ycommercewebserviceshmc' /> -->
+    <!-- <extension name='yaddon' /> -->
+    
+    <extension name='datahubadapter' />
+    <extension name='datahubbackoffice' />
+    <extension name='basecommercebackoffice' />
+    <extension name='b2bcommercebackoffice' />
+    <extension name='commercesearchbackoffice' />
+     <extension name='assistedservicefacades'/>
+	<extension name='assistedservicestorefront'/> 
+	
+	<extension dir='${HYBRIS_BIN_DIR}/custom/ext-showcase/ext-addon/ext-liveedit/liveeditaddon'/>
+    <!--upgrade changes start-->
+      <extension dir='${HYBRIS_BIN_DIR}/ext-addon/b2bacceleratoraddon'/>
+      <extension name='commerceorgaddon' />
+      <extension name='b2bcommercefacades'/>
+      <extension dir="${HYBRIS_BIN_DIR}/ext-accelerator/b2bacceleratorfacades"/>
+      <extension dir="${HYBRIS_BIN_DIR}/ext-accelerator/acceleratorstorefrontcommons"/>
+      <extension dir="${HYBRIS_BIN_DIR}/ext-addon/addonsupport"/>
+    <extension name="backofficesolrsearch"/>
+
+	<!--upgrade changes end-->
+	<extension name='greenleetest' />
+    <extension name='greenleecore' />
+    <extension name='greenleestorefront' />
+    <extension name='greenleeinitialdata' />
+    <extension name='greenleecockpits' />
+    <extension name='greenleefacades' />
+    <extension name='greenleefulfilmentprocess' />
+	<!--<extension name='greenleecommerceaddon' /> would be using OOTB commerceorgaddon-->
+	<extension name='greenleesapintegration' />
+	
+
+	<!--<extension name='acceleratorstorefrontcommons' />-->
+	<!--<extension name='b2bacceleratorfacades' />-->
+	<!--<extension name='addonsupport' />-->
+
+	<extension name="greenleeprocessintegration" />
+	
+	<extension name="mediaconversion"/>
+	<extension name="voucher"/>
+	<extension name="productcomparison"/>
+	<extension name="paymentechintegration"/>
+
+  </extensions>
+</hybrisconfig>
