@@ -3,6 +3,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="/platform"/>
 	<classpathentry exported="true" kind="lib" path="resources"/>
+	<classpathentry kind="lib" path="lib/csv-web-service.jar"/>
 	<classpathentry kind="src" output="eclipsebin/classes" path="src"/>
 	<classpathentry kind="src" output="eclipsebin/web/classes" path="web/src"/>
 	<classpathentry kind="src" output="eclipsebin/classes" path="testsrc"/>
@@ -10,6 +11,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/acceleratorservices"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/y2ysync"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/y2ysyncdemoelectronics"/>
-	<classpathentry kind="lib" path="/greenleecore/lib/csv-web-service.jar"/>
 	<classpathentry kind="output" path="eclipsebin/notused"/>
 </classpath>

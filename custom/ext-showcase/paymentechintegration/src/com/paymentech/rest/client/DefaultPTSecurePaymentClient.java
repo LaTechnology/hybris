@@ -3,12 +3,12 @@ package com.paymentech.rest.client;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
-
-import org.apache.commons.httpclient.util.HttpURLConnection;
+ 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Consts;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
@@ -99,7 +99,7 @@ public class DefaultPTSecurePaymentClient implements PTSecurePaymentClient {
 			String statusCode = String.valueOf(response.getStatusLine()
 					.getStatusCode());
 			LOG.error("Response Code received: " + statusCode);
-			if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_OK) {
+			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				result = EntityUtils.toString(response.getEntity());
 				if (StringUtils.isNotEmpty(result)) {
 					serverResponse = getPtAPIPaymentService().xmlToJAXBObject(

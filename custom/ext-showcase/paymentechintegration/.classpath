@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="/platform"/>
 	<classpathentry exported="true" kind="lib" path="resources"/>
+	<classpathentry kind="lib" path="lib/jersey-core-1.18.1.jar"/>
 	<classpathentry kind="src" output="eclipsebin/classes" path="src"/>
 	<classpathentry kind="src" output="eclipsebin/classes" path="testsrc"/>
 	<classpathentry kind="src" output="eclipsebin/classes" path="gensrc"/>
@@ -10,8 +11,7 @@
 	<classpathentry kind="lib" path="lib/httpcore-4.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/ptxmlapi.jar"/>
 	<classpathentry kind="lib" path="lib/httpclient-4.4.1.jar"/>
-	<classpathentry kind="lib" path="lib/jersey-core-1.18.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_71">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_202">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
